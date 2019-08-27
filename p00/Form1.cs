@@ -93,6 +93,9 @@ namespace p00
         private void button_Tools_DeinterlaceDualISO_Click(object sender, EventArgs e)
         {
             rwt.rawData = rwt.DeinterlaceUniversal(rwt.rawData, true);
+            //rwt.makeSplineHorizontal();
+            //rwt.makeSplineVertical();
+            Console.WriteLine();
         }
         private void button_Tools_Transpose_Click(object sender, EventArgs e)
         {
@@ -184,7 +187,7 @@ namespace p00
             OpenFileDialog thisDialog = new OpenFileDialog();
 
             //thisDialog.InitialDirectory = "d:\\";
-            thisDialog.Filter = "rcc files (*.rcc)|*.rcc|All files (*.*)|*.*";
+            thisDialog.Filter = "All files (*.*)|*.*";
             thisDialog.FilterIndex = 2;
             thisDialog.RestoreDirectory = true;
             thisDialog.Multiselect = true;
@@ -217,10 +220,10 @@ namespace p00
                     mass.mapData = rwt.mapData;
                     mass.rawData = mass.ImportRawData14bitUncompressed(@path);
                     mass.rawData = mass.DeinterlaceUniversal(mass.rawData, true);
-                    mass.ModifyBlock(mass.rawData, 0, 0, mass.CorrectArea(mass.rawData, mass.mapData, 2, 4, 0, 0));
-                    mass.ModifyBlock(mass.rawData, 1, 1, mass.CorrectArea(mass.rawData, mass.mapData, 2, 4, 1, 1));
-                    mass.ModifyBlock(mass.rawData, 0, 2, mass.CorrectArea(mass.rawData, mass.mapData, 2, 4, 0, 2));
-                    mass.ModifyBlock(mass.rawData, 1, 3, mass.CorrectArea(mass.rawData, mass.mapData, 2, 4, 1, 3));
+                    mass.ModifyBlock(mass.rawData, 0, 0, mass.CorrectArea2(mass.rawData, mass.mapData, 2, 4, 0, 0));
+                    mass.ModifyBlock(mass.rawData, 1, 1, mass.CorrectArea2(mass.rawData, mass.mapData, 2, 4, 1, 1));
+                    mass.ModifyBlock(mass.rawData, 0, 2, mass.CorrectArea2(mass.rawData, mass.mapData, 2, 4, 0, 2));
+                    mass.ModifyBlock(mass.rawData, 1, 3, mass.CorrectArea2(mass.rawData, mass.mapData, 2, 4, 1, 3));
                     mass.rawData = mass.InterlaceUniversal(mass.rawData, true);
                     mass.ExportRawData14bitUncompressed(mass.rawData, @path);
                 }
@@ -229,7 +232,7 @@ namespace p00
 
         private void button6_Click(object sender, EventArgs e)
         {
-            rwt.FindFunction((double)numericUpDown_angle.Value);
+            rwt.FindFunction(rwt.SliceBlock(rwt.rawData,2,4,0,0),rwt.SliceBlock(rwt.mapData,2,4,0,0),(double)numericUpDown_angle.Value,211,237);
         }
     }   
 }

@@ -10,6 +10,7 @@ using MathNet.Numerics;
 using System.Collections;
 using System.IO;
 using BitMiracle.LibTiff.Classic;*/
+using MathNet.Numerics.Interpolation;
 
 namespace p00
 {
@@ -18,5 +19,7 @@ namespace p00
     {
         public int[,] rawData;
         public int[,] mapData;
+        //public CubicSpline[] splineHorizontal;
+        //public CubicSpline[] splineVertical;
     }
 }
