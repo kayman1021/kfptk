@@ -3,6 +3,7 @@ C:\Users\atkalman\Desktop\p00\p00\p00\bin\Debug\p00.exe
 C:\Users\atkalman\Desktop\p00\p00\p00\bin\Debug\p00.pdb
 C:\Users\atkalman\Desktop\p00\p00\p00\bin\Debug\BitMiracle.LibTiff.NET.dll
 C:\Users\atkalman\Desktop\p00\p00\p00\bin\Debug\BitMiracle.LibTiff.NET.xml
+C:\Users\atkalman\Desktop\p00\p00\p00\obj\Debug\p00.csprojAssemblyReference.cache
 C:\Users\atkalman\Desktop\p00\p00\p00\obj\Debug\p00.Form1.resources
 C:\Users\atkalman\Desktop\p00\p00\p00\obj\Debug\p00.Properties.Resources.resources
 C:\Users\atkalman\Desktop\p00\p00\p00\obj\Debug\p00.csproj.GenerateResource.cache
@@ -10,4 +11,3 @@ C:\Users\atkalman\Desktop\p00\p00\p00\obj\Debug\p00.csproj.CoreCompileInputs.cac
 C:\Users\atkalman\Desktop\p00\p00\p00\obj\Debug\p00.csproj.CopyComplete
 C:\Users\atkalman\Desktop\p00\p00\p00\obj\Debug\p00.exe
 C:\Users\atkalman\Desktop\p00\p00\p00\obj\Debug\p00.pdb
-C:\Users\atkalman\Desktop\p00\p00\p00\obj\Debug\p00.csprojAssemblyReference.cache

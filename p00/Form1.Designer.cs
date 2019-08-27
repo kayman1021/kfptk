@@ -28,322 +28,542 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.textBox_ImportRaw = new System.Windows.Forms.TextBox();
-            this.textBox_ExportTiff = new System.Windows.Forms.TextBox();
-            this.button_ImportRawXiaomi = new System.Windows.Forms.Button();
-            this.button_ExportTiff = new System.Windows.Forms.Button();
-            this.button_Deinterlace = new System.Windows.Forms.Button();
-            this.button_Interlace = new System.Windows.Forms.Button();
-            this.button_ExportIntArray = new System.Windows.Forms.Button();
-            this.button_ImportRaw14bit = new System.Windows.Forms.Button();
-            this.textBox_ExportIntArray = new System.Windows.Forms.TextBox();
-            this.button_ImportRawBrowse = new System.Windows.Forms.Button();
-            this.button_ExportTiffBrowse = new System.Windows.Forms.Button();
-            this.button_ExportIntArrayBrowse = new System.Windows.Forms.Button();
-            this.button_SeperateDualISO = new System.Windows.Forms.Button();
-            this.button_Transpose = new System.Windows.Forms.Button();
-            this.button_DeinterlaceDualISO = new System.Windows.Forms.Button();
-            this.button_InterlaceDualISO = new System.Windows.Forms.Button();
-            this.button_KeepTopHalf = new System.Windows.Forms.Button();
-            this.button_KeepBottomHalf = new System.Windows.Forms.Button();
-            this.button_AlternateDualISO = new System.Windows.Forms.Button();
-            this.button_ImportFPMFromImage = new System.Windows.Forms.Button();
-            this.textBox_ImportFPMFromImage = new System.Windows.Forms.TextBox();
-            this.button_BrowseFPMImage = new System.Windows.Forms.Button();
+            this.groupBox_Export_TIFF = new System.Windows.Forms.GroupBox();
+            this.textBox_Export_TIFF_Text = new System.Windows.Forms.TextBox();
+            this.button_Export_TIFF_Export = new System.Windows.Forms.Button();
+            this.button_Export_TIFF_Browse = new System.Windows.Forms.Button();
+            this.groupBox_Export_FPM = new System.Windows.Forms.GroupBox();
+            this.button_Export_FPM_Export = new System.Windows.Forms.Button();
+            this.button_Export_FPM_Browse = new System.Windows.Forms.Button();
+            this.textBox_Export_FPM_Text = new System.Windows.Forms.TextBox();
+            this.groupBox_Tools = new System.Windows.Forms.GroupBox();
+            this.button_Tools_SwapSides = new System.Windows.Forms.Button();
+            this.button_Tools_Transpose = new System.Windows.Forms.Button();
+            this.button_Tools_InterlaceDualISO = new System.Windows.Forms.Button();
+            this.button_Tools_DeinterlaceDualISO = new System.Windows.Forms.Button();
+            this.button_Tools_Interlace = new System.Windows.Forms.Button();
+            this.button_Tools_Deinterlace = new System.Windows.Forms.Button();
+            this.groupBox_Import_FPM = new System.Windows.Forms.GroupBox();
+            this.textBox_Import_FPM_Text = new System.Windows.Forms.TextBox();
+            this.button_Import_FPM_Import = new System.Windows.Forms.Button();
+            this.button_Import_FPM_Browse = new System.Windows.Forms.Button();
+            this.groupBox_Import_DNG = new System.Windows.Forms.GroupBox();
+            this.comboBox_Import_DNG_Select = new System.Windows.Forms.ComboBox();
+            this.textBox_Import_DNG_Text = new System.Windows.Forms.TextBox();
+            this.button_Import_DNG_Import = new System.Windows.Forms.Button();
+            this.button_Import_DNG_Browse = new System.Windows.Forms.Button();
+            this.radioButton_Select_Left = new System.Windows.Forms.RadioButton();
+            this.radioButton_Select_Right = new System.Windows.Forms.RadioButton();
+            this.groupBox_Select = new System.Windows.Forms.GroupBox();
+            this.groupBox_Import = new System.Windows.Forms.GroupBox();
+            this.groupBox_Import_Mapped = new System.Windows.Forms.GroupBox();
+            this.textBox_Import_Mapped_Text = new System.Windows.Forms.TextBox();
+            this.button_Import_Mapped_Import = new System.Windows.Forms.Button();
+            this.button_Import_Mapped_Browse = new System.Windows.Forms.Button();
+            this.groupBox_Import_TIFF = new System.Windows.Forms.GroupBox();
+            this.button_Import_TIFF_Import = new System.Windows.Forms.Button();
+            this.textBox_Import_TIFF_Text = new System.Windows.Forms.TextBox();
+            this.button_Import_TIFF_Browse = new System.Windows.Forms.Button();
+            this.groupBox_Export = new System.Windows.Forms.GroupBox();
+            this.groupBox_Export_TIFF.SuspendLayout();
+            this.groupBox_Export_FPM.SuspendLayout();
+            this.groupBox_Tools.SuspendLayout();
+            this.groupBox_Import_FPM.SuspendLayout();
+            this.groupBox_Import_DNG.SuspendLayout();
+            this.groupBox_Select.SuspendLayout();
+            this.groupBox_Import.SuspendLayout();
+            this.groupBox_Import_Mapped.SuspendLayout();
+            this.groupBox_Import_TIFF.SuspendLayout();
+            this.groupBox_Export.SuspendLayout();
             this.SuspendLayout();
             // 
-            // textBox_ImportRaw
+            // groupBox_Export_TIFF
             // 
-            this.textBox_ImportRaw.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F);
-            this.textBox_ImportRaw.Location = new System.Drawing.Point(12, 12);
-            this.textBox_ImportRaw.Multiline = true;
-            this.textBox_ImportRaw.Name = "textBox_ImportRaw";
-            this.textBox_ImportRaw.Size = new System.Drawing.Size(500, 24);
-            this.textBox_ImportRaw.TabIndex = 0;
+            this.groupBox_Export_TIFF.Controls.Add(this.textBox_Export_TIFF_Text);
+            this.groupBox_Export_TIFF.Controls.Add(this.button_Export_TIFF_Export);
+            this.groupBox_Export_TIFF.Controls.Add(this.button_Export_TIFF_Browse);
+            this.groupBox_Export_TIFF.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F);
+            this.groupBox_Export_TIFF.Location = new System.Drawing.Point(6, 25);
+            this.groupBox_Export_TIFF.Name = "groupBox_Export_TIFF";
+            this.groupBox_Export_TIFF.Size = new System.Drawing.Size(350, 100);
+            this.groupBox_Export_TIFF.TabIndex = 13;
+            this.groupBox_Export_TIFF.TabStop = false;
+            this.groupBox_Export_TIFF.Text = "TIFF";
             // 
-            // textBox_ExportTiff
+            // textBox_Export_TIFF_Text
             // 
-            this.textBox_ExportTiff.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F);
-            this.textBox_ExportTiff.Location = new System.Drawing.Point(12, 698);
-            this.textBox_ExportTiff.Multiline = true;
-            this.textBox_ExportTiff.Name = "textBox_ExportTiff";
-            this.textBox_ExportTiff.Size = new System.Drawing.Size(500, 24);
-            this.textBox_ExportTiff.TabIndex = 2;
+            this.textBox_Export_TIFF_Text.Font = new System.Drawing.Font("Microsoft Sans Serif", 11F);
+            this.textBox_Export_TIFF_Text.Location = new System.Drawing.Point(6, 25);
+            this.textBox_Export_TIFF_Text.Name = "textBox_Export_TIFF_Text";
+            this.textBox_Export_TIFF_Text.Size = new System.Drawing.Size(338, 24);
+            this.textBox_Export_TIFF_Text.TabIndex = 5;
             // 
-            // button_ImportRawXiaomi
+            // button_Export_TIFF_Export
             // 
-            this.button_ImportRawXiaomi.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F);
-            this.button_ImportRawXiaomi.Location = new System.Drawing.Point(518, 42);
-            this.button_ImportRawXiaomi.Name = "button_ImportRawXiaomi";
-            this.button_ImportRawXiaomi.Size = new System.Drawing.Size(150, 24);
-            this.button_ImportRawXiaomi.TabIndex = 3;
-            this.button_ImportRawXiaomi.Text = "Import Raw Xiaomi";
-            this.button_ImportRawXiaomi.UseVisualStyleBackColor = true;
-            this.button_ImportRawXiaomi.Click += new System.EventHandler(this.button_ImportRawXiaomi_Click);
+            this.button_Export_TIFF_Export.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F);
+            this.button_Export_TIFF_Export.Location = new System.Drawing.Point(244, 55);
+            this.button_Export_TIFF_Export.Name = "button_Export_TIFF_Export";
+            this.button_Export_TIFF_Export.Size = new System.Drawing.Size(100, 24);
+            this.button_Export_TIFF_Export.TabIndex = 6;
+            this.button_Export_TIFF_Export.Text = "Export";
+            this.button_Export_TIFF_Export.UseVisualStyleBackColor = true;
+            this.button_Export_TIFF_Export.Click += new System.EventHandler(this.button_Export_TIFF_Export_Click);
             // 
-            // button_ExportTiff
+            // button_Export_TIFF_Browse
             // 
-            this.button_ExportTiff.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F);
-            this.button_ExportTiff.Location = new System.Drawing.Point(518, 728);
-            this.button_ExportTiff.Name = "button_ExportTiff";
-            this.button_ExportTiff.Size = new System.Drawing.Size(150, 24);
-            this.button_ExportTiff.TabIndex = 4;
-            this.button_ExportTiff.Text = "Export Tiff";
-            this.button_ExportTiff.UseVisualStyleBackColor = true;
-            this.button_ExportTiff.Click += new System.EventHandler(this.button_ExportTiff_Click);
+            this.button_Export_TIFF_Browse.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F);
+            this.button_Export_TIFF_Browse.Location = new System.Drawing.Point(6, 55);
+            this.button_Export_TIFF_Browse.Name = "button_Export_TIFF_Browse";
+            this.button_Export_TIFF_Browse.Size = new System.Drawing.Size(100, 24);
+            this.button_Export_TIFF_Browse.TabIndex = 5;
+            this.button_Export_TIFF_Browse.Text = "Browse";
+            this.button_Export_TIFF_Browse.UseVisualStyleBackColor = true;
+            this.button_Export_TIFF_Browse.Click += new System.EventHandler(this.button_Export_TIFF_Browse_Click);
             // 
-            // button_Deinterlace
+            // groupBox_Export_FPM
             // 
-            this.button_Deinterlace.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F);
-            this.button_Deinterlace.Location = new System.Drawing.Point(12, 348);
-            this.button_Deinterlace.Name = "button_Deinterlace";
-            this.button_Deinterlace.Size = new System.Drawing.Size(160, 24);
-            this.button_Deinterlace.TabIndex = 5;
-            this.button_Deinterlace.Text = "Deinterlace";
-            this.button_Deinterlace.UseVisualStyleBackColor = true;
-            this.button_Deinterlace.Click += new System.EventHandler(this.button_Deinterlace_Click);
+            this.groupBox_Export_FPM.Controls.Add(this.button_Export_FPM_Export);
+            this.groupBox_Export_FPM.Controls.Add(this.button_Export_FPM_Browse);
+            this.groupBox_Export_FPM.Controls.Add(this.textBox_Export_FPM_Text);
+            this.groupBox_Export_FPM.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F);
+            this.groupBox_Export_FPM.Location = new System.Drawing.Point(362, 25);
+            this.groupBox_Export_FPM.Name = "groupBox_Export_FPM";
+            this.groupBox_Export_FPM.Size = new System.Drawing.Size(349, 100);
+            this.groupBox_Export_FPM.TabIndex = 14;
+            this.groupBox_Export_FPM.TabStop = false;
+            this.groupBox_Export_FPM.Text = "FPM";
             // 
-            // button_Interlace
+            // button_Export_FPM_Export
             // 
-            this.button_Interlace.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F);
-            this.button_Interlace.Location = new System.Drawing.Point(178, 348);
-            this.button_Interlace.Name = "button_Interlace";
-            this.button_Interlace.Size = new System.Drawing.Size(160, 24);
-            this.button_Interlace.TabIndex = 6;
-            this.button_Interlace.Text = "Interlace";
-            this.button_Interlace.UseVisualStyleBackColor = true;
-            this.button_Interlace.Click += new System.EventHandler(this.button_Interlace_Click);
+            this.button_Export_FPM_Export.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F);
+            this.button_Export_FPM_Export.Location = new System.Drawing.Point(243, 55);
+            this.button_Export_FPM_Export.Name = "button_Export_FPM_Export";
+            this.button_Export_FPM_Export.Size = new System.Drawing.Size(100, 24);
+            this.button_Export_FPM_Export.TabIndex = 5;
+            this.button_Export_FPM_Export.Text = "Export";
+            this.button_Export_FPM_Export.UseVisualStyleBackColor = true;
+            this.button_Export_FPM_Export.Click += new System.EventHandler(this.button_Export_FPM_Export_Click);
             // 
-            // button_ExportIntArray
+            // button_Export_FPM_Browse
             // 
-            this.button_ExportIntArray.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F);
-            this.button_ExportIntArray.Location = new System.Drawing.Point(518, 828);
-            this.button_ExportIntArray.Name = "button_ExportIntArray";
-            this.button_ExportIntArray.Size = new System.Drawing.Size(150, 24);
-            this.button_ExportIntArray.TabIndex = 9;
-            this.button_ExportIntArray.Text = "Export Int Array";
-            this.button_ExportIntArray.UseVisualStyleBackColor = true;
-            this.button_ExportIntArray.Click += new System.EventHandler(this.button_ExportIntArray_Click);
+            this.button_Export_FPM_Browse.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F);
+            this.button_Export_FPM_Browse.Location = new System.Drawing.Point(6, 55);
+            this.button_Export_FPM_Browse.Name = "button_Export_FPM_Browse";
+            this.button_Export_FPM_Browse.Size = new System.Drawing.Size(100, 24);
+            this.button_Export_FPM_Browse.TabIndex = 8;
+            this.button_Export_FPM_Browse.Text = "Browse";
+            this.button_Export_FPM_Browse.UseVisualStyleBackColor = true;
+            this.button_Export_FPM_Browse.Click += new System.EventHandler(this.button_Export_FPM_Browse_Click);
             // 
-            // button_ImportRaw14bit
+            // textBox_Export_FPM_Text
             // 
-            this.button_ImportRaw14bit.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F);
-            this.button_ImportRaw14bit.Location = new System.Drawing.Point(674, 42);
-            this.button_ImportRaw14bit.Name = "button_ImportRaw14bit";
-            this.button_ImportRaw14bit.Size = new System.Drawing.Size(150, 24);
-            this.button_ImportRaw14bit.TabIndex = 10;
-            this.button_ImportRaw14bit.Text = "Import Raw 14bit";
-            this.button_ImportRaw14bit.UseVisualStyleBackColor = true;
-            this.button_ImportRaw14bit.Click += new System.EventHandler(this.button_ImportRaw14bit_Click);
+            this.textBox_Export_FPM_Text.Font = new System.Drawing.Font("Microsoft Sans Serif", 11F);
+            this.textBox_Export_FPM_Text.Location = new System.Drawing.Point(6, 25);
+            this.textBox_Export_FPM_Text.Name = "textBox_Export_FPM_Text";
+            this.textBox_Export_FPM_Text.Size = new System.Drawing.Size(338, 24);
+            this.textBox_Export_FPM_Text.TabIndex = 7;
             // 
-            // textBox_ExportIntArray
+            // groupBox_Tools
             // 
-            this.textBox_ExportIntArray.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F);
-            this.textBox_ExportIntArray.Location = new System.Drawing.Point(12, 798);
-            this.textBox_ExportIntArray.Multiline = true;
-            this.textBox_ExportIntArray.Name = "textBox_ExportIntArray";
-            this.textBox_ExportIntArray.Size = new System.Drawing.Size(500, 24);
-            this.textBox_ExportIntArray.TabIndex = 11;
+            this.groupBox_Tools.Controls.Add(this.button_Tools_SwapSides);
+            this.groupBox_Tools.Controls.Add(this.button_Tools_Transpose);
+            this.groupBox_Tools.Controls.Add(this.button_Tools_InterlaceDualISO);
+            this.groupBox_Tools.Controls.Add(this.button_Tools_DeinterlaceDualISO);
+            this.groupBox_Tools.Controls.Add(this.button_Tools_Interlace);
+            this.groupBox_Tools.Controls.Add(this.button_Tools_Deinterlace);
+            this.groupBox_Tools.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F);
+            this.groupBox_Tools.Location = new System.Drawing.Point(12, 374);
+            this.groupBox_Tools.Name = "groupBox_Tools";
+            this.groupBox_Tools.Size = new System.Drawing.Size(720, 200);
+            this.groupBox_Tools.TabIndex = 11;
+            this.groupBox_Tools.TabStop = false;
+            this.groupBox_Tools.Text = "Tools";
             // 
-            // button_ImportRawBrowse
+            // button_Tools_SwapSides
             // 
-            this.button_ImportRawBrowse.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F);
-            this.button_ImportRawBrowse.Location = new System.Drawing.Point(518, 12);
-            this.button_ImportRawBrowse.Name = "button_ImportRawBrowse";
-            this.button_ImportRawBrowse.Size = new System.Drawing.Size(306, 24);
-            this.button_ImportRawBrowse.TabIndex = 12;
-            this.button_ImportRawBrowse.Text = "Browse for DNG";
-            this.button_ImportRawBrowse.UseVisualStyleBackColor = true;
-            this.button_ImportRawBrowse.Click += new System.EventHandler(this.button_ImportRawBrowse_Click);
+            this.button_Tools_SwapSides.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F);
+            this.button_Tools_SwapSides.Location = new System.Drawing.Point(218, 85);
+            this.button_Tools_SwapSides.Name = "button_Tools_SwapSides";
+            this.button_Tools_SwapSides.Size = new System.Drawing.Size(200, 24);
+            this.button_Tools_SwapSides.TabIndex = 7;
+            this.button_Tools_SwapSides.Text = "Swap Sides";
+            this.button_Tools_SwapSides.UseVisualStyleBackColor = true;
+            this.button_Tools_SwapSides.Click += new System.EventHandler(this.button_Tools_SwapSides_Click);
             // 
-            // button_ExportTiffBrowse
+            // button_Tools_Transpose
             // 
-            this.button_ExportTiffBrowse.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F);
-            this.button_ExportTiffBrowse.Location = new System.Drawing.Point(518, 698);
-            this.button_ExportTiffBrowse.Name = "button_ExportTiffBrowse";
-            this.button_ExportTiffBrowse.Size = new System.Drawing.Size(306, 24);
-            this.button_ExportTiffBrowse.TabIndex = 13;
-            this.button_ExportTiffBrowse.Text = "Browse for TIFF";
-            this.button_ExportTiffBrowse.UseVisualStyleBackColor = true;
-            this.button_ExportTiffBrowse.Click += new System.EventHandler(this.button_ExportTiffBrowse_Click);
+            this.button_Tools_Transpose.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F);
+            this.button_Tools_Transpose.Location = new System.Drawing.Point(12, 85);
+            this.button_Tools_Transpose.Name = "button_Tools_Transpose";
+            this.button_Tools_Transpose.Size = new System.Drawing.Size(200, 24);
+            this.button_Tools_Transpose.TabIndex = 4;
+            this.button_Tools_Transpose.Text = "Transpose";
+            this.button_Tools_Transpose.UseVisualStyleBackColor = true;
+            this.button_Tools_Transpose.Click += new System.EventHandler(this.button_Tools_Transpose_Click);
             // 
-            // button_ExportIntArrayBrowse
+            // button_Tools_InterlaceDualISO
             // 
-            this.button_ExportIntArrayBrowse.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F);
-            this.button_ExportIntArrayBrowse.Location = new System.Drawing.Point(518, 798);
-            this.button_ExportIntArrayBrowse.Name = "button_ExportIntArrayBrowse";
-            this.button_ExportIntArrayBrowse.Size = new System.Drawing.Size(306, 24);
-            this.button_ExportIntArrayBrowse.TabIndex = 14;
-            this.button_ExportIntArrayBrowse.Text = "Browse for TXT";
-            this.button_ExportIntArrayBrowse.UseVisualStyleBackColor = true;
-            this.button_ExportIntArrayBrowse.Click += new System.EventHandler(this.button_ExportIntArrayBrowse_Click);
+            this.button_Tools_InterlaceDualISO.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F);
+            this.button_Tools_InterlaceDualISO.Location = new System.Drawing.Point(218, 55);
+            this.button_Tools_InterlaceDualISO.Name = "button_Tools_InterlaceDualISO";
+            this.button_Tools_InterlaceDualISO.Size = new System.Drawing.Size(200, 24);
+            this.button_Tools_InterlaceDualISO.TabIndex = 3;
+            this.button_Tools_InterlaceDualISO.Text = "Interlace Dual ISO";
+            this.button_Tools_InterlaceDualISO.UseVisualStyleBackColor = true;
+            this.button_Tools_InterlaceDualISO.Click += new System.EventHandler(this.button_Tools_InterlaceDualISO_Click);
             // 
-            // button_SeperateDualISO
+            // button_Tools_DeinterlaceDualISO
             // 
-            this.button_SeperateDualISO.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F);
-            this.button_SeperateDualISO.Location = new System.Drawing.Point(12, 498);
-            this.button_SeperateDualISO.Name = "button_SeperateDualISO";
-            this.button_SeperateDualISO.Size = new System.Drawing.Size(160, 24);
-            this.button_SeperateDualISO.TabIndex = 15;
-            this.button_SeperateDualISO.Text = "Seperate Dual ISO";
-            this.button_SeperateDualISO.UseVisualStyleBackColor = true;
-            this.button_SeperateDualISO.Click += new System.EventHandler(this.button_SeperateDualISO_Click);
+            this.button_Tools_DeinterlaceDualISO.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F);
+            this.button_Tools_DeinterlaceDualISO.Location = new System.Drawing.Point(12, 55);
+            this.button_Tools_DeinterlaceDualISO.Name = "button_Tools_DeinterlaceDualISO";
+            this.button_Tools_DeinterlaceDualISO.Size = new System.Drawing.Size(200, 24);
+            this.button_Tools_DeinterlaceDualISO.TabIndex = 2;
+            this.button_Tools_DeinterlaceDualISO.Text = "Deinterlace Dual ISO";
+            this.button_Tools_DeinterlaceDualISO.UseVisualStyleBackColor = true;
+            this.button_Tools_DeinterlaceDualISO.Click += new System.EventHandler(this.button_Tools_DeinterlaceDualISO_Click);
             // 
-            // button_Transpose
+            // button_Tools_Interlace
             // 
-            this.button_Transpose.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F);
-            this.button_Transpose.Location = new System.Drawing.Point(12, 598);
-            this.button_Transpose.Name = "button_Transpose";
-            this.button_Transpose.Size = new System.Drawing.Size(160, 24);
-            this.button_Transpose.TabIndex = 16;
-            this.button_Transpose.Text = "Transpose Image";
-            this.button_Transpose.UseVisualStyleBackColor = true;
-            this.button_Transpose.Click += new System.EventHandler(this.button_Transpose_Click);
+            this.button_Tools_Interlace.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F);
+            this.button_Tools_Interlace.Location = new System.Drawing.Point(218, 25);
+            this.button_Tools_Interlace.Name = "button_Tools_Interlace";
+            this.button_Tools_Interlace.Size = new System.Drawing.Size(200, 24);
+            this.button_Tools_Interlace.TabIndex = 1;
+            this.button_Tools_Interlace.Text = "Interlace Simple";
+            this.button_Tools_Interlace.UseVisualStyleBackColor = true;
+            this.button_Tools_Interlace.Click += new System.EventHandler(this.button_Tools_Interlace_Click);
             // 
-            // button_DeinterlaceDualISO
+            // button_Tools_Deinterlace
             // 
-            this.button_DeinterlaceDualISO.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F);
-            this.button_DeinterlaceDualISO.Location = new System.Drawing.Point(12, 528);
-            this.button_DeinterlaceDualISO.Name = "button_DeinterlaceDualISO";
-            this.button_DeinterlaceDualISO.Size = new System.Drawing.Size(160, 24);
-            this.button_DeinterlaceDualISO.TabIndex = 17;
-            this.button_DeinterlaceDualISO.Text = "Deinterlace Dual ISO";
-            this.button_DeinterlaceDualISO.UseVisualStyleBackColor = true;
-            this.button_DeinterlaceDualISO.Click += new System.EventHandler(this.button_DeinterlaceDualISO_Click);
+            this.button_Tools_Deinterlace.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F);
+            this.button_Tools_Deinterlace.Location = new System.Drawing.Point(12, 25);
+            this.button_Tools_Deinterlace.Name = "button_Tools_Deinterlace";
+            this.button_Tools_Deinterlace.Size = new System.Drawing.Size(200, 24);
+            this.button_Tools_Deinterlace.TabIndex = 0;
+            this.button_Tools_Deinterlace.Text = "Deinterlace Simple";
+            this.button_Tools_Deinterlace.UseVisualStyleBackColor = true;
+            this.button_Tools_Deinterlace.Click += new System.EventHandler(this.button_Tools_Deinterlace_Click);
             // 
-            // button_InterlaceDualISO
+            // groupBox_Import_FPM
             // 
-            this.button_InterlaceDualISO.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F);
-            this.button_InterlaceDualISO.Location = new System.Drawing.Point(178, 528);
-            this.button_InterlaceDualISO.Name = "button_InterlaceDualISO";
-            this.button_InterlaceDualISO.Size = new System.Drawing.Size(160, 24);
-            this.button_InterlaceDualISO.TabIndex = 18;
-            this.button_InterlaceDualISO.Text = "Interlace Dual ISO";
-            this.button_InterlaceDualISO.UseVisualStyleBackColor = true;
-            this.button_InterlaceDualISO.Click += new System.EventHandler(this.button_InterlaceDualISO_Click);
+            this.groupBox_Import_FPM.Controls.Add(this.textBox_Import_FPM_Text);
+            this.groupBox_Import_FPM.Controls.Add(this.button_Import_FPM_Import);
+            this.groupBox_Import_FPM.Controls.Add(this.button_Import_FPM_Browse);
+            this.groupBox_Import_FPM.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F);
+            this.groupBox_Import_FPM.Location = new System.Drawing.Point(362, 25);
+            this.groupBox_Import_FPM.Name = "groupBox_Import_FPM";
+            this.groupBox_Import_FPM.Size = new System.Drawing.Size(350, 100);
+            this.groupBox_Import_FPM.TabIndex = 10;
+            this.groupBox_Import_FPM.TabStop = false;
+            this.groupBox_Import_FPM.Text = "FPM";
             // 
-            // button_KeepTopHalf
+            // textBox_Import_FPM_Text
             // 
-            this.button_KeepTopHalf.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F);
-            this.button_KeepTopHalf.Location = new System.Drawing.Point(178, 628);
-            this.button_KeepTopHalf.Name = "button_KeepTopHalf";
-            this.button_KeepTopHalf.Size = new System.Drawing.Size(160, 24);
-            this.button_KeepTopHalf.TabIndex = 19;
-            this.button_KeepTopHalf.Text = "Keep Top Half";
-            this.button_KeepTopHalf.UseVisualStyleBackColor = true;
-            this.button_KeepTopHalf.Click += new System.EventHandler(this.button_KeepTopHalf_Click);
+            this.textBox_Import_FPM_Text.Font = new System.Drawing.Font("Microsoft Sans Serif", 11F);
+            this.textBox_Import_FPM_Text.Location = new System.Drawing.Point(6, 25);
+            this.textBox_Import_FPM_Text.Name = "textBox_Import_FPM_Text";
+            this.textBox_Import_FPM_Text.Size = new System.Drawing.Size(338, 24);
+            this.textBox_Import_FPM_Text.TabIndex = 0;
             // 
-            // button_KeepBottomHalf
+            // button_Import_FPM_Import
             // 
-            this.button_KeepBottomHalf.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F);
-            this.button_KeepBottomHalf.Location = new System.Drawing.Point(12, 628);
-            this.button_KeepBottomHalf.Name = "button_KeepBottomHalf";
-            this.button_KeepBottomHalf.Size = new System.Drawing.Size(160, 24);
-            this.button_KeepBottomHalf.TabIndex = 20;
-            this.button_KeepBottomHalf.Text = "Keep Bottom Half";
-            this.button_KeepBottomHalf.UseVisualStyleBackColor = true;
-            this.button_KeepBottomHalf.Click += new System.EventHandler(this.button_KeepBottomHalf_Click);
+            this.button_Import_FPM_Import.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F);
+            this.button_Import_FPM_Import.Location = new System.Drawing.Point(244, 55);
+            this.button_Import_FPM_Import.Name = "button_Import_FPM_Import";
+            this.button_Import_FPM_Import.Size = new System.Drawing.Size(100, 24);
+            this.button_Import_FPM_Import.TabIndex = 4;
+            this.button_Import_FPM_Import.Text = "Import";
+            this.button_Import_FPM_Import.UseVisualStyleBackColor = true;
+            this.button_Import_FPM_Import.Click += new System.EventHandler(this.button_Import_FPM_Import_Click);
             // 
-            // button_AlternateDualISO
+            // button_Import_FPM_Browse
             // 
-            this.button_AlternateDualISO.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F);
-            this.button_AlternateDualISO.Location = new System.Drawing.Point(178, 498);
-            this.button_AlternateDualISO.Name = "button_AlternateDualISO";
-            this.button_AlternateDualISO.Size = new System.Drawing.Size(160, 24);
-            this.button_AlternateDualISO.TabIndex = 21;
-            this.button_AlternateDualISO.Text = "Alternate Dual ISO";
-            this.button_AlternateDualISO.UseVisualStyleBackColor = true;
-            this.button_AlternateDualISO.Click += new System.EventHandler(this.button_AlternateDualISO_Click);
+            this.button_Import_FPM_Browse.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F);
+            this.button_Import_FPM_Browse.Location = new System.Drawing.Point(6, 55);
+            this.button_Import_FPM_Browse.Name = "button_Import_FPM_Browse";
+            this.button_Import_FPM_Browse.Size = new System.Drawing.Size(100, 24);
+            this.button_Import_FPM_Browse.TabIndex = 1;
+            this.button_Import_FPM_Browse.Text = "Browse";
+            this.button_Import_FPM_Browse.UseVisualStyleBackColor = true;
+            this.button_Import_FPM_Browse.Click += new System.EventHandler(this.button_Import_FPM_Browse_Click);
             // 
-            // button_ImportFPMFromImage
+            // groupBox_Import_DNG
             // 
-            this.button_ImportFPMFromImage.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F);
-            this.button_ImportFPMFromImage.Location = new System.Drawing.Point(518, 130);
-            this.button_ImportFPMFromImage.Name = "button_ImportFPMFromImage";
-            this.button_ImportFPMFromImage.Size = new System.Drawing.Size(150, 24);
-            this.button_ImportFPMFromImage.TabIndex = 22;
-            this.button_ImportFPMFromImage.Text = "Import Image";
-            this.button_ImportFPMFromImage.UseVisualStyleBackColor = true;
-            this.button_ImportFPMFromImage.Click += new System.EventHandler(this.button_ImportFPMFromImage_Click);
+            this.groupBox_Import_DNG.Controls.Add(this.comboBox_Import_DNG_Select);
+            this.groupBox_Import_DNG.Controls.Add(this.textBox_Import_DNG_Text);
+            this.groupBox_Import_DNG.Controls.Add(this.button_Import_DNG_Import);
+            this.groupBox_Import_DNG.Controls.Add(this.button_Import_DNG_Browse);
+            this.groupBox_Import_DNG.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F);
+            this.groupBox_Import_DNG.Location = new System.Drawing.Point(6, 25);
+            this.groupBox_Import_DNG.Name = "groupBox_Import_DNG";
+            this.groupBox_Import_DNG.Size = new System.Drawing.Size(350, 100);
+            this.groupBox_Import_DNG.TabIndex = 9;
+            this.groupBox_Import_DNG.TabStop = false;
+            this.groupBox_Import_DNG.Text = "DNG";
             // 
-            // textBox_ImportFPMFromImage
+            // comboBox_Import_DNG_Select
             // 
-            this.textBox_ImportFPMFromImage.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F);
-            this.textBox_ImportFPMFromImage.Location = new System.Drawing.Point(12, 100);
-            this.textBox_ImportFPMFromImage.Multiline = true;
-            this.textBox_ImportFPMFromImage.Name = "textBox_ImportFPMFromImage";
-            this.textBox_ImportFPMFromImage.Size = new System.Drawing.Size(500, 24);
-            this.textBox_ImportFPMFromImage.TabIndex = 23;
+            this.comboBox_Import_DNG_Select.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F);
+            this.comboBox_Import_DNG_Select.FormattingEnabled = true;
+            this.comboBox_Import_DNG_Select.Items.AddRange(new object[] {
+            p00.Form1.dngFileType.MLVApp14bit,
+            p00.Form1.dngFileType.Xiaomi16bit});
+            this.comboBox_Import_DNG_Select.Location = new System.Drawing.Point(112, 55);
+            this.comboBox_Import_DNG_Select.Name = "comboBox_Import_DNG_Select";
+            this.comboBox_Import_DNG_Select.Size = new System.Drawing.Size(126, 24);
+            this.comboBox_Import_DNG_Select.TabIndex = 3;
             // 
-            // button_BrowseFPMImage
+            // textBox_Import_DNG_Text
             // 
-            this.button_BrowseFPMImage.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F);
-            this.button_BrowseFPMImage.Location = new System.Drawing.Point(518, 100);
-            this.button_BrowseFPMImage.Name = "button_BrowseFPMImage";
-            this.button_BrowseFPMImage.Size = new System.Drawing.Size(306, 24);
-            this.button_BrowseFPMImage.TabIndex = 24;
-            this.button_BrowseFPMImage.Text = "Browse for Pixelmap Image";
-            this.button_BrowseFPMImage.UseVisualStyleBackColor = true;
-            this.button_BrowseFPMImage.Click += new System.EventHandler(this.button_BrowseFPMImage_Click);
+            this.textBox_Import_DNG_Text.Font = new System.Drawing.Font("Microsoft Sans Serif", 11F);
+            this.textBox_Import_DNG_Text.Location = new System.Drawing.Point(6, 25);
+            this.textBox_Import_DNG_Text.Name = "textBox_Import_DNG_Text";
+            this.textBox_Import_DNG_Text.Size = new System.Drawing.Size(338, 24);
+            this.textBox_Import_DNG_Text.TabIndex = 0;
+            // 
+            // button_Import_DNG_Import
+            // 
+            this.button_Import_DNG_Import.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F);
+            this.button_Import_DNG_Import.Location = new System.Drawing.Point(244, 55);
+            this.button_Import_DNG_Import.Name = "button_Import_DNG_Import";
+            this.button_Import_DNG_Import.Size = new System.Drawing.Size(100, 24);
+            this.button_Import_DNG_Import.TabIndex = 4;
+            this.button_Import_DNG_Import.Text = "Import";
+            this.button_Import_DNG_Import.UseVisualStyleBackColor = true;
+            this.button_Import_DNG_Import.Click += new System.EventHandler(this.button_Import_DNG_Import_Click);
+            // 
+            // button_Import_DNG_Browse
+            // 
+            this.button_Import_DNG_Browse.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F);
+            this.button_Import_DNG_Browse.Location = new System.Drawing.Point(6, 55);
+            this.button_Import_DNG_Browse.Name = "button_Import_DNG_Browse";
+            this.button_Import_DNG_Browse.Size = new System.Drawing.Size(100, 24);
+            this.button_Import_DNG_Browse.TabIndex = 1;
+            this.button_Import_DNG_Browse.Text = "Browse";
+            this.button_Import_DNG_Browse.UseVisualStyleBackColor = true;
+            this.button_Import_DNG_Browse.Click += new System.EventHandler(this.button_Import_DNG_Browse_Click);
+            // 
+            // radioButton_Select_Left
+            // 
+            this.radioButton_Select_Left.AutoSize = true;
+            this.radioButton_Select_Left.Checked = true;
+            this.radioButton_Select_Left.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F);
+            this.radioButton_Select_Left.Location = new System.Drawing.Point(12, 25);
+            this.radioButton_Select_Left.Name = "radioButton_Select_Left";
+            this.radioButton_Select_Left.Size = new System.Drawing.Size(87, 24);
+            this.radioButton_Select_Left.TabIndex = 15;
+            this.radioButton_Select_Left.TabStop = true;
+            this.radioButton_Select_Left.Text = "Edit Left";
+            this.radioButton_Select_Left.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.radioButton_Select_Left.UseVisualStyleBackColor = true;
+            // 
+            // radioButton_Select_Right
+            // 
+            this.radioButton_Select_Right.AutoSize = true;
+            this.radioButton_Select_Right.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F);
+            this.radioButton_Select_Right.Location = new System.Drawing.Point(368, 25);
+            this.radioButton_Select_Right.Name = "radioButton_Select_Right";
+            this.radioButton_Select_Right.Size = new System.Drawing.Size(97, 24);
+            this.radioButton_Select_Right.TabIndex = 16;
+            this.radioButton_Select_Right.Text = "Edit Right";
+            this.radioButton_Select_Right.UseVisualStyleBackColor = true;
+            // 
+            // groupBox_Select
+            // 
+            this.groupBox_Select.Controls.Add(this.radioButton_Select_Left);
+            this.groupBox_Select.Controls.Add(this.radioButton_Select_Right);
+            this.groupBox_Select.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F);
+            this.groupBox_Select.Location = new System.Drawing.Point(12, 268);
+            this.groupBox_Select.Name = "groupBox_Select";
+            this.groupBox_Select.Size = new System.Drawing.Size(720, 100);
+            this.groupBox_Select.TabIndex = 17;
+            this.groupBox_Select.TabStop = false;
+            this.groupBox_Select.Text = "Select Edit Side";
+            // 
+            // groupBox_Import
+            // 
+            this.groupBox_Import.Controls.Add(this.groupBox_Import_Mapped);
+            this.groupBox_Import.Controls.Add(this.groupBox_Import_TIFF);
+            this.groupBox_Import.Controls.Add(this.groupBox_Import_DNG);
+            this.groupBox_Import.Controls.Add(this.groupBox_Import_FPM);
+            this.groupBox_Import.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F);
+            this.groupBox_Import.Location = new System.Drawing.Point(12, 12);
+            this.groupBox_Import.Name = "groupBox_Import";
+            this.groupBox_Import.Size = new System.Drawing.Size(720, 250);
+            this.groupBox_Import.TabIndex = 18;
+            this.groupBox_Import.TabStop = false;
+            this.groupBox_Import.Text = "Import";
+            // 
+            // groupBox_Import_Mapped
+            // 
+            this.groupBox_Import_Mapped.Controls.Add(this.textBox_Import_Mapped_Text);
+            this.groupBox_Import_Mapped.Controls.Add(this.button_Import_Mapped_Import);
+            this.groupBox_Import_Mapped.Controls.Add(this.button_Import_Mapped_Browse);
+            this.groupBox_Import_Mapped.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F);
+            this.groupBox_Import_Mapped.Location = new System.Drawing.Point(362, 131);
+            this.groupBox_Import_Mapped.Name = "groupBox_Import_Mapped";
+            this.groupBox_Import_Mapped.Size = new System.Drawing.Size(350, 100);
+            this.groupBox_Import_Mapped.TabIndex = 11;
+            this.groupBox_Import_Mapped.TabStop = false;
+            this.groupBox_Import_Mapped.Text = "Mapped Image";
+            // 
+            // textBox_Import_Mapped_Text
+            // 
+            this.textBox_Import_Mapped_Text.Font = new System.Drawing.Font("Microsoft Sans Serif", 11F);
+            this.textBox_Import_Mapped_Text.Location = new System.Drawing.Point(6, 25);
+            this.textBox_Import_Mapped_Text.Name = "textBox_Import_Mapped_Text";
+            this.textBox_Import_Mapped_Text.Size = new System.Drawing.Size(338, 24);
+            this.textBox_Import_Mapped_Text.TabIndex = 0;
+            // 
+            // button_Import_Mapped_Import
+            // 
+            this.button_Import_Mapped_Import.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F);
+            this.button_Import_Mapped_Import.Location = new System.Drawing.Point(244, 55);
+            this.button_Import_Mapped_Import.Name = "button_Import_Mapped_Import";
+            this.button_Import_Mapped_Import.Size = new System.Drawing.Size(100, 24);
+            this.button_Import_Mapped_Import.TabIndex = 4;
+            this.button_Import_Mapped_Import.Text = "Import";
+            this.button_Import_Mapped_Import.UseVisualStyleBackColor = true;
+            this.button_Import_Mapped_Import.Click += new System.EventHandler(this.button_Import_Mapped_Import_Click);
+            // 
+            // button_Import_Mapped_Browse
+            // 
+            this.button_Import_Mapped_Browse.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F);
+            this.button_Import_Mapped_Browse.Location = new System.Drawing.Point(6, 55);
+            this.button_Import_Mapped_Browse.Name = "button_Import_Mapped_Browse";
+            this.button_Import_Mapped_Browse.Size = new System.Drawing.Size(100, 24);
+            this.button_Import_Mapped_Browse.TabIndex = 1;
+            this.button_Import_Mapped_Browse.Text = "Browse";
+            this.button_Import_Mapped_Browse.UseVisualStyleBackColor = true;
+            this.button_Import_Mapped_Browse.Click += new System.EventHandler(this.button_Import_Mapped_Browse_Click);
+            // 
+            // groupBox_Import_TIFF
+            // 
+            this.groupBox_Import_TIFF.Controls.Add(this.button_Import_TIFF_Import);
+            this.groupBox_Import_TIFF.Controls.Add(this.textBox_Import_TIFF_Text);
+            this.groupBox_Import_TIFF.Controls.Add(this.button_Import_TIFF_Browse);
+            this.groupBox_Import_TIFF.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F);
+            this.groupBox_Import_TIFF.Location = new System.Drawing.Point(6, 131);
+            this.groupBox_Import_TIFF.Name = "groupBox_Import_TIFF";
+            this.groupBox_Import_TIFF.Size = new System.Drawing.Size(350, 100);
+            this.groupBox_Import_TIFF.TabIndex = 10;
+            this.groupBox_Import_TIFF.TabStop = false;
+            this.groupBox_Import_TIFF.Text = "TIFF";
+            // 
+            // button_Import_TIFF_Import
+            // 
+            this.button_Import_TIFF_Import.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F);
+            this.button_Import_TIFF_Import.Location = new System.Drawing.Point(244, 55);
+            this.button_Import_TIFF_Import.Name = "button_Import_TIFF_Import";
+            this.button_Import_TIFF_Import.Size = new System.Drawing.Size(100, 24);
+            this.button_Import_TIFF_Import.TabIndex = 4;
+            this.button_Import_TIFF_Import.Text = "Import";
+            this.button_Import_TIFF_Import.UseVisualStyleBackColor = true;
+            this.button_Import_TIFF_Import.Click += new System.EventHandler(this.button_Import_TIFF_Import_Click);
+            // 
+            // textBox_Import_TIFF_Text
+            // 
+            this.textBox_Import_TIFF_Text.Font = new System.Drawing.Font("Microsoft Sans Serif", 11F);
+            this.textBox_Import_TIFF_Text.Location = new System.Drawing.Point(6, 25);
+            this.textBox_Import_TIFF_Text.Name = "textBox_Import_TIFF_Text";
+            this.textBox_Import_TIFF_Text.Size = new System.Drawing.Size(338, 24);
+            this.textBox_Import_TIFF_Text.TabIndex = 0;
+            // 
+            // button_Import_TIFF_Browse
+            // 
+            this.button_Import_TIFF_Browse.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F);
+            this.button_Import_TIFF_Browse.Location = new System.Drawing.Point(6, 55);
+            this.button_Import_TIFF_Browse.Name = "button_Import_TIFF_Browse";
+            this.button_Import_TIFF_Browse.Size = new System.Drawing.Size(100, 24);
+            this.button_Import_TIFF_Browse.TabIndex = 1;
+            this.button_Import_TIFF_Browse.Text = "Browse";
+            this.button_Import_TIFF_Browse.UseVisualStyleBackColor = true;
+            this.button_Import_TIFF_Browse.Click += new System.EventHandler(this.button_Import_TIFF_Browse_Click);
+            // 
+            // groupBox_Export
+            // 
+            this.groupBox_Export.Controls.Add(this.groupBox_Export_TIFF);
+            this.groupBox_Export.Controls.Add(this.groupBox_Export_FPM);
+            this.groupBox_Export.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F);
+            this.groupBox_Export.Location = new System.Drawing.Point(13, 581);
+            this.groupBox_Export.Name = "groupBox_Export";
+            this.groupBox_Export.Size = new System.Drawing.Size(719, 150);
+            this.groupBox_Export.TabIndex = 19;
+            this.groupBox_Export.TabStop = false;
+            this.groupBox_Export.Text = "Export";
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1786, 928);
-            this.Controls.Add(this.button_BrowseFPMImage);
-            this.Controls.Add(this.textBox_ImportFPMFromImage);
-            this.Controls.Add(this.button_ImportFPMFromImage);
-            this.Controls.Add(this.button_AlternateDualISO);
-            this.Controls.Add(this.button_KeepBottomHalf);
-            this.Controls.Add(this.button_KeepTopHalf);
-            this.Controls.Add(this.button_InterlaceDualISO);
-            this.Controls.Add(this.button_DeinterlaceDualISO);
-            this.Controls.Add(this.button_Transpose);
-            this.Controls.Add(this.button_SeperateDualISO);
-            this.Controls.Add(this.button_ExportIntArrayBrowse);
-            this.Controls.Add(this.button_ExportTiffBrowse);
-            this.Controls.Add(this.button_ImportRawBrowse);
-            this.Controls.Add(this.textBox_ExportIntArray);
-            this.Controls.Add(this.button_ImportRaw14bit);
-            this.Controls.Add(this.button_ExportIntArray);
-            this.Controls.Add(this.button_Interlace);
-            this.Controls.Add(this.button_Deinterlace);
-            this.Controls.Add(this.button_ExportTiff);
-            this.Controls.Add(this.button_ImportRawXiaomi);
-            this.Controls.Add(this.textBox_ExportTiff);
-            this.Controls.Add(this.textBox_ImportRaw);
+            this.ClientSize = new System.Drawing.Size(742, 742);
+            this.Controls.Add(this.groupBox_Export);
+            this.Controls.Add(this.groupBox_Import);
+            this.Controls.Add(this.groupBox_Select);
+            this.Controls.Add(this.groupBox_Tools);
             this.Name = "Form1";
             this.Text = "Form1";
+            this.groupBox_Export_TIFF.ResumeLayout(false);
+            this.groupBox_Export_TIFF.PerformLayout();
+            this.groupBox_Export_FPM.ResumeLayout(false);
+            this.groupBox_Export_FPM.PerformLayout();
+            this.groupBox_Tools.ResumeLayout(false);
+            this.groupBox_Import_FPM.ResumeLayout(false);
+            this.groupBox_Import_FPM.PerformLayout();
+            this.groupBox_Import_DNG.ResumeLayout(false);
+            this.groupBox_Import_DNG.PerformLayout();
+            this.groupBox_Select.ResumeLayout(false);
+            this.groupBox_Select.PerformLayout();
+            this.groupBox_Import.ResumeLayout(false);
+            this.groupBox_Import_Mapped.ResumeLayout(false);
+            this.groupBox_Import_Mapped.PerformLayout();
+            this.groupBox_Import_TIFF.ResumeLayout(false);
+            this.groupBox_Import_TIFF.PerformLayout();
+            this.groupBox_Export.ResumeLayout(false);
             this.ResumeLayout(false);
-            this.PerformLayout();
 
         }
 
         #endregion
 
-        private System.Windows.Forms.TextBox textBox_ImportRaw;
-        private System.Windows.Forms.TextBox textBox_ExportTiff;
-        private System.Windows.Forms.Button button_ImportRawXiaomi;
-        private System.Windows.Forms.Button button_ExportTiff;
-        private System.Windows.Forms.Button button_Deinterlace;
-        private System.Windows.Forms.Button button_Interlace;
-        private System.Windows.Forms.Button button_ExportIntArray;
-        private System.Windows.Forms.Button button_ImportRaw14bit;
-        private System.Windows.Forms.TextBox textBox_ExportIntArray;
-        private System.Windows.Forms.Button button_ImportRawBrowse;
-        private System.Windows.Forms.Button button_ExportTiffBrowse;
-        private System.Windows.Forms.Button button_ExportIntArrayBrowse;
-        private System.Windows.Forms.Button button_SeperateDualISO;
-        private System.Windows.Forms.Button button_Transpose;
-        private System.Windows.Forms.Button button_DeinterlaceDualISO;
-        private System.Windows.Forms.Button button_InterlaceDualISO;
-        private System.Windows.Forms.Button button_KeepTopHalf;
-        private System.Windows.Forms.Button button_KeepBottomHalf;
-        private System.Windows.Forms.Button button_AlternateDualISO;
-        private System.Windows.Forms.Button button_ImportFPMFromImage;
-        private System.Windows.Forms.TextBox textBox_ImportFPMFromImage;
-        private System.Windows.Forms.Button button_BrowseFPMImage;
+        private System.Windows.Forms.GroupBox groupBox_Export_TIFF;
+        private System.Windows.Forms.TextBox textBox_Export_TIFF_Text;
+        private System.Windows.Forms.Button button_Export_TIFF_Export;
+        private System.Windows.Forms.Button button_Export_TIFF_Browse;
+        private System.Windows.Forms.GroupBox groupBox_Export_FPM;
+        private System.Windows.Forms.Button button_Export_FPM_Export;
+        private System.Windows.Forms.Button button_Export_FPM_Browse;
+        private System.Windows.Forms.TextBox textBox_Export_FPM_Text;
+        private System.Windows.Forms.GroupBox groupBox_Tools;
+        private System.Windows.Forms.Button button_Tools_Transpose;
+        private System.Windows.Forms.Button button_Tools_InterlaceDualISO;
+        private System.Windows.Forms.Button button_Tools_DeinterlaceDualISO;
+        private System.Windows.Forms.Button button_Tools_Interlace;
+        private System.Windows.Forms.Button button_Tools_Deinterlace;
+        private System.Windows.Forms.GroupBox groupBox_Import_FPM;
+        private System.Windows.Forms.Button button_Import_FPM_Import;
+        private System.Windows.Forms.Button button_Import_FPM_Browse;
+        private System.Windows.Forms.TextBox textBox_Import_FPM_Text;
+        private System.Windows.Forms.GroupBox groupBox_Import_DNG;
+        private System.Windows.Forms.Button button_Import_DNG_Import;
+        private System.Windows.Forms.ComboBox comboBox_Import_DNG_Select;
+        private System.Windows.Forms.Button button_Import_DNG_Browse;
+        private System.Windows.Forms.TextBox textBox_Import_DNG_Text;
+        private System.Windows.Forms.RadioButton radioButton_Select_Left;
+        private System.Windows.Forms.RadioButton radioButton_Select_Right;
+        private System.Windows.Forms.GroupBox groupBox_Select;
+        private System.Windows.Forms.GroupBox groupBox_Import;
+        private System.Windows.Forms.GroupBox groupBox_Import_Mapped;
+        private System.Windows.Forms.TextBox textBox_Import_Mapped_Text;
+        private System.Windows.Forms.Button button_Import_Mapped_Import;
+        private System.Windows.Forms.Button button_Import_Mapped_Browse;
+        private System.Windows.Forms.GroupBox groupBox_Import_TIFF;
+        private System.Windows.Forms.Button button_Import_TIFF_Import;
+        private System.Windows.Forms.TextBox textBox_Import_TIFF_Text;
+        private System.Windows.Forms.Button button_Import_TIFF_Browse;
+        private System.Windows.Forms.GroupBox groupBox_Export;
+        private System.Windows.Forms.Button button_Tools_SwapSides;
     }
 }
 
