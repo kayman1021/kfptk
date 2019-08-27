@@ -42,6 +42,8 @@
             this.button_ImportRawBrowse = new System.Windows.Forms.Button();
             this.button_ExportTiffBrowse = new System.Windows.Forms.Button();
             this.button_ExportIntArrayBrowse = new System.Windows.Forms.Button();
+            this.button_SeperateDualISO = new System.Windows.Forms.Button();
+            this.button_Transpose = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // textBox_ImportRaw
@@ -192,11 +194,35 @@
             this.button_ExportIntArrayBrowse.UseVisualStyleBackColor = true;
             this.button_ExportIntArrayBrowse.Click += new System.EventHandler(this.button_ExportIntArrayBrowse_Click);
             // 
+            // button_SeperateDualISO
+            // 
+            this.button_SeperateDualISO.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F);
+            this.button_SeperateDualISO.Location = new System.Drawing.Point(12, 102);
+            this.button_SeperateDualISO.Name = "button_SeperateDualISO";
+            this.button_SeperateDualISO.Size = new System.Drawing.Size(160, 24);
+            this.button_SeperateDualISO.TabIndex = 15;
+            this.button_SeperateDualISO.Text = "Seperate Dual ISO";
+            this.button_SeperateDualISO.UseVisualStyleBackColor = true;
+            this.button_SeperateDualISO.Click += new System.EventHandler(this.button_SeperateDualISO_Click);
+            // 
+            // button_Transpose
+            // 
+            this.button_Transpose.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F);
+            this.button_Transpose.Location = new System.Drawing.Point(373, 93);
+            this.button_Transpose.Name = "button_Transpose";
+            this.button_Transpose.Size = new System.Drawing.Size(160, 24);
+            this.button_Transpose.TabIndex = 16;
+            this.button_Transpose.Text = "Transpose";
+            this.button_Transpose.UseVisualStyleBackColor = true;
+            this.button_Transpose.Click += new System.EventHandler(this.button_Transpose_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(837, 369);
+            this.ClientSize = new System.Drawing.Size(839, 689);
+            this.Controls.Add(this.button_Transpose);
+            this.Controls.Add(this.button_SeperateDualISO);
             this.Controls.Add(this.button_ExportIntArrayBrowse);
             this.Controls.Add(this.button_ExportTiffBrowse);
             this.Controls.Add(this.button_ImportRawBrowse);
@@ -234,6 +260,8 @@
         private System.Windows.Forms.Button button_ImportRawBrowse;
         private System.Windows.Forms.Button button_ExportTiffBrowse;
         private System.Windows.Forms.Button button_ExportIntArrayBrowse;
+        private System.Windows.Forms.Button button_SeperateDualISO;
+        private System.Windows.Forms.Button button_Transpose;
     }
 }
 
