@@ -309,5 +309,16 @@ namespace p00
                 rwt.ModifyBlock(rwt.rawData, zone.X, zone.Y, data);
             }
         }
+
+        private void button7_Click(object sender, EventArgs e)
+        {
+           // rwt.CA(rwt.rawData, rwt.mapData, 2, 4, 0, 0);
+
+
+            rwt.ModifyBlock(rwt.rawData, 0, 0, rwt.CA(rwt.rawData, rwt.mapData, 2, 4, 0, 0));
+            rwt.ModifyBlock(rwt.rawData, 1, 1, rwt.CA(rwt.rawData, rwt.mapData, 2, 4, 1, 1));
+            rwt.ModifyBlock(rwt.rawData, 0, 2, rwt.CA(rwt.rawData, rwt.mapData, 2, 4, 0, 2));
+            rwt.ModifyBlock(rwt.rawData, 1, 3, rwt.CA(rwt.rawData, rwt.mapData, 2, 4, 1, 3));
+        }
     }   
 }

@@ -77,6 +77,7 @@
             this.tabPage3 = new System.Windows.Forms.TabPage();
             this.button6 = new System.Windows.Forms.Button();
             this.numericUpDown_angle = new System.Windows.Forms.NumericUpDown();
+            this.button7 = new System.Windows.Forms.Button();
             this.groupBox_Export_TIFF.SuspendLayout();
             this.groupBox_Export_FPM.SuspendLayout();
             this.groupBox_Tools.SuspendLayout();
@@ -631,11 +632,22 @@
             this.numericUpDown_angle.Size = new System.Drawing.Size(120, 20);
             this.numericUpDown_angle.TabIndex = 0;
             // 
+            // button7
+            // 
+            this.button7.Location = new System.Drawing.Point(924, 710);
+            this.button7.Name = "button7";
+            this.button7.Size = new System.Drawing.Size(75, 23);
+            this.button7.TabIndex = 25;
+            this.button7.Text = "button7";
+            this.button7.UseVisualStyleBackColor = true;
+            this.button7.Click += new System.EventHandler(this.button7_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(762, 809);
+            this.ClientSize = new System.Drawing.Size(1163, 958);
+            this.Controls.Add(this.button7);
             this.Controls.Add(this.tabControl1);
             this.Name = "Form1";
             this.Text = "Form1";
@@ -714,6 +726,7 @@
         private System.Windows.Forms.NumericUpDown numericUpDown_angle;
         private System.Windows.Forms.Button button_correctHorizontal;
         private System.Windows.Forms.Button button_correctVertical;
+        private System.Windows.Forms.Button button7;
     }
 }
 

@@ -10,8 +10,6 @@ namespace p00
 {
     partial class RawData
     {
-
-
         public double CalculateMSE_double(double[] input)
         {
             double sum = 0;
@@ -27,19 +25,38 @@ namespace p00
                 temp = average - input[i];
                 sum += temp * temp;
             }
-
-
-
             return sum / (float)input.Length;
         }
 
-        public struct ouputValues
+        public bool isArrayListEqual(ArrayList left, ArrayList right)
+        {
+            if (left.Count != right.Count)
+            {
+                return false;
+            }
+            else
+            {
+                outputDouble tempL;
+                outputDouble tempR;
+                for (int i = 0; i < left.Count; i++)
+                {
+                    tempL = (outputDouble)left[i];
+                    tempR = (outputDouble)right[i];
+                    if (tempL.x != tempR.x || tempL.y != tempR.y)
+                    {
+                        return false;
+                    }
+                }
+                return true;
+            }
+        }
+
+        public struct outputValues
         {
             public int x;
             public int y;
             public int value;
             public double error;
-            //public int i;
         }
 
         public struct outputDouble
@@ -56,12 +73,18 @@ namespace p00
             public double y;
         }
 
+        public struct optValue
+        {
+            public int value;
+            public double error;
+        }
+
         public double degToRad(double angleInDegree)
         {
             return angleInDegree * System.Math.PI / 180;
         }
 
-        public ouputValues FindValueAtDegree(int[,] data, int[,] map, double degree, int xxx, int yyy, CubicSpline[] helperHOR, CubicSpline[] helperVER)
+        public outputValues FindValueAtDegree(int[,] data, int[,] map, double degree, int xxx, int yyy, CubicSpline[] helperHOR, CubicSpline[] helperVER)
         {
             int oldvalue = data[xxx, yyy];
             int width = data.GetLength(0);
@@ -78,17 +101,17 @@ namespace p00
                 if (i != 0)
                 {
                     valueX = i + xxx;
-                    valueY = (System.Math.Tan(DegInRad)*i)+yyy;
-                    if (valueX >= 0 && valueX < width && valueY >= 0 && valueY < height&& valueY-yyy>= limitLower && valueY-yyy<= limitUpper)
+                    valueY = (System.Math.Tan(DegInRad) * i) + yyy;
+                    if (valueX >= 0 && valueX < width && valueY >= 0 && valueY < height && valueY - yyy >= limitLower && valueY - yyy <= limitUpper)
                     {
                         tempPoints.Add(new outputDouble() { x = valueX, y = valueY, value = interpolateFromColumn((int)valueX, valueY, helperVER), radius = i });
 
                     }
-                    valueX = (i/System.Math.Tan(DegInRad))+xxx;
+                    valueX = (i / System.Math.Tan(DegInRad)) + xxx;
                     valueY = i + yyy;
-                    if (valueX >= 0 && valueX < width && valueY >= 0 && valueY < height && valueX-xxx >= limitLower && valueX-xxx <= limitUpper)
+                    if (valueX >= 0 && valueX < width && valueY >= 0 && valueY < height && valueX - xxx >= limitLower && valueX - xxx <= limitUpper)
                     {
-                        tempPoints.Add(new outputDouble() { x =valueX, y = valueY, value = interpolateFromRow(valueX,(int)valueY, helperHOR), radius = i });
+                        tempPoints.Add(new outputDouble() { x = valueX, y = valueY, value = interpolateFromRow(valueX, (int)valueY, helperHOR), radius = i });
                     }
                 }
             }
@@ -106,7 +129,7 @@ namespace p00
 
             if (arrayAxis.Count <= 4)
             {
-                return new ouputValues() { x = xxx, y = yyy, value = 0, error = double.MaxValue };
+                return new outputValues() { x = xxx, y = yyy, value = 0, error = double.MaxValue };
             }
             else
             {
@@ -124,9 +147,9 @@ namespace p00
                 double a = p.Item1;
                 double b = p.Item2;
                 //double thismofo=GoodnessOfFit.RSquared(aAxis.Select(x => a + b * x), aValues);
-                double thismofo = GoodnessOfFit.RSquared(aAxis.Select(x => q1+q2*x+q3*x*x), aValues);
+                double thismofo = GoodnessOfFit.RSquared(aAxis.Select(x => q1 + q2 * x + q3 * x * x), aValues);
                 Console.WriteLine();
-                return new ouputValues() { x = xxx, y = yyy, value = (int)interpolatedValue, error =thismofo };
+                return new outputValues() { x = xxx, y = yyy, value = (int)interpolatedValue, error = thismofo };
                 //return new ouputValues() { x = xxx, y = yyy, pixelvalue = (int)interpolatedValue, MSEvalue = ArrayStatistics.Variance(CalculateMSE_double(arrayValues.ToArray(typeof(double)) as double[]) };
             }
 
@@ -158,7 +181,7 @@ namespace p00
         }
 
 
-        public void CA(int[,] inputData, int[,] inputMap, int slicesX, int slicesY, int indexX, int indexY)
+        public int[,] CA(int[,] inputData, int[,] inputMap, int slicesX, int slicesY, int indexX, int indexY)
         {
             int[,] data = SliceBlock(rawData, slicesX, slicesY, indexX, indexY);
             int[,] map = SliceBlock(mapData, slicesX, slicesY, indexX, indexY);
@@ -167,17 +190,17 @@ namespace p00
             CubicSpline[] helperHOR = InterpolateRow(data, map);
             CubicSpline[] helperVER = InterpolateColumn(data, map);
             ArrayList angles = new ArrayList();
-            for (int i = 0; i < 180; i=i+15)
+            for (int i = 0; i < 180; i = i + 15)
             {
                 angles.Add((double)i);
             }
-            
+
             int counter = 0;
             for (int xxx = 0; xxx < width; xxx++)
             {
                 for (int yyy = 0; yyy < height; yyy++)
                 {
-                    if (map[xxx,yyy]==0)
+                    if (map[xxx, yyy] == 0)
                     {
                         counter++;
                     }
@@ -190,23 +213,26 @@ namespace p00
                 {
                     if (map[xxx, yyy] == 0)
                     {
-                        //result.Add(new pointDouble() { x = xxx, y = yyy });
                         result.Add(new ArrayList() { new pointDouble() { x = xxx, y = yyy } });
                     }
                 }
             }
-            CB(data, map, helperHOR, helperVER, angles, result);
+            ArrayList values = CB(data, map, helperHOR, helperVER, angles, result);
+            int[,] optimizedSlice = optimizer(data, map, values);
+            Console.WriteLine();
+            return optimizedSlice;
         }
 
 
-        public void CB(int[,]data,int[,]map, CubicSpline[] helperHOR, CubicSpline[] helperVER, ArrayList angles, ArrayList results)
+        public ArrayList CB(int[,] data, int[,] map, CubicSpline[] helperHOR, CubicSpline[] helperVER, ArrayList angles, ArrayList results)
         {
+            ArrayList output = new ArrayList();
             int oldvalue;
             int width = data.GetLength(0);
             int height = data.GetLength(1);
             double DegInRad;
             int xxx, yyy;
-            int limitUpper = 9;
+            int limitUpper =5;
             int limitLower = -limitUpper;
             int badpixelsCount = results.Count;
             for (int i = 0; i < angles.Count; i++)
@@ -217,91 +243,178 @@ namespace p00
                 double localY;
                 double globalX;
                 double globalY;
-                ArrayList anglePoints = new ArrayList();
-                for (int radius = limitLower; radius < limitUpper; radius++)
+                ArrayList anglePoints_XisINT = new ArrayList();
+                ArrayList anglePoints_YisINT = new ArrayList();
+                for (int radius = limitLower; radius <= limitUpper; radius++)
                 {
-                    if (radius!=0)
+                    if (radius != 0)
                     {
-                        localX = radius;
-                        localY = (System.Math.Tan(DegInRad) * radius);
+                        if ((double)angles[i] % 90 == 0)
+                        {
+                            if ((double)angles[i] == 0)
+                            {
+                                localX = radius;
+                                localY = 0;
+                            }
+                            else
+                            {
+                                localX = 0;
+                                localY = radius;
+                            }
+                        }
+                        else
+                        {
+                            localX = radius;
+                            localY = (System.Math.Tan(DegInRad) * radius);
+                        }
                         if (localY >= limitLower && localY <= limitUpper)
                         {
-                            anglePoints.Add(new pointDouble() {x=localX,y=localY });
+                            anglePoints_XisINT.Add(new outputDouble() { x = localX, y = localY, radius = radius });
                         }
-                        localX = radius / System.Math.Tan(DegInRad);
-                        localY = radius;
+
+
+
+
+                        if ((double)angles[i] == 0)
+                        {
+                            if ((double)angles[i] == 0)
+                            {
+                                localX = radius;
+                                localY = 0;
+                            }
+                            else
+                            {
+                                localX = 0;
+                                localY = radius;
+                            }
+                        }
+                        else
+                        {
+                            localX = radius / System.Math.Tan(DegInRad);
+                            localY = radius;
+                        }
+
                         if (localX >= limitLower && localX <= limitUpper)
                         {
-                            anglePoints.Add(new pointDouble() { x = localX, y = localY });
+                            anglePoints_YisINT.Add(new outputDouble() { x = localX, y = localY, radius = radius });
                         }
                     }
                 }
 
+                Console.WriteLine();
+
                 for (int j = 0; j < badpixelsCount; j++)
                 {
+
                     ArrayList temp1 = (ArrayList)results[j];
                     pointDouble temp2 = (pointDouble)temp1[0];
                     xxx = (int)temp2.x;
                     yyy = (int)temp2.y;
                     oldvalue = data[xxx, yyy];
                     ArrayList tempPoints = new ArrayList();
+                    int radius;
 
 
-                    for (int k = 0; k < anglePoints.Count; k++)
+                    for (int k = 0; k < anglePoints_XisINT.Count; k++)
                     {
-                        localX = ((pointDouble)anglePoints[k]).x;
-                        localY = ((pointDouble)anglePoints[k]).y;
+                        localX = ((outputDouble)anglePoints_XisINT[k]).x;
+                        localY = ((outputDouble)anglePoints_XisINT[k]).y;
+                        radius = ((outputDouble)anglePoints_XisINT[k]).radius;
                         globalX = localX + xxx;
                         globalY = localY + yyy;
-                        if (globalX>=0&& globalX <width&& globalY >= 0 && globalY < height)
+                        if (globalX >= 0 && globalX < width && globalY >= 0 && globalY < height)
                         {
-                            if (Math.Abs(localX % 1) <= (Double.Epsilon * 100))
-                            {
-                                tempPoints.Add(new outputDouble() { x = globalX, y = globalY, value = interpolateFromColumn((int)globalX, globalY, helperVER), radius = (int)localX });
-                            }
-                            else
-                            {
-                                if (Math.Abs(localY % 1) <= (Double.Epsilon * 100))
-                                {
-                                    tempPoints.Add(new outputDouble() { x = globalX, y = globalY, value = interpolateFromRow(globalX, (int)globalY, helperHOR), radius = (int)localY });
-                                }
-                                else
-                                {
-                                    Console.WriteLine("WRONG");
-                                }
-                            }
-                            
+                            tempPoints.Add(new outputDouble() { x = globalX, y = globalY, value = interpolateFromColumn((int)globalX, globalY, helperVER), radius = radius });
                         }
                     }
 
-
-                    for (int radius = limitLower; radius <= limitUpper; radius++)
+                    if (!isArrayListEqual(anglePoints_XisINT, anglePoints_YisINT))
                     {
-                        if (radius!=0)
+                        for (int k = 0; k < anglePoints_YisINT.Count; k++)
                         {
-                            localX = radius;
-                            localY = (System.Math.Tan(DegInRad) * radius);
+                            localX = ((outputDouble)anglePoints_YisINT[k]).x;
+                            localY = ((outputDouble)anglePoints_YisINT[k]).y;
+                            radius = ((outputDouble)anglePoints_YisINT[k]).radius;
                             globalX = localX + xxx;
                             globalY = localY + yyy;
-                            if (globalX >= 0 && globalX < width && globalY >= 0 && globalY< height && localY >= limitLower && localY <= limitUpper)
-                            {
-                                tempPoints.Add(new outputDouble() { x = globalX, y = globalY, value = interpolateFromColumn((int)globalX, globalY, helperVER), radius = radius });
-                            }
-
-                            localX = radius / System.Math.Tan(DegInRad);
-                            localY = radius;
-                            globalX = localX + xxx;
-                            globalY = localY + yyy;
-                            if (globalX >= 0 && globalX < width && globalY >= 0 && globalY < height && localX >= limitLower && localX  <= limitUpper)
+                            if (globalX >= 0 && globalX < width && globalY >= 0 && globalY < height)
                             {
                                 tempPoints.Add(new outputDouble() { x = globalX, y = globalY, value = interpolateFromRow(globalX, (int)globalY, helperHOR), radius = radius });
                             }
                         }
+                    }
 
 
+                    Console.WriteLine();
+
+                    ArrayList arrayAxis = new ArrayList();
+                    ArrayList arrayValues = new ArrayList();
+                    for (int ggg = 0; ggg < tempPoints.Count; ggg++)
+                    {
+                        outputDouble temp = ((outputDouble)tempPoints[ggg]);
+                        arrayAxis.Add(temp.radius / Math.Abs(temp.radius) * getVectorLength(xxx - temp.x, yyy - temp.y));
+                        arrayValues.Add(temp.value);
+                    }
+                    double[] aAxis = arrayAxis.ToArray(typeof(double)) as double[];
+                    double[] aValues = arrayValues.ToArray(typeof(double)) as double[];
+
+                    //Tuple<double, double> fitLine = Fit.Line(aAxis, aValues);
+                    //double goodnessLine = GoodnessOfFit.RSquared(aAxis.Select(x => fitLine.Item2 + fitLine.Item1 * x), aValues);
+                    if (aAxis.Length<4)
+                    {
+                        output.Add(new outputValues() { x = xxx, y = yyy, value = 0, error = 0 });
+                    }
+                    else
+                    {
+                        double[] fitPolynomial = Fit.Polynomial(aAxis, aValues, 3);
+                        //double goodnessPolynomial = GoodnessOfFit.RSquared(aAxis.Select(x => fitPolynomial[0] + fitPolynomial[1] * x + fitPolynomial[2] * x * x + fitPolynomial[3] * x * x * x), aValues);
+                        double goodnessPolynomial = GoodnessOfFit.RSquared(aAxis.Select(x => fitPolynomial[0] + fitPolynomial[1] * x + fitPolynomial[2] * x * x), aValues);
+                        Console.WriteLine();
+                        Func<double, double> f = Fit.LinearCombinationFunc(aAxis, aValues, x => 1.0, x => x, x => x * x);
+                        double res = f(0);
+
+                        Console.WriteLine();
+                        output.Add(new outputValues() { x = xxx, y = yyy, value = (int)res, error = goodnessPolynomial });
+                        Console.WriteLine();
+                    }
+                    Console.WriteLine();
+                }
+            }
+            Console.WriteLine();
+            return output;
+        }
+
+
+
+
+        public int[,] optimizer(int[,] data, int[,] map,ArrayList input)
+        {
+            int width = data.GetLength(0);
+            int height = data.GetLength(1);
+            ArrayList output = new ArrayList();
+            optValue[,] pic = new optValue[width, height];
+            for (int i = 0; i < input.Count; i++)
+            {
+                outputValues temp =(outputValues) input[i];
+                if (pic[temp.x,temp.y].error<=temp.error)
+                {
+                    pic[temp.x, temp.y].error = temp.error;
+                    pic[temp.x, temp.y].value = temp.value;
+                }
+            }
+            Console.WriteLine();
+            for (int xxx = 0; xxx < width; xxx++)
+            {
+                for (int yyy = 0; yyy < height; yyy++)
+                {
+                    if (map[xxx,yyy]==0)
+                    {
+                        Console.WriteLine();
+                        data[xxx, yyy] = pic[xxx, yyy].value;
                     }
                 }
             }
+            return data;
         }
 
 
@@ -324,7 +437,7 @@ namespace p00
             angles.Add((double)135);
             angles.Add((double)150);
             angles.Add((double)165);*/
-            for (int i = 0; i < 180; i++)
+            for (int i = 0; i < 180; i=i+15)
             {
                 angles.Add((double)i);
             }
@@ -333,7 +446,7 @@ namespace p00
 
             int width = data.GetLength(0);
             int height = data.GetLength(1);
-            ouputValues[,] optimals = new ouputValues[width, height];
+            outputValues[,] optimals = new outputValues[width, height];
 
             for (int xxx = 0; xxx < width; xxx++)
             {
@@ -341,14 +454,14 @@ namespace p00
                 {
                     if (map[xxx, yyy] == ushort.MinValue)
                     {
-                        optimals[xxx, yyy] = new ouputValues() { x = xxx, y = yyy, error = double.MaxValue, value = 0 };
+                        optimals[xxx, yyy] = new outputValues() { x = xxx, y = yyy, error = double.MaxValue, value = 0 };
                     }
                 }
             }
 
             for (int i = 0; i < likelyValues.Count; i++)
             {
-                ouputValues temp = (ouputValues)likelyValues[i];
+                outputValues temp = (outputValues)likelyValues[i];
                 if (temp.error <= optimals[temp.x, temp.y].error)
                 {
                     optimals[temp.x, temp.y] = temp;
@@ -361,7 +474,7 @@ namespace p00
                 {
                     if (map[xxx, yyy] == ushort.MinValue)
                     {
-                        ouputValues temp = (ouputValues)optimals[xxx, yyy];
+                        outputValues temp = (outputValues)optimals[xxx, yyy];
                         data[xxx, yyy] = temp.value;
                     }
                 }
