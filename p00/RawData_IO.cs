@@ -257,7 +257,7 @@ namespace p00
                 height = input.GetField(TiffTag.IMAGELENGTH)[0].ToInt();
                 output = new int[width, height];
             }
-            int bitsPerSample = 14;
+            const int bitsPerSample = 14;
             using (BinaryReader reader = new BinaryReader(File.Open(filename, FileMode.Open)))
             {
                 int filelength = (int)(new System.IO.FileInfo(filename).Length);
@@ -278,10 +278,18 @@ namespace p00
                 for (int bbb = 0; bbb < bitbuffer.Length; bbb += bitsPerSample)
                 {
                     sum = 0;
-                    for (int aaa = 0; aaa < bitsPerSample; aaa++)
+                    for (int aaa = 0; aaa <bitsPerSample; aaa++)
                     {
                         temp = bitbuffer[aaa + bbb];
-                        if (temp) { sum += (int)(Math.Pow((double)(2), (double)(bitsPerSample - 1 - aaa))); }
+                       
+                        /*if (temp)
+                        {
+                            sum += (int)(Math.Pow((double)(2), (double)(bitsPerSample - 1 - aaa)));
+                        }*/
+                        if (temp)
+                        {
+                        sum+= 1<< (bitsPerSample - 1 - aaa);
+                        }
                     }
                     intbuffer[bbb / bitsPerSample] = sum;
                 }
