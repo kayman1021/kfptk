@@ -17,6 +17,5 @@ namespace p00
     {
         public int[,] rawData;
         public int[,] mapData;
-        //public correctedValue[,] correctedValues;
     }
 }

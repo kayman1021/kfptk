@@ -179,158 +179,16 @@ namespace p00
 
         private void button1_Click(object sender, EventArgs e)
         {
-            int[,] data;
-            int[,] pixel;
+            rwt.ModifyBlock(rwt.rawData, 0, 0, rwt.CorrectArea(rwt.rawData, rwt.mapData, 2, 2, 0, 0));
+            rwt.ModifyBlock(rwt.rawData, 1, 1, rwt.CorrectArea(rwt.rawData, rwt.mapData, 2, 2, 1, 1));
+        }
 
-            data= rwt.SliceBlock(rwt.rawData,2,2, 0, 0);
-            pixel= rwt.SliceBlock(rwt.mapData,2,2, 0, 0);
-            RawData.CorrectedValue[,]zone1 = new RawData.CorrectedValue[data.GetLength(0), data.GetLength(1)];
-            for (int i = 0; i < data.GetLength(1); i++)
-            {
-                for (int j = 0; j < data.GetLength(0); j++)
-                {
-                    zone1[j, i] = new RawData.CorrectedValue
-                    {
-                        pixelvalue = int.MaxValue,
-                        MSEvalue=double.MaxValue
-                    };
-                }
-            }
-            for (int yyy = 0; yyy < data.GetLength(1); yyy++)
-            {
-                if (!rwt.IsEmptyRow(rwt.mapData,yyy))
-                {
-                    RawData.ouputValues[] horizontal = rwt.CorrectLine(data, pixel, yyy);
-                    for (int counter = 0; counter < horizontal.GetLength(0); counter++)
-                    {
-
-                        RawData.ouputValues temp = horizontal[counter];
-                        if (zone1[temp.x,temp.y].MSEvalue>temp.MSEvalue)
-                        {
-                            zone1[temp.x, temp.y] = new RawData.CorrectedValue
-                            {
-                                pixelvalue = temp.pixelvalue,
-                                MSEvalue = temp.MSEvalue
-                            };
-                        }
-                        
-                    }
-                }
-            }
-
-            for (int xxx = 0; xxx < data.GetLength(0); xxx++)
-            {
-                if (!rwt.IsEmptyColumn(rwt.mapData, xxx))
-                {
-                    RawData.ouputValues[] vertical = rwt.CorrectLine(rwt.TransposeArray(data),rwt.TransposeArray( pixel), xxx);
-                    for (int counter = 0; counter < vertical.GetLength(0); counter++)
-                    {
-
-                        RawData.ouputValues temp = vertical[counter];
-                        if (zone1[temp.y, temp.x].MSEvalue > temp.MSEvalue)
-                        {
-                            zone1[temp.y, temp.x] = new RawData.CorrectedValue
-                            {
-                                pixelvalue = temp.pixelvalue,
-                                MSEvalue = temp.MSEvalue
-                            };
-                        }
-
-                    }
-                }
-            }
-
-            for (int yyy = 0; yyy < pixel.GetLength(1); yyy++)
-            {
-                for (int xxx = 0; xxx < pixel.GetLength(0); xxx++)
-                {
-                    if (pixel[xxx,yyy]==ushort.MinValue)
-                    {
-                        data[xxx, yyy] = zone1[xxx, yyy].pixelvalue;
-                    }
-                }
-            }
-            rwt.ModifyBlock(rwt.rawData,0,0,data);
-
-
-
-
-
-
-
-
-
-            data = rwt.SliceBlock(rwt.rawData, 2, 2, 1, 1);
-            pixel = rwt.SliceBlock(rwt.mapData, 2, 2, 1, 1);
-            RawData.CorrectedValue[,] zone2 = new RawData.CorrectedValue[data.GetLength(0), data.GetLength(1)];
-            for (int i = 0; i < data.GetLength(1); i++)
-            {
-                for (int j = 0; j < data.GetLength(0); j++)
-                {
-                    zone2[j, i] = new RawData.CorrectedValue
-                    {
-                        pixelvalue = int.MaxValue,
-                        MSEvalue = double.MaxValue
-                    };
-                }
-            }
-            for (int yyy = 0; yyy < data.GetLength(1); yyy++)
-            {
-                if (!rwt.IsEmptyRow(rwt.mapData, yyy))
-                {
-                    RawData.ouputValues[] horizontal = rwt.CorrectLine(data, pixel, yyy);
-                    for (int counter = 0; counter < horizontal.GetLength(0); counter++)
-                    {
-
-                        RawData.ouputValues temp = horizontal[counter];
-                        if (zone2[temp.x, temp.y].MSEvalue > temp.MSEvalue)
-                        {
-                            zone2[temp.x, temp.y] = new RawData.CorrectedValue
-                            {
-                                pixelvalue = temp.pixelvalue,
-                                MSEvalue = temp.MSEvalue
-                            };
-                        }
-
-                    }
-                }
-            }
-
-            for (int xxx = 0; xxx < data.GetLength(0); xxx++)
-            {
-                if (!rwt.IsEmptyColumn(rwt.mapData, xxx))
-                {
-                    RawData.ouputValues[] vertical = rwt.CorrectLine(rwt.TransposeArray(data), rwt.TransposeArray(pixel), xxx);
-                    for (int counter = 0; counter < vertical.GetLength(0); counter++)
-                    {
-
-                        RawData.ouputValues temp = vertical[counter];
-                        if (zone2[temp.y, temp.x].MSEvalue > temp.MSEvalue)
-                        {
-                            zone2[temp.y, temp.x] = new RawData.CorrectedValue
-                            {
-                                pixelvalue = temp.pixelvalue,
-                                MSEvalue = temp.MSEvalue
-                            };
-                        }
-
-                    }
-                }
-            }
-
-            for (int yyy = 0; yyy < pixel.GetLength(1); yyy++)
-            {
-                for (int xxx = 0; xxx < pixel.GetLength(0); xxx++)
-                {
-                    if (pixel[xxx, yyy] == ushort.MinValue)
-                    {
-                        data[xxx, yyy] = zone2[xxx, yyy].pixelvalue;
-                    }
-                }
-            }
-            rwt.ModifyBlock(rwt.rawData, 1, 1, data);
-
-
+        private void button2_Click(object sender, EventArgs e)
+        {
+            rwt.ModifyBlock(rwt.rawData, 0, 0, rwt.CorrectArea(rwt.rawData, rwt.mapData, 2, 4, 0, 0));
+            rwt.ModifyBlock(rwt.rawData, 1, 1, rwt.CorrectArea(rwt.rawData, rwt.mapData, 2, 4, 1, 1));
+            rwt.ModifyBlock(rwt.rawData, 0, 2, rwt.CorrectArea(rwt.rawData, rwt.mapData, 2, 4, 0, 2));
+            rwt.ModifyBlock(rwt.rawData, 1, 3, rwt.CorrectArea(rwt.rawData, rwt.mapData, 2, 4, 1, 3));
         }
     }   
 }

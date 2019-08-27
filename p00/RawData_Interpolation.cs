@@ -1,15 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Drawing;
-using MathNet.Numerics.Interpolation;
-using MathNet.Numerics.LinearAlgebra;
-using MathNet.Numerics;
-using System.Collections;
-using System.IO;
-using BitMiracle.LibTiff.Classic;
+﻿using MathNet.Numerics.Interpolation;
 
 namespace p00
 {
@@ -58,9 +47,11 @@ namespace p00
             }
             double average = sum / 5;
             sum = 0;
+            double temp = 0;
             for (int i = 0; i < 5; i++)
             {
-                sum += Math.Pow((average - input[i]), 2);
+                temp = average - input[i];
+                sum += temp * temp;
             }
 
 
@@ -121,7 +112,7 @@ namespace p00
                 {
 
 
-                    if (i - 2 > 0 && i + 2 <= arrayLength)
+                    if (i - 2 > 0 && i + 2 < arrayLength)
                     {
                         dataMSE[0] = data[i - 2, line];
                         dataMSE[1] = data[i - 1, line];
@@ -177,7 +168,6 @@ namespace p00
             return values;
         }
 
-       // public int[,] CorrectArea(int[,]raw, int )
         public int[,] CorrectArea(int[,]rawData, int [,]mapData, int slicesX, int slicesY,int indexX, int indexY)
         {
             int[,] raw = SliceBlock(rawData, slicesX, slicesY, indexX, indexY);
@@ -201,7 +191,7 @@ namespace p00
                 if (!IsEmptyRow(map, yyy))
                 {
                     ouputValues[] horizontal = CorrectLine(raw, map, yyy);
-                    for (int counter = 0; counter < lengthX; counter++)
+                    for (int counter = 0; counter < horizontal.GetLength(0); counter++)
                     {
 
                         ouputValues temp = horizontal[counter];
@@ -223,7 +213,7 @@ namespace p00
                 if (!IsEmptyColumn(map, xxx))
                 {
                     ouputValues[] vertical = CorrectLine(TransposeArray(raw), TransposeArray(map), xxx);
-                    for (int counter = 0; counter < lengthX; counter++)
+                    for (int counter = 0; counter < vertical.GetLength(0); counter++)
                     {
 
                         ouputValues temp = vertical[counter];
@@ -250,7 +240,6 @@ namespace p00
                     }
                 }
             }
-            //rwt.ModifyBlock(rwt.rawData, 0, 0, raw);
             return raw;
         }
 
