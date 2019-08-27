@@ -443,6 +443,7 @@
             this.groupBox_Import_TIFF.Controls.Add(this.button_Import_TIFF_Import);
             this.groupBox_Import_TIFF.Controls.Add(this.textBox_Import_TIFF_Text);
             this.groupBox_Import_TIFF.Controls.Add(this.button_Import_TIFF_Browse);
+            this.groupBox_Import_TIFF.Enabled = false;
             this.groupBox_Import_TIFF.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F);
             this.groupBox_Import_TIFF.Location = new System.Drawing.Point(6, 131);
             this.groupBox_Import_TIFF.Name = "groupBox_Import_TIFF";

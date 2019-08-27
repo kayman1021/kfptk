@@ -101,7 +101,7 @@ namespace p00
                 output.SetField(TiffTag.RESOLUTIONUNIT, ResUnit.CENTIMETER);
                 output.SetField(TiffTag.PLANARCONFIG, PlanarConfig.CONTIG);
                 output.SetField(TiffTag.PHOTOMETRIC, Photometric.MINISBLACK);
-                output.SetField(TiffTag.COMPRESSION, Compression.NONE);
+                output.SetField(TiffTag.COMPRESSION, Compression.LZW);
                 output.SetField(TiffTag.ROWSPERSTRIP, height);
                 output.SetField(TiffTag.FILLORDER, FillOrder.MSB2LSB);
                 byte[] bytebuffer = new byte[width * 16 / 8];
@@ -236,29 +236,25 @@ namespace p00
             return output;
         }
 
-        public int[,] AlternateDualISO(int[,] input)
+        public int[,] InterlaceDualISO(int[,] input)
         {
             int[,] output;
             int width = input.GetLength(0);
             int height = input.GetLength(1);
             output = new int[width, height];
-            int halfres = height / 2;
+            //int halfres = height / 2;
+            int slices = 4;
             int temp;
-            for (int yyy = 0; yyy < height; yyy++)
+            for (int xxx = 0; xxx < width; xxx++)
             {
-                if (yyy / halfres == 0)
+                
+                for (int yyy = 0; yyy < height; yyy++)
                 {
-                    temp = (yyy * 2) - (yyy % 2);
-                }
-                else
-                {
-                    temp = ((yyy - halfres) * 2) - (yyy % 2) + 2;
-                }
-                for (int xxx = 0; xxx < width; xxx++)
-                {
+                    temp = ((yyy % (height/slices)) *slices) + (yyy /(height/slices));
                     output[xxx, temp] = input[xxx, yyy];
                 }
             }
+            output = Interlace(output, true);
             return output;
         }
 
@@ -342,7 +338,7 @@ namespace p00
                     }
                     else
                     {
-                        temp = 0;
+                        temp = (int)(ushort.MinValue);
                     }
                     output[xxx, yyy] = temp;
                 }
@@ -368,9 +364,38 @@ namespace p00
             input2 = temp;
         }
 
-        public int[,] ImportPixelMapFromFPM(string filename)
+        public int[,] ImportPixelMapFromFPM(string filename,int[,]getResolutionOfThis)
         {
-            return null;
+            string input=System.IO.File.ReadAllText(@filename);
+            string[]stringArray = input.Split(new string[] { "\n" }, StringSplitOptions.None);
+            Point[] pointArray =new Point[ stringArray.GetLength(0)];
+            string[] coordinates;
+            int maximumXXX = int.MinValue;
+            int maximumYYY = int.MinValue;
+            int xxx, yyy;
+            for (int i = 0; i < stringArray.GetLength(0); i++)
+            {
+                coordinates = stringArray[i].Split(new string[] { " \r " }, StringSplitOptions.None);
+                xxx = int.Parse(coordinates[0]);
+                yyy = int.Parse(coordinates[1]);
+                if (xxx>maximumXXX)
+                {
+                    maximumXXX = xxx;
+                }
+                if (yyy>maximumYYY)
+                {
+                    maximumYYY = yyy;
+                }
+                pointArray[i] = new Point(xxx ,yyy);
+            }
+
+            int[,] output = new int[getResolutionOfThis.GetLength(0), getResolutionOfThis.GetLength(1)];
+            for (int i = 0; i < pointArray.Length; i++)
+            {
+                output[pointArray[i].X, pointArray[i].Y] = ushort.MinValue;
+            }
+
+            return output;
         }
 
         public int[,] ImportRawDataTiff(string filename)
@@ -380,7 +405,22 @@ namespace p00
 
         public void ExportFPM(string filename, int[,] data)
         {
-
+            StringBuilder sb = new StringBuilder();
+            int temp;
+            int height = data.GetLength(1);
+            int width = data.GetLength(0);
+            for (int yyy = 0; yyy < height; yyy++)
+            {
+                for (int xxx = 0; xxx < width; xxx++)
+                {
+                    temp = data[xxx, yyy];
+                    if (temp<=0)
+                    {
+                        sb.Append(xxx + " \t "+yyy+"\n");
+                    }
+                }
+            }
+            System.IO.File.WriteAllText(@filename, sb.ToString());
         }
     }
 }
