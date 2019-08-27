@@ -422,5 +422,10 @@ namespace p00
             }
             System.IO.File.WriteAllText(@filename, sb.ToString());
         }
+
+        public void whatever()
+        {
+            Interpolator ip = new Interpolator(50, 55, 90, 50, 48, 3);
+        }
     }
 }
