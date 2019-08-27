@@ -65,6 +65,7 @@
             this.textBox_Import_TIFF_Text = new System.Windows.Forms.TextBox();
             this.button_Import_TIFF_Browse = new System.Windows.Forms.Button();
             this.groupBox_Export = new System.Windows.Forms.GroupBox();
+            this.button1 = new System.Windows.Forms.Button();
             this.groupBox_Export_TIFF.SuspendLayout();
             this.groupBox_Export_FPM.SuspendLayout();
             this.groupBox_Tools.SuspendLayout();
@@ -494,11 +495,23 @@
             this.groupBox_Export.TabStop = false;
             this.groupBox_Export.Text = "Export";
             // 
+            // button1
+            // 
+            this.button1.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F);
+            this.button1.Location = new System.Drawing.Point(159, 826);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(238, 23);
+            this.button1.TabIndex = 20;
+            this.button1.Text = "correctrow";
+            this.button1.UseVisualStyleBackColor = true;
+            this.button1.Click += new System.EventHandler(this.button1_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(742, 742);
+            this.ClientSize = new System.Drawing.Size(977, 909);
+            this.Controls.Add(this.button1);
             this.Controls.Add(this.groupBox_Export);
             this.Controls.Add(this.groupBox_Import);
             this.Controls.Add(this.groupBox_Select);
@@ -565,6 +578,7 @@
         private System.Windows.Forms.Button button_Import_TIFF_Browse;
         private System.Windows.Forms.GroupBox groupBox_Export;
         private System.Windows.Forms.Button button_Tools_SwapSides;
+        private System.Windows.Forms.Button button1;
     }
 }
 

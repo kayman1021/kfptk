@@ -7,7 +7,7 @@ namespace p00
     {
         public enum dngFileType { Xiaomi16bit, MLVApp14bit };
         public enum mapFileType { Image, FMP };
-        RawDataTool rwt = new RawDataTool();
+        RawData rwt = new RawData();
 
 
         public Form1()
@@ -178,5 +178,23 @@ namespace p00
             rwt.ExportFPM(@textBox_Export_FPM_Text.Text, rwt.pixelData);
         }
 
+        private void button1_Click(object sender, EventArgs e)
+        {
+            int[,] data = rwt.SliceBlock(rwt.rawData,2,2, 0, 0);
+            int[,] pixel = rwt.SliceBlock(rwt.pixelData,2,2, 0, 0);
+            for (int yyy = 0; yyy < data.GetLength(1); yyy++)
+            {
+                if (!rwt.IsEmptyRow(rwt.pixelData,yyy))
+                {
+                    
+                    int[]temp=rwt.CorrectRow(data, pixel, yyy);
+                    for (int xxx = 0; xxx < data.GetLength(0); xxx++)
+                    {
+                        data[xxx, yyy] = temp[xxx];
+                    }
+                }
+            }
+            rwt.ModifyBlock(rwt.rawData,0,0,data);
+        }
     }   
 }
