@@ -66,6 +66,15 @@
             this.button2 = new System.Windows.Forms.Button();
             this.button3 = new System.Windows.Forms.Button();
             this.button_EXP_EOS = new System.Windows.Forms.Button();
+            this.tabControl1 = new System.Windows.Forms.TabControl();
+            this.tabPage1 = new System.Windows.Forms.TabPage();
+            this.tabPage2 = new System.Windows.Forms.TabPage();
+            this.button5 = new System.Windows.Forms.Button();
+            this.listBox_MASS_DUAL_ISO = new System.Windows.Forms.ListBox();
+            this.button4 = new System.Windows.Forms.Button();
+            this.tabPage3 = new System.Windows.Forms.TabPage();
+            this.numericUpDown_angle = new System.Windows.Forms.NumericUpDown();
+            this.button6 = new System.Windows.Forms.Button();
             this.groupBox_Export_TIFF.SuspendLayout();
             this.groupBox_Export_FPM.SuspendLayout();
             this.groupBox_Tools.SuspendLayout();
@@ -75,6 +84,11 @@
             this.groupBox_Import_Mapped.SuspendLayout();
             this.groupBox_Import_TIFF.SuspendLayout();
             this.groupBox_Export.SuspendLayout();
+            this.tabControl1.SuspendLayout();
+            this.tabPage1.SuspendLayout();
+            this.tabPage2.SuspendLayout();
+            this.tabPage3.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown_angle)).BeginInit();
             this.SuspendLayout();
             // 
             // groupBox_Export_TIFF
@@ -172,7 +186,7 @@
             this.groupBox_Tools.Controls.Add(this.button_Tools_Interlace);
             this.groupBox_Tools.Controls.Add(this.button_Tools_Deinterlace);
             this.groupBox_Tools.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F);
-            this.groupBox_Tools.Location = new System.Drawing.Point(12, 268);
+            this.groupBox_Tools.Location = new System.Drawing.Point(6, 259);
             this.groupBox_Tools.Name = "groupBox_Tools";
             this.groupBox_Tools.Size = new System.Drawing.Size(720, 200);
             this.groupBox_Tools.TabIndex = 11;
@@ -348,7 +362,7 @@
             this.groupBox_Import.Controls.Add(this.groupBox_Import_DNG);
             this.groupBox_Import.Controls.Add(this.groupBox_Import_FPM);
             this.groupBox_Import.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F);
-            this.groupBox_Import.Location = new System.Drawing.Point(12, 12);
+            this.groupBox_Import.Location = new System.Drawing.Point(6, 3);
             this.groupBox_Import.Name = "groupBox_Import";
             this.groupBox_Import.Size = new System.Drawing.Size(720, 250);
             this.groupBox_Import.TabIndex = 18;
@@ -447,7 +461,7 @@
             this.groupBox_Export.Controls.Add(this.groupBox_Export_TIFF);
             this.groupBox_Export.Controls.Add(this.groupBox_Export_FPM);
             this.groupBox_Export.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F);
-            this.groupBox_Export.Location = new System.Drawing.Point(12, 640);
+            this.groupBox_Export.Location = new System.Drawing.Point(6, 465);
             this.groupBox_Export.Name = "groupBox_Export";
             this.groupBox_Export.Size = new System.Drawing.Size(720, 150);
             this.groupBox_Export.TabIndex = 19;
@@ -457,7 +471,7 @@
             // button1
             // 
             this.button1.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F);
-            this.button1.Location = new System.Drawing.Point(159, 826);
+            this.button1.Location = new System.Drawing.Point(6, 698);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(238, 23);
             this.button1.TabIndex = 20;
@@ -468,7 +482,7 @@
             // button2
             // 
             this.button2.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F);
-            this.button2.Location = new System.Drawing.Point(443, 826);
+            this.button2.Location = new System.Drawing.Point(6, 727);
             this.button2.Name = "button2";
             this.button2.Size = new System.Drawing.Size(238, 23);
             this.button2.TabIndex = 21;
@@ -478,7 +492,7 @@
             // 
             // button3
             // 
-            this.button3.Location = new System.Drawing.Point(827, 780);
+            this.button3.Location = new System.Drawing.Point(349, 698);
             this.button3.Name = "button3";
             this.button3.Size = new System.Drawing.Size(75, 23);
             this.button3.TabIndex = 22;
@@ -488,7 +502,7 @@
             // 
             // button_EXP_EOS
             // 
-            this.button_EXP_EOS.Location = new System.Drawing.Point(827, 826);
+            this.button_EXP_EOS.Location = new System.Drawing.Point(349, 727);
             this.button_EXP_EOS.Name = "button_EXP_EOS";
             this.button_EXP_EOS.Size = new System.Drawing.Size(75, 23);
             this.button_EXP_EOS.TabIndex = 23;
@@ -496,18 +510,109 @@
             this.button_EXP_EOS.UseVisualStyleBackColor = true;
             this.button_EXP_EOS.Click += new System.EventHandler(this.button_EXP_EOS_Click);
             // 
+            // tabControl1
+            // 
+            this.tabControl1.Controls.Add(this.tabPage1);
+            this.tabControl1.Controls.Add(this.tabPage2);
+            this.tabControl1.Controls.Add(this.tabPage3);
+            this.tabControl1.Location = new System.Drawing.Point(12, 12);
+            this.tabControl1.Name = "tabControl1";
+            this.tabControl1.SelectedIndex = 0;
+            this.tabControl1.Size = new System.Drawing.Size(738, 785);
+            this.tabControl1.TabIndex = 24;
+            // 
+            // tabPage1
+            // 
+            this.tabPage1.Controls.Add(this.groupBox_Import);
+            this.tabPage1.Controls.Add(this.button_EXP_EOS);
+            this.tabPage1.Controls.Add(this.groupBox_Tools);
+            this.tabPage1.Controls.Add(this.button3);
+            this.tabPage1.Controls.Add(this.groupBox_Export);
+            this.tabPage1.Controls.Add(this.button2);
+            this.tabPage1.Controls.Add(this.button1);
+            this.tabPage1.Location = new System.Drawing.Point(4, 22);
+            this.tabPage1.Name = "tabPage1";
+            this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPage1.Size = new System.Drawing.Size(730, 759);
+            this.tabPage1.TabIndex = 0;
+            this.tabPage1.Text = "SANDBOX";
+            this.tabPage1.UseVisualStyleBackColor = true;
+            // 
+            // tabPage2
+            // 
+            this.tabPage2.Controls.Add(this.button5);
+            this.tabPage2.Controls.Add(this.listBox_MASS_DUAL_ISO);
+            this.tabPage2.Controls.Add(this.button4);
+            this.tabPage2.Location = new System.Drawing.Point(4, 22);
+            this.tabPage2.Name = "tabPage2";
+            this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPage2.Size = new System.Drawing.Size(730, 759);
+            this.tabPage2.TabIndex = 1;
+            this.tabPage2.Text = "MASS DUAL ISO EOS";
+            this.tabPage2.UseVisualStyleBackColor = true;
+            // 
+            // button5
+            // 
+            this.button5.Location = new System.Drawing.Point(423, 159);
+            this.button5.Name = "button5";
+            this.button5.Size = new System.Drawing.Size(281, 127);
+            this.button5.TabIndex = 2;
+            this.button5.Text = "button5";
+            this.button5.UseVisualStyleBackColor = true;
+            // 
+            // listBox_MASS_DUAL_ISO
+            // 
+            this.listBox_MASS_DUAL_ISO.FormattingEnabled = true;
+            this.listBox_MASS_DUAL_ISO.Location = new System.Drawing.Point(6, 6);
+            this.listBox_MASS_DUAL_ISO.Name = "listBox_MASS_DUAL_ISO";
+            this.listBox_MASS_DUAL_ISO.Size = new System.Drawing.Size(410, 745);
+            this.listBox_MASS_DUAL_ISO.TabIndex = 1;
+            // 
+            // button4
+            // 
+            this.button4.Location = new System.Drawing.Point(416, 6);
+            this.button4.Name = "button4";
+            this.button4.Size = new System.Drawing.Size(308, 146);
+            this.button4.TabIndex = 0;
+            this.button4.Text = "button4";
+            this.button4.UseVisualStyleBackColor = true;
+            this.button4.Click += new System.EventHandler(this.button4_Click_1);
+            // 
+            // tabPage3
+            // 
+            this.tabPage3.Controls.Add(this.button6);
+            this.tabPage3.Controls.Add(this.numericUpDown_angle);
+            this.tabPage3.Location = new System.Drawing.Point(4, 22);
+            this.tabPage3.Name = "tabPage3";
+            this.tabPage3.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPage3.Size = new System.Drawing.Size(730, 759);
+            this.tabPage3.TabIndex = 2;
+            this.tabPage3.Text = "tabPage3";
+            this.tabPage3.UseVisualStyleBackColor = true;
+            // 
+            // numericUpDown_angle
+            // 
+            this.numericUpDown_angle.Location = new System.Drawing.Point(34, 49);
+            this.numericUpDown_angle.Name = "numericUpDown_angle";
+            this.numericUpDown_angle.Size = new System.Drawing.Size(120, 20);
+            this.numericUpDown_angle.TabIndex = 0;
+            // 
+            // button6
+            // 
+            this.button6.Location = new System.Drawing.Point(225, 49);
+            this.button6.Name = "button6";
+            this.button6.Size = new System.Drawing.Size(75, 23);
+            this.button6.TabIndex = 1;
+            this.button6.Text = "button6";
+            this.button6.UseVisualStyleBackColor = true;
+            this.button6.Click += new System.EventHandler(this.button6_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(977, 909);
-            this.Controls.Add(this.button_EXP_EOS);
-            this.Controls.Add(this.button3);
-            this.Controls.Add(this.button2);
-            this.Controls.Add(this.button1);
-            this.Controls.Add(this.groupBox_Export);
-            this.Controls.Add(this.groupBox_Import);
-            this.Controls.Add(this.groupBox_Tools);
+            this.ClientSize = new System.Drawing.Size(762, 809);
+            this.Controls.Add(this.tabControl1);
             this.Name = "Form1";
             this.Text = "Form1";
             this.groupBox_Export_TIFF.ResumeLayout(false);
@@ -525,6 +630,11 @@
             this.groupBox_Import_TIFF.ResumeLayout(false);
             this.groupBox_Import_TIFF.PerformLayout();
             this.groupBox_Export.ResumeLayout(false);
+            this.tabControl1.ResumeLayout(false);
+            this.tabPage1.ResumeLayout(false);
+            this.tabPage2.ResumeLayout(false);
+            this.tabPage3.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown_angle)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -569,6 +679,15 @@
         private System.Windows.Forms.Button button2;
         private System.Windows.Forms.Button button3;
         private System.Windows.Forms.Button button_EXP_EOS;
+        private System.Windows.Forms.TabControl tabControl1;
+        private System.Windows.Forms.TabPage tabPage1;
+        private System.Windows.Forms.TabPage tabPage2;
+        private System.Windows.Forms.Button button4;
+        private System.Windows.Forms.ListBox listBox_MASS_DUAL_ISO;
+        private System.Windows.Forms.Button button5;
+        private System.Windows.Forms.TabPage tabPage3;
+        private System.Windows.Forms.Button button6;
+        private System.Windows.Forms.NumericUpDown numericUpDown_angle;
     }
 }
 

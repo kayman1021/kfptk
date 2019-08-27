@@ -177,5 +177,59 @@ namespace p00
         {
             rwt.ExportRawData14bitUncompressed(rwt.rawData, textBox_Import_DNG_Text.Text);
         }
+
+        private void button4_Click_1(object sender, EventArgs e)
+        {
+            System.IO.Stream myStream;
+            OpenFileDialog thisDialog = new OpenFileDialog();
+
+            //thisDialog.InitialDirectory = "d:\\";
+            thisDialog.Filter = "rcc files (*.rcc)|*.rcc|All files (*.*)|*.*";
+            thisDialog.FilterIndex = 2;
+            thisDialog.RestoreDirectory = true;
+            thisDialog.Multiselect = true;
+            thisDialog.Title = "Please Select Source File(s) for Conversion";
+
+            if (thisDialog.ShowDialog() == DialogResult.OK)
+            {
+                foreach (String file in thisDialog.FileNames)
+                {
+                    try
+                    {
+                        if ((myStream = thisDialog.OpenFile()) != null)
+                        {
+                            using (myStream)
+                            {
+                                listBox_MASS_DUAL_ISO.Items.Add(file);
+                            }
+                        }
+                    }
+
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show("Error: Could not read file from disk. Original error: " + ex.Message);
+                    }
+                }
+
+                foreach (string  path in listBox_MASS_DUAL_ISO.Items)
+                {
+                    RawData mass = new RawData();
+                    mass.mapData = rwt.mapData;
+                    mass.rawData = mass.ImportRawData14bitUncompressed(@path);
+                    mass.rawData = mass.DeinterlaceUniversal(mass.rawData, true);
+                    mass.ModifyBlock(mass.rawData, 0, 0, mass.CorrectArea(mass.rawData, mass.mapData, 2, 4, 0, 0));
+                    mass.ModifyBlock(mass.rawData, 1, 1, mass.CorrectArea(mass.rawData, mass.mapData, 2, 4, 1, 1));
+                    mass.ModifyBlock(mass.rawData, 0, 2, mass.CorrectArea(mass.rawData, mass.mapData, 2, 4, 0, 2));
+                    mass.ModifyBlock(mass.rawData, 1, 3, mass.CorrectArea(mass.rawData, mass.mapData, 2, 4, 1, 3));
+                    mass.rawData = mass.InterlaceUniversal(mass.rawData, true);
+                    mass.ExportRawData14bitUncompressed(mass.rawData, @path);
+                }
+            }
+        }
+
+        private void button6_Click(object sender, EventArgs e)
+        {
+            rwt.FindFunction((double)numericUpDown_angle.Value);
+        }
     }   
 }
