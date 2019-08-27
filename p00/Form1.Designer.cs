@@ -65,7 +65,7 @@
             this.button1 = new System.Windows.Forms.Button();
             this.button2 = new System.Windows.Forms.Button();
             this.button3 = new System.Windows.Forms.Button();
-            this.button4 = new System.Windows.Forms.Button();
+            this.button_EXP_EOS = new System.Windows.Forms.Button();
             this.groupBox_Export_TIFF.SuspendLayout();
             this.groupBox_Export_FPM.SuspendLayout();
             this.groupBox_Tools.SuspendLayout();
@@ -172,7 +172,7 @@
             this.groupBox_Tools.Controls.Add(this.button_Tools_Interlace);
             this.groupBox_Tools.Controls.Add(this.button_Tools_Deinterlace);
             this.groupBox_Tools.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F);
-            this.groupBox_Tools.Location = new System.Drawing.Point(12, 374);
+            this.groupBox_Tools.Location = new System.Drawing.Point(12, 268);
             this.groupBox_Tools.Name = "groupBox_Tools";
             this.groupBox_Tools.Size = new System.Drawing.Size(720, 200);
             this.groupBox_Tools.TabIndex = 11;
@@ -306,9 +306,6 @@
             // 
             this.comboBox_Import_DNG_Select.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F);
             this.comboBox_Import_DNG_Select.FormattingEnabled = true;
-            this.comboBox_Import_DNG_Select.Items.AddRange(new object[] {
-            p00.dngFileType.MLVApp14bit,
-            p00.dngFileType.Xiaomi16bit});
             this.comboBox_Import_DNG_Select.Location = new System.Drawing.Point(112, 55);
             this.comboBox_Import_DNG_Select.Name = "comboBox_Import_DNG_Select";
             this.comboBox_Import_DNG_Select.Size = new System.Drawing.Size(126, 24);
@@ -450,9 +447,9 @@
             this.groupBox_Export.Controls.Add(this.groupBox_Export_TIFF);
             this.groupBox_Export.Controls.Add(this.groupBox_Export_FPM);
             this.groupBox_Export.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F);
-            this.groupBox_Export.Location = new System.Drawing.Point(13, 581);
+            this.groupBox_Export.Location = new System.Drawing.Point(12, 640);
             this.groupBox_Export.Name = "groupBox_Export";
-            this.groupBox_Export.Size = new System.Drawing.Size(719, 150);
+            this.groupBox_Export.Size = new System.Drawing.Size(720, 150);
             this.groupBox_Export.TabIndex = 19;
             this.groupBox_Export.TabStop = false;
             this.groupBox_Export.Text = "Export";
@@ -481,32 +478,30 @@
             // 
             // button3
             // 
-            this.button3.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F);
-            this.button3.Location = new System.Drawing.Point(702, 826);
+            this.button3.Location = new System.Drawing.Point(827, 780);
             this.button3.Name = "button3";
-            this.button3.Size = new System.Drawing.Size(238, 23);
+            this.button3.Size = new System.Drawing.Size(75, 23);
             this.button3.TabIndex = 22;
-            this.button3.Text = "deinterlace universal DUAL";
+            this.button3.Text = "EXP_XIA";
             this.button3.UseVisualStyleBackColor = true;
-            this.button3.Click += new System.EventHandler(this.button3_Click);
+            this.button3.Click += new System.EventHandler(this.button3_Click_1);
             // 
-            // button4
+            // button_EXP_EOS
             // 
-            this.button4.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F);
-            this.button4.Location = new System.Drawing.Point(690, 874);
-            this.button4.Name = "button4";
-            this.button4.Size = new System.Drawing.Size(238, 23);
-            this.button4.TabIndex = 23;
-            this.button4.Text = "deinterlace universal SINGLE";
-            this.button4.UseVisualStyleBackColor = true;
-            this.button4.Click += new System.EventHandler(this.button4_Click);
+            this.button_EXP_EOS.Location = new System.Drawing.Point(827, 826);
+            this.button_EXP_EOS.Name = "button_EXP_EOS";
+            this.button_EXP_EOS.Size = new System.Drawing.Size(75, 23);
+            this.button_EXP_EOS.TabIndex = 23;
+            this.button_EXP_EOS.Text = "EXP_EOS";
+            this.button_EXP_EOS.UseVisualStyleBackColor = true;
+            this.button_EXP_EOS.Click += new System.EventHandler(this.button_EXP_EOS_Click);
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(977, 909);
-            this.Controls.Add(this.button4);
+            this.Controls.Add(this.button_EXP_EOS);
             this.Controls.Add(this.button3);
             this.Controls.Add(this.button2);
             this.Controls.Add(this.button1);
@@ -573,7 +568,7 @@
         private System.Windows.Forms.Button button1;
         private System.Windows.Forms.Button button2;
         private System.Windows.Forms.Button button3;
-        private System.Windows.Forms.Button button4;
+        private System.Windows.Forms.Button button_EXP_EOS;
     }
 }
 

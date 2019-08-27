@@ -12,6 +12,8 @@ namespace p00
         public Form1()
         {
             InitializeComponent();
+            comboBox_Import_DNG_Select.Items.Add(dngFileType.MLVApp14bit);
+            comboBox_Import_DNG_Select.Items.Add(dngFileType.Xiaomi16bit);
             comboBox_Import_DNG_Select.SelectedIndex = 0;
         }
 
@@ -164,6 +166,16 @@ namespace p00
         private void button4_Click(object sender, EventArgs e)
         {
             rwt.rawData = rwt.DeinterlaceUniversal(rwt.rawData, false);
+        }
+
+        private void button3_Click_1(object sender, EventArgs e)
+        {
+            rwt.ExportRawDataXiaomi(rwt.rawData,@textBox_Import_DNG_Text.Text);
+        }
+
+        private void button_EXP_EOS_Click(object sender, EventArgs e)
+        {
+            rwt.ExportRawData14bitUncompressed(rwt.rawData, textBox_Import_DNG_Text.Text);
         }
     }   
 }

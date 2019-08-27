@@ -4,8 +4,6 @@ using System.Drawing;
 using System.Collections;
 using System.IO;
 using BitMiracle.LibTiff.Classic;
-using photo;
-using photo.exif;
 
 namespace p00
 {
@@ -13,7 +11,8 @@ namespace p00
     {
         public int[,] ImportRawDataXiaomi(string filename)
         {
-            int bitsPerSample = 16;
+            const int bitsPerSample = 16;
+            const int bitsPerByte = 8;
             int width, height;
             int[,] output;
             using (Tiff input = Tiff.Open(@filename, "r"))
@@ -24,24 +23,231 @@ namespace p00
             }
             using (BinaryReader reader = new BinaryReader(File.Open(@filename, FileMode.Open)))
             {
-                int filelength = (int)(new System.IO.FileInfo(@filename).Length);
-                int datalength = (int)(width * height * bitsPerSample / 8);
+                int filelength = (int)new System.IO.FileInfo(@filename).Length;
+                int datalength = (width * height * bitsPerSample / bitsPerByte);
                 int start_addr = filelength - datalength;
                 int pixelcount = width * height;
                 reader.ReadBytes(start_addr);
                 Byte[] bytebuffer = reader.ReadBytes(datalength);
-                for (int i = 0; i < pixelcount; i++) { output[i % width, i / width] = (int)(bytebuffer[2 * i]) + (int)(bytebuffer[2 * i + 1] * 256); }
+                //for (int i = 0; i < pixelcount; i++) { output[i % width, i / width] = (int)(bytebuffer[2 * i]) + (int)(bytebuffer[2 * i + 1] * 256); }
+                for (int i = 0; i < pixelcount; i++) { output[i % width, i / width] = (bytebuffer[i<<1]) + ((bytebuffer[(i<<1) + 1]) <<8); }
             }
             Console.WriteLine();
             return output;
         }
-
-        public void ExportRawDataXiaomi(int[,]data,string filename)
+        public void ExportRawDataXiaomi(int[,] data, string filename)
         {
+            int bitsPerSample = 16;
+            int width = data.GetLength(0);
+            int height = data.GetLength(1);
 
+
+            byte[] bytedump;
+            int[] intdump;
+            int filelength;
+            int datalength;
+            int start_addr;
+            int pixelcount;
+            using (BinaryReader reader = new BinaryReader(File.Open(@filename, FileMode.Open)))
+            {
+                filelength = (int)(new System.IO.FileInfo(@filename).Length);
+                datalength = (int)(width * height * bitsPerSample / 8);
+                start_addr = filelength - datalength;
+                pixelcount = width * height;
+                intdump = new int[filelength / 2];
+
+                bytedump = reader.ReadBytes(filelength);
+                for (int i = 0; i < filelength / 2; i++) { intdump[i] = (int)(bytedump[2 * i]) + (int)(bytedump[2 * i + 1] * 256); }
+            }
+
+            //Array.Copy(rawData, 0, intdump, start_addr / 2, pixelcount);
+
+            int counter = 0;
+            for (int i = intdump.Length - pixelcount; i < intdump.Length; i++)
+            {
+                intdump[i] = rawData[counter % rawData.GetLength(0), counter / rawData.GetLength(0)];
+                counter++;
+            }
+
+            bool[] boolA = new bool[8];
+            bool[] boolB = new bool[8];
+            int temp;
+
+            for (int i = 0; i < intdump.Length; i++)
+            {
+                temp = intdump[i];
+                boolB[0] = Convert.ToBoolean(temp / 32768);
+                temp = temp % 32768;
+                boolB[1] = Convert.ToBoolean(temp / 16384);
+                temp = temp % 16384;
+                boolB[2] = Convert.ToBoolean(temp / 8192);
+                temp = temp % 8192;
+                boolB[3] = Convert.ToBoolean(temp / 4096);
+                temp = temp % 4096;
+                boolB[4] = Convert.ToBoolean(temp / 2048);
+                temp = temp % 2048;
+                boolB[5] = Convert.ToBoolean(temp / 1024);
+                temp = temp % 1024;
+                boolB[6] = Convert.ToBoolean(temp / 512);
+                temp = temp % 512;
+                boolB[7] = Convert.ToBoolean(temp / 256);
+                temp = temp % 256;
+
+                boolA[0] = Convert.ToBoolean(temp / 128);
+                temp = temp % 128; ;
+                boolA[1] = Convert.ToBoolean(temp / 64);
+                temp = temp % 64;
+                boolA[2] = Convert.ToBoolean(temp / 32);
+                temp = temp % 32;
+                boolA[3] = Convert.ToBoolean(temp / 16);
+                temp = temp % 16;
+                boolA[4] = Convert.ToBoolean(temp / 8);
+                temp = temp % 8;
+                boolA[5] = Convert.ToBoolean(temp / 4);
+                temp = temp % 4;
+                boolA[6] = Convert.ToBoolean(temp / 2);
+                temp = temp % 2;
+                boolA[7] = Convert.ToBoolean(temp / 1);
+                temp = temp % 1;
+
+
+                bytedump[2 * i] = BoolArrayToByte(boolA);
+                bytedump[(2 * i) + 1] = BoolArrayToByte(boolB);
+            }
+
+            byteArrayWriter(bytedump, filename);
         }
+        public void byteArrayWriter(byte[] input, string filename)
+        {
+            string outputFilename = filename.Substring(0, filename.Length - 4) + "_corrected.dng";
+            using (BinaryWriter writer = new BinaryWriter(File.Open((@outputFilename), FileMode.Create))) { writer.Write(input); }
+        }
+        public byte BoolArrayToByte(bool[] input)
+        {
+            byte outut = 0;
+            if (input[0])
+            {
+                outut += 128;
+            }
+            if (input[1])
+            {
+                outut += 64;
+            }
+            if (input[2])
+            {
+                outut += 32;
+            }
+            if (input[3])
+            {
+                outut += 16;
+            }
+            if (input[4])
+            {
+                outut += 8;
+            }
+            if (input[5])
+            {
+                outut += 4;
+            }
+            if (input[6])
+            {
+                outut += 2;
+            }
+            if (input[7])
+            {
+                outut += 1;
+            }
+            return outut;
+        }
+        public int[] ArrayConvert2Dto1D(int[,] input)
+        {
+            int xxx = input.GetLength(0);
+            int yyy = input.GetLength(1);
+            int arraylength = xxx*yyy;
+            int[] output = new int[arraylength];
+            for (int i = 0; i < arraylength; i++)
+            {
+                output[i] = input[i % xxx, i / xxx];
+            }
+            return output;
+        }
+        public bool[] IntegerTo14Bit(int input)
+        {
+            bool[] output = new bool[14];
+            int divider = 8192;
+            int remainder = input;
+            for (int i = 0; i < 14; i++)
+            {
+                output[i] = Convert.ToBoolean(remainder / divider);
+                remainder = remainder % divider;
+                divider = divider >> 1;
+            }
+            return output;
+        }
+        public void ExportRawData14bitUncompressed(int[,] data, string filename)
+        {
+            int filelength;
+            int datalength;
+            int start_addr;
+            int pixelcount;
+            byte[] bytebuffer_filecopy;
+            byte[] bytebuffer_data;
+            using (Tiff input = Tiff.Open(@filename, "r"))
+            {
+                pixelcount = input.GetField(TiffTag.IMAGEWIDTH)[0].ToInt()*input.GetField(TiffTag.IMAGELENGTH)[0].ToInt();
+            }
+            using (BinaryReader reader = new BinaryReader(File.Open(filename, FileMode.Open)))
+            {
+                filelength = (int)(new System.IO.FileInfo(filename).Length);
+                datalength = (int)(pixelcount * 14 / 8f);
+                start_addr = filelength - datalength;
+                bytebuffer_filecopy = reader.ReadBytes(filelength);
+                bytebuffer_data = new byte[datalength];
+                
+                int[] intArray = ArrayConvert2Dto1D(data);
+                BitArray bitbuffer = new BitArray(bytebuffer_filecopy);
+                bool[] intDataAsBoolArray = new bool[pixelcount * 14];
+                for (int i = 0; i < pixelcount; i++)
+                {
+                    Array.Copy(IntegerTo14Bit(intArray[i]), 0, intDataAsBoolArray, i * 14, 14);
+                }
 
+                bool[] tmp = new bool[8];
+                for (int i = 0; i < datalength; i++)
+                {
+                    Array.Copy(intDataAsBoolArray, i * 8, tmp, 0, 8);
+                    bytebuffer_data[i] = BoolArrayToByte(tmp);
+                }
 
+                Array.Copy(bytebuffer_data, 0, bytebuffer_filecopy, start_addr, datalength);
+                byteArrayWriter(bytebuffer_filecopy, filename);
+            }
+        }
+        public BitArray Reverse_Bitarray(BitArray input)
+        {
+            int length = input.Length;
+            BitArray output = input;
+            bool tmp;
+            for (int i = 0; i < length; i=i+8)
+            {
+                tmp = output[i];
+                output[i] = output[i + 7];
+                output[i + 7] = tmp;
+
+                tmp = output[i+1];
+                output[i+1] = output[i + 6];
+                output[i + 6] = tmp;
+
+                tmp = output[i+2];
+                output[i+2] = output[i + 5];
+                output[i + 5] = tmp;
+
+                tmp = output[i+3];
+                output[i+3] = output[i + 4];
+                output[i + 4] = tmp;
+            }
+            return output;
+        }
         public int[,] ImportRawData14bitUncompressed(string filename)
         {
             int width, height;
@@ -64,16 +270,10 @@ namespace p00
                 bytebuffer = reader.ReadBytes(datalength);
                 BitArray bitbuffer = new BitArray(bytebuffer);
                 int[] intbuffer = new int[pixelcount];
-                bool ttt;
-                for (int i = 0; i < bitbuffer.Length; i += 8)
-                {
-                    for (int j = 0; j < 4; j++)
-                    {
-                        ttt = bitbuffer[i + j];
-                        bitbuffer[i + j] = bitbuffer[i + (8 - j - 1)];
-                        bitbuffer[i + (8 - j - 1)] = ttt;
-                    }
-                }
+
+
+                bitbuffer=Reverse_Bitarray(bitbuffer);
+
                 bool temp;
                 int sum;
                 for (int bbb = 0; bbb < bitbuffer.Length; bbb += bitsPerSample)
