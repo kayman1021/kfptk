@@ -9,7 +9,12 @@ namespace p00
         public enum mapFileType { Image, FMP };
         RawDataTool rwt = new RawDataTool();
 
-        public Form1() { InitializeComponent(); }
+
+        public Form1()
+        {
+            InitializeComponent();
+            comboBox_Import_DNG_Select.SelectedIndex = 0;
+        }
 
         private void button_Import_DNG_Browse_Click(object sender, EventArgs e)
         {
@@ -97,7 +102,7 @@ namespace p00
             else { input = rwt.pixelData; }
 
             input = rwt.DeinterlaceDualISO(input);
-            input = rwt.Deinterlace(input, true);
+            //input = rwt.Deinterlace(input, false);
 
             if (radioButton_Select_Left.Checked) { rwt.rawData = input; }
             else { rwt.pixelData = input; }

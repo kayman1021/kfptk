@@ -81,7 +81,7 @@ namespace p00
                     intbuffer[bbb / bitsPerSample] = sum;
                 }
                 Console.WriteLine();
-                for (int i = 0; i < intbuffer.Length; i++) { output[i % width, i / height] = intbuffer[i]; }
+                for (int i = 0; i < intbuffer.Length; i++) { output[i % width, i / width] = intbuffer[i]; }
                 return output;
             }
         }
@@ -221,18 +221,18 @@ namespace p00
             return output;
         }
 
-        public int [,] DeinterlaceDualISO(int[,]input)
+        public int[,] DeinterlaceDualISO(int[,] input)
         {
             int[,] output = new int[input.GetLength(0), input.GetLength(1)];
-            for (int yyy = 0; yyy < input.GetLength(1); yyy++)
+            for (int xxx = 0; xxx < input.GetLength(0); xxx++)
             {
-                for (int xxx = 0; xxx < input.GetLength(1); xxx++)
+                for (int yyy = 0; yyy < input.GetLength(1); yyy++)
                 {
-                    output[xxx, yyy%4*4+yyy/4] = input[xxx, yyy];
+                    output[xxx, (((input.GetLength(1)/4) * (yyy % 4)) + yyy / 4)] = input[xxx, yyy];
                 }
 
             }
-            output = Deinterlace(output,true);
+            output = Deinterlace(output, true);
             return output;
         }
 
@@ -378,9 +378,9 @@ namespace p00
             return null;
         }
 
-        public void ExportFPM(string filename, int[,]data)
+        public void ExportFPM(string filename, int[,] data)
         {
-            
+
         }
     }
 }
