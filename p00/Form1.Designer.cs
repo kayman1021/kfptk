@@ -290,7 +290,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1023, 910);
+            this.ClientSize = new System.Drawing.Size(1786, 928);
             this.Controls.Add(this.button_BrowseFPMImage);
             this.Controls.Add(this.textBox_ImportFPMFromImage);
             this.Controls.Add(this.button_ImportFPMFromImage);

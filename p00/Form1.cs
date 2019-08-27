@@ -23,7 +23,7 @@ namespace p00
             catch (Exception) { throw new ApplicationException("Failed loading file"); }
         }
         private void button_ImportRawXiaomi_Click(object sender, EventArgs e) { rwt.ImportRawDataXiaomi(@textBox_ImportRaw.Text); }
-        private void button_ImportRaw14bit_Click(object sender, EventArgs e) { rwt.ImportRawData14bitUncompressed(@textBox_ImportRaw.Text); }
+        private void button_ImportRaw14bit_Click(object sender, EventArgs e) { rwt.rawData=rwt.ImportRawData14bitUncompressed(@textBox_ImportRaw.Text); }
 
         private void button_ExportTiffBrowse_Click(object sender, EventArgs e)
         {
@@ -132,17 +132,19 @@ namespace p00
 
     class RawDataTool
     {
+        public enum dngType {Xiaomi16bit,MLVApp14bit };
         public int[,] rawData;
-        public void ImportRawDataXiaomi(string filename)
+        public int[,] pixelData;
+        public int[,] ImportRawDataXiaomi(string filename)
         {
             int bitsPerSample = 16;
-            int width;
-            int height;
+            int width, height;
+            int[,] output;
             using (Tiff input = Tiff.Open(@filename, "r"))
             {
                 width = input.GetField(TiffTag.IMAGEWIDTH)[0].ToInt();
                 height = input.GetField(TiffTag.IMAGELENGTH)[0].ToInt();
-                rawData = new int[width, height];
+                output = new int[width, height];
             }
             using (BinaryReader reader = new BinaryReader(File.Open(@filename, FileMode.Open)))
             {
@@ -152,18 +154,20 @@ namespace p00
                 int pixelcount = width * height;
                 reader.ReadBytes(start_addr);
                 Byte[] bytebuffer = reader.ReadBytes(datalength);
-                for (int i = 0; i < pixelcount; i++) { rawData[i % width, i / width] = (int)(bytebuffer[2 * i]) + (int)(bytebuffer[2 * i + 1] * 256); }
+                for (int i = 0; i < pixelcount; i++) { output[i % width, i / width] = (int)(bytebuffer[2 * i]) + (int)(bytebuffer[2 * i + 1] * 256); }
             }
             Console.WriteLine();
+            return output;
         }
-        public void ImportRawData14bitUncompressed(string filename)
+        public int[,] ImportRawData14bitUncompressed(string filename)
         {
             int width, height;
+            int[,] output;
             using (Tiff input = Tiff.Open(@filename, "r"))
             {
                 width = input.GetField(TiffTag.IMAGEWIDTH)[0].ToInt();
                 height = input.GetField(TiffTag.IMAGELENGTH)[0].ToInt();
-                rawData = new int[width, height];
+                output = new int[width, height]; 
             }
             int bitsPerSample = 14;
             using (BinaryReader reader = new BinaryReader(File.Open(filename, FileMode.Open)))
@@ -200,7 +204,8 @@ namespace p00
                     intbuffer[bbb / bitsPerSample] = sum;
                 }
                 Console.WriteLine();
-                for (int i = 0; i < intbuffer.Length; i++) { rawData[i % width, i / height] = intbuffer[i]; }
+                for (int i = 0; i < intbuffer.Length; i++) { output[i % width, i / height] = intbuffer[i]; }
+                return output;
             }
         }
         public void ExportRawDataTiff(string filename, int[,] input)
@@ -228,7 +233,7 @@ namespace p00
                 {
                     for (int xxx = 0; xxx < width; xxx++)
                     {
-                        rawValue = rawData[xxx, yyy];
+                        rawValue = input[xxx, yyy];
                         bytebuffer[xxx * 2] = (byte)(rawValue % 256);
                         bytebuffer[xxx * 2 + 1] = (byte)(rawValue / 256);
                     }
@@ -245,7 +250,7 @@ namespace p00
             string newline = "\r\n";
             for (int yyy = 0; yyy < height; yyy++)
             {
-                for (int xxx = 0; xxx < width; xxx++) { sb.Append(rawData[xxx, yyy] + spacer); }
+                for (int xxx = 0; xxx < width; xxx++) { sb.Append(input[xxx, yyy] + spacer); }
                 sb.Append(newline);
             }
             File.WriteAllText(@filename, sb.ToString());
