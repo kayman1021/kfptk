@@ -2,6 +2,33 @@
 {
     partial class RawData
     {
+        public int[,] DeinterlaceUniversal(int[,] input,bool IsDualISO)
+        {
+            
+            int UniqueSenselsX = 2;
+            int UniqueSenselsY;
+            if (IsDualISO) { UniqueSenselsY = 4; }
+            else { UniqueSenselsY = 2; }
+
+            int resolutionX = input.GetLength(0);
+            int resolutionY = input.GetLength(1);
+            int blockSizeX = resolutionX / UniqueSenselsX;
+            int blockSizeY = resolutionY / UniqueSenselsY;
+            int[,] output = new int[resolutionX,resolutionY];
+            for (int xxx = 0; xxx < resolutionX; xxx++)
+            {
+                for (int yyy = 0; yyy < resolutionY; yyy++)
+                {
+                    output[xxx, ((blockSizeY * (yyy % UniqueSenselsY)) + yyy / UniqueSenselsY)] = input[xxx, yyy];
+                }
+
+            }
+            output = Deinterlace(output, true);
+            return output;
+        }
+
+
+
         public int[,] Deinterlace(int[,] input, bool direction)
         {
             int[,] output;
@@ -67,28 +94,7 @@
             return output;
         }
 
-        public int[,] SeperateDualISO(int[,] input)
-        {
-            int[,] output;
-            int width = input.GetLength(0);
-            int height = input.GetLength(1);
-            output = new int[width, height];
-            int halfres = height / 2;
-            int temp;
-            for (int yyy = 0; yyy < height; yyy++)
-            {
-                temp = (yyy / 2) + (yyy % 2);
-                if (yyy % 4 >= 2)
-                {
-                    temp += halfres - 1;
-                }
-                for (int xxx = 0; xxx < width; xxx++)
-                {
-                    output[xxx, temp] = input[xxx, yyy];
-                }
-            }
-            return output;
-        }
+
 
         public int[,] DeinterlaceDualISO(int[,] input)
         {
@@ -111,7 +117,6 @@
             int width = input.GetLength(0);
             int height = input.GetLength(1);
             output = new int[width, height];
-            //int halfres = height / 2;
             int slices = 4;
             int temp;
             for (int xxx = 0; xxx < width; xxx++)
@@ -127,71 +132,6 @@
             return output;
         }
 
-
-
-        public int[,] SplitTop(int[,] input)
-        {
-            int width = input.GetLength(0);
-            int height = input.GetLength(1);
-            int halfres = height / 2;
-            int[,] output = new int[width, halfres];
-
-            for (int yyy = 0; yyy < halfres; yyy++)
-            {
-                for (int xxx = 0; xxx < width; xxx++)
-                {
-                    output[xxx, yyy] = input[xxx, yyy];
-                }
-            }
-            return output;
-        }
-
-        public int[,] SplitBottom(int[,] input)
-        {
-            int width = input.GetLength(0);
-            int height = input.GetLength(1);
-            int halfres = height / 2;
-            int[,] output = new int[width, halfres];
-
-            for (int yyy = halfres; yyy < height; yyy++)
-            {
-                for (int xxx = 0; xxx < width; xxx++)
-                {
-                    output[xxx, yyy - halfres] = input[xxx, yyy];
-                }
-            }
-            return output;
-        }
-
-        public int[,] JoinHalves(int[,] top, int[,] bottom)
-        {
-            int width = top.GetLength(0);
-            int height = top.GetLength(1) * 2;
-            int halfres = top.GetLength(1);
-            int[,] output = new int[width, height];
-
-            for (int yyy = 0; yyy < halfres; yyy++)
-            {
-                for (int xxx = 0; xxx < width; xxx++)
-                {
-                    output[xxx, yyy] = top[xxx, yyy];
-                }
-            }
-            for (int yyy = 0; yyy < halfres; yyy++)
-            {
-                for (int xxx = 0; xxx < width; xxx++)
-                {
-                    int temp = yyy + halfres;
-                    output[xxx, temp] = bottom[xxx, yyy];
-                }
-            }
-
-
-            return output;
-        }
-
-
-
         public void SwapSides(int[,] input1, int[,] input2)
         {
             int[,] temp;
@@ -200,12 +140,6 @@
             input2 = temp;
         }
 
-
-
-
-
-
-        //(rwt.pixelData, 2, 2, 1, 1);
         public int[,] SliceBlock(int[,] input,int slicesX,int slicesY, int x, int y)
         {
             int sliceWidth = input.GetLength(0) / slicesX;
@@ -219,7 +153,6 @@
                     int debugX = x * sliceWidth + xxx;
                     int debugY = y * sliceHeight + yyy;
                     output[xxx, yyy] = input[debugX,debugY];
-                    //output[xxx, yyy] = input[x * sliceWidth + xxx, y * sliceHeight + yyy];
                 }
             }
             return output;

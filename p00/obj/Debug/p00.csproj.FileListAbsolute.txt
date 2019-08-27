@@ -3,6 +3,7 @@ C:\Users\atkalman\Desktop\p00\p00\p00\bin\Debug\p00.exe
 C:\Users\atkalman\Desktop\p00\p00\p00\bin\Debug\p00.pdb
 C:\Users\atkalman\Desktop\p00\p00\p00\bin\Debug\BitMiracle.LibTiff.NET.dll
 C:\Users\atkalman\Desktop\p00\p00\p00\bin\Debug\MathNet.Numerics.dll
+C:\Users\atkalman\Desktop\p00\p00\p00\bin\Debug\photo.exif.dll
 C:\Users\atkalman\Desktop\p00\p00\p00\bin\Debug\BitMiracle.LibTiff.NET.xml
 C:\Users\atkalman\Desktop\p00\p00\p00\bin\Debug\MathNet.Numerics.xml
 C:\Users\atkalman\Desktop\p00\p00\p00\obj\Debug\p00.csprojAssemblyReference.cache

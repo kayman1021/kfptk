@@ -1,4 +1,4 @@
-﻿using System;
+﻿/*using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -9,10 +9,11 @@ using MathNet.Numerics.LinearAlgebra;
 using MathNet.Numerics;
 using System.Collections;
 using System.IO;
-using BitMiracle.LibTiff.Classic;
+using BitMiracle.LibTiff.Classic;*/
 
 namespace p00
 {
+    public enum dngFileType { Xiaomi16bit, MLVApp14bit };
     partial class RawData
     {
         public int[,] rawData;

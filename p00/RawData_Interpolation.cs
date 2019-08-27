@@ -112,47 +112,47 @@ namespace p00
                 {
 
 
-                    if (i - 2 > 0 && i + 2 < arrayLength)
+                    if (i >= 2 && i + 2 <= arrayLength-1)
                     {
-                        dataMSE[0] = data[i - 2, line];
-                        dataMSE[1] = data[i - 1, line];
-                        dataMSE[2] = data[i, line];
-                        dataMSE[3] = data[i + 1, line];
-                        dataMSE[4] = data[i + 2, line];
+                        dataMSE[0] = (int)cs.Interpolate(i - 2);
+                        dataMSE[1] = (int)cs.Interpolate(i - 1);
+                        dataMSE[2] = (int)cs.Interpolate(i);
+                        dataMSE[3] = (int)cs.Interpolate(i +1);
+                        dataMSE[4] = (int)cs.Interpolate(i +2);
                     }
                     else
                     {
                         if (i == 0)
                         {
-                            dataMSE[0] = data[i, line];
-                            dataMSE[1] = data[i + 1, line];
-                            dataMSE[2] = data[i + 2, line];
-                            dataMSE[3] = data[i + 3, line];
-                            dataMSE[4] = data[i + 4, line];
+                            dataMSE[0] = (int)cs.Interpolate(i);
+                            dataMSE[1] = (int)cs.Interpolate(i+1);
+                            dataMSE[2] = (int)cs.Interpolate(i+ 2);
+                            dataMSE[3] = (int)cs.Interpolate(i +3);
+                            dataMSE[4] = (int)cs.Interpolate(i+4);
                         }
                         if (i == 1)
                         {
-                            dataMSE[0] = data[i - 1, line];
-                            dataMSE[1] = data[i, line];
-                            dataMSE[2] = data[i + 1, line];
-                            dataMSE[3] = data[i + 2, line];
-                            dataMSE[4] = data[i + 3, line];
+                            dataMSE[0] = (int)cs.Interpolate(i - 1);
+                            dataMSE[1] = (int)cs.Interpolate(i);
+                            dataMSE[2] = (int)cs.Interpolate(i +1);
+                            dataMSE[3] = (int)cs.Interpolate(i +2);
+                            dataMSE[4] = (int)cs.Interpolate(i +3);
                         }
                         if (i == arrayLength - 1)
                         {
-                            dataMSE[0] = data[i - 3, line];
-                            dataMSE[1] = data[i - 2, line];
-                            dataMSE[2] = data[i - 1, line];
-                            dataMSE[3] = data[i, line];
-                            dataMSE[4] = data[i + 1, line];
+                            dataMSE[0] = (int)cs.Interpolate(i - 4);
+                            dataMSE[1] = (int)cs.Interpolate(i - 3);
+                            dataMSE[2] = (int)cs.Interpolate(i - 2);
+                            dataMSE[3] = (int)cs.Interpolate(i - 1);
+                            dataMSE[4] = (int)cs.Interpolate(i);
                         }
-                        if (i == arrayLength)
+                        if (i == arrayLength-2)
                         {
-                            dataMSE[0] = data[i - 4, line];
-                            dataMSE[1] = data[i - 3, line];
-                            dataMSE[2] = data[i - 2, line];
-                            dataMSE[3] = data[i - 1, line];
-                            dataMSE[4] = data[i, line];
+                            dataMSE[0] = (int)cs.Interpolate(i - 3);
+                            dataMSE[1] = (int)cs.Interpolate(i - 2);
+                            dataMSE[2] = (int)cs.Interpolate(i - 1);
+                            dataMSE[3] = (int)cs.Interpolate(i);
+                            dataMSE[4] = (int)cs.Interpolate(i+ 1);
                         }
                     }
                     values[counter] = new ouputValues

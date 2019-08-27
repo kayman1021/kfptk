@@ -67,6 +67,7 @@
             this.groupBox_Export = new System.Windows.Forms.GroupBox();
             this.button1 = new System.Windows.Forms.Button();
             this.button2 = new System.Windows.Forms.Button();
+            this.button3 = new System.Windows.Forms.Button();
             this.groupBox_Export_TIFF.SuspendLayout();
             this.groupBox_Export_FPM.SuspendLayout();
             this.groupBox_Tools.SuspendLayout();
@@ -309,8 +310,8 @@
             this.comboBox_Import_DNG_Select.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F);
             this.comboBox_Import_DNG_Select.FormattingEnabled = true;
             this.comboBox_Import_DNG_Select.Items.AddRange(new object[] {
-            p00.Form1.dngFileType.MLVApp14bit,
-            p00.Form1.dngFileType.Xiaomi16bit});
+            p00.dngFileType.MLVApp14bit,
+            p00.dngFileType.Xiaomi16bit});
             this.comboBox_Import_DNG_Select.Location = new System.Drawing.Point(112, 55);
             this.comboBox_Import_DNG_Select.Name = "comboBox_Import_DNG_Select";
             this.comboBox_Import_DNG_Select.Size = new System.Drawing.Size(126, 24);
@@ -518,11 +519,23 @@
             this.button2.UseVisualStyleBackColor = true;
             this.button2.Click += new System.EventHandler(this.button2_Click);
             // 
+            // button3
+            // 
+            this.button3.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F);
+            this.button3.Location = new System.Drawing.Point(702, 826);
+            this.button3.Name = "button3";
+            this.button3.Size = new System.Drawing.Size(238, 23);
+            this.button3.TabIndex = 22;
+            this.button3.Text = "deinterlace universal";
+            this.button3.UseVisualStyleBackColor = true;
+            this.button3.Click += new System.EventHandler(this.button3_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(977, 909);
+            this.Controls.Add(this.button3);
             this.Controls.Add(this.button2);
             this.Controls.Add(this.button1);
             this.Controls.Add(this.groupBox_Export);
@@ -593,6 +606,7 @@
         private System.Windows.Forms.Button button_Tools_SwapSides;
         private System.Windows.Forms.Button button1;
         private System.Windows.Forms.Button button2;
+        private System.Windows.Forms.Button button3;
     }
 }
 

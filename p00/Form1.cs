@@ -5,7 +5,7 @@ namespace p00
 {
     public partial class Form1 : Form
     {
-        public enum dngFileType { Xiaomi16bit, MLVApp14bit };
+        
         RawData rwt = new RawData();
 
 
@@ -189,6 +189,11 @@ namespace p00
             rwt.ModifyBlock(rwt.rawData, 1, 1, rwt.CorrectArea(rwt.rawData, rwt.mapData, 2, 4, 1, 1));
             rwt.ModifyBlock(rwt.rawData, 0, 2, rwt.CorrectArea(rwt.rawData, rwt.mapData, 2, 4, 0, 2));
             rwt.ModifyBlock(rwt.rawData, 1, 3, rwt.CorrectArea(rwt.rawData, rwt.mapData, 2, 4, 1, 3));
+        }
+
+        private void button3_Click(object sender, EventArgs e)
+        {
+            rwt.rawData = rwt.DeinterlaceUniversal(rwt.rawData, true);
         }
     }   
 }

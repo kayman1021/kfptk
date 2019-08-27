@@ -4,6 +4,8 @@ using System.Drawing;
 using System.Collections;
 using System.IO;
 using BitMiracle.LibTiff.Classic;
+using photo;
+using photo.exif;
 
 namespace p00
 {
@@ -33,6 +35,13 @@ namespace p00
             Console.WriteLine();
             return output;
         }
+
+        public void ExportRawDataXiaomi(int[,]data,string filename)
+        {
+
+        }
+
+
         public int[,] ImportRawData14bitUncompressed(string filename)
         {
             int width, height;
