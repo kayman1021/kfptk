@@ -16,7 +16,7 @@ namespace p00
 
         }
 
-        //GUI INTERACTION
+        //GUI INTERACTION 
         private void button_ImportRawXiaomi_Click(object sender, EventArgs e)
         {
             rwt.ImportRawDataXiaomi(@textBox_ImportRaw.Text);
@@ -154,51 +154,46 @@ namespace p00
                 int filelength = (int)(new System.IO.FileInfo(filename).Length);
                 int datalength = (int)(rawWidth * rawHeight * bitsPerSample / 8f);
                 int start_addr = filelength - datalength;
+                int pixelcount = rawWidth * rawHeight;
                 reader.ReadBytes(start_addr);
-                byte[] buffbuff = new byte[datalength];
-                buffbuff = reader.ReadBytes(datalength);
-                BitArray bitsbits = new BitArray(datalength * 8);
-                for (int i = 0; i < datalength; i++)
+                byte[] bytebuffer = new byte[datalength];
+                bytebuffer = reader.ReadBytes(datalength);
+                BitArray bitbuffer = new BitArray(bytebuffer);
+                int[]intbuffer = new int[pixelcount];
+
+
+                bool ttt;
+                for (int i = 0; i < bitbuffer.Length; i+=8)//Reverse byte order, so 14bit can be gained more easily
                 {
-                    int remainder = buffbuff[i];
-
-                    for (int k = 0; k < 8; k++)
+                    for (int j = 0; j < 4; j++)
                     {
-                        int victim = remainder;
-                        int power = (int)(Math.Pow((double)2, (double)(8 - 1 - k)));
-                        int whole = victim / power;
-
-                        if (whole == 1)
-                        {
-                            bitsbits[i * 8 + k] = true;
-                        }
-                        else
-                        {
-                            bitsbits[i * 8 + k] = false;
-                        }
-                        remainder = victim - (whole * power);
+                        ttt = bitbuffer[i + j];
+                        bitbuffer[i + j] = bitbuffer[i + (8 - j-1)];
+                        bitbuffer[i + (8 - j - 1)] = ttt;
                     }
                 }
-                int[] pixelbits = new int[bitsPerSample];
-                for (int i = 0; i < rawWidth * rawHeight; i++)
+
+
+                bool temp;
+                int sum;
+                for (int bbb = 0; bbb < bitbuffer.Length; bbb+=bitsPerSample)
                 {
-                    for (int j = 0; j < bitsPerSample; j++)
+                    sum = 0;
+                    for (int aaa = 0; aaa < bitsPerSample; aaa++)//Calculate every bit's power, write sum into array
                     {
-                        bool current = bitsbits[(i * bitsPerSample) + j];
-                        if (current)
+                        temp = bitbuffer[aaa+bbb];
+                        if (temp)
                         {
-                            pixelbits[j] = 1;
-                        }
-                        else
-                        {
-                            pixelbits[j] = 0;
+                            sum += (int)(Math.Pow((double)(2), (double)(bitsPerSample-1- aaa)));
                         }
                     }
-                    int summ = 0;
-                    for (int k = 0; k < bitsPerSample; k++)
-                    {
-                        summ += pixelbits[k] * (int)Math.Pow((double)2, (double)(bitsPerSample - 1 - k));
-                    }
+                    intbuffer[bbb/bitsPerSample] = sum;
+                }
+                Console.WriteLine();
+
+                for (int i = 0; i < intbuffer.Length; i++)//Convert 1 dimension array to 2 dimension array
+                {
+                    rawData[i % rawWidth, i / rawWidth] = intbuffer[i];
                 }
             }
         }//BIG MESS
