@@ -1,5 +1,8 @@
 ﻿using System;
 using System.Windows.Forms;
+using MathNet.Numerics;
+using MathNet.Numerics.Interpolation;
+using System.Drawing;
 
 namespace p00
 {
@@ -216,23 +219,95 @@ namespace p00
 
                 foreach (string  path in listBox_MASS_DUAL_ISO.Items)
                 {
-                    RawData mass = new RawData();
-                    mass.mapData = rwt.mapData;
-                    mass.rawData = mass.ImportRawData14bitUncompressed(@path);
-                    mass.rawData = mass.DeinterlaceUniversal(mass.rawData, true);
-                    mass.ModifyBlock(mass.rawData, 0, 0, mass.CorrectArea2(mass.rawData, mass.mapData, 2, 4, 0, 0));
-                    mass.ModifyBlock(mass.rawData, 1, 1, mass.CorrectArea2(mass.rawData, mass.mapData, 2, 4, 1, 1));
-                    mass.ModifyBlock(mass.rawData, 0, 2, mass.CorrectArea2(mass.rawData, mass.mapData, 2, 4, 0, 2));
-                    mass.ModifyBlock(mass.rawData, 1, 3, mass.CorrectArea2(mass.rawData, mass.mapData, 2, 4, 1, 3));
-                    mass.rawData = mass.InterlaceUniversal(mass.rawData, true);
-                    mass.ExportRawData14bitUncompressed(mass.rawData, @path);
+                   // RawData mass = new RawData();
+                   // mass.mapData = rwt.mapData;
+                   // mass.rawData = mass.ImportRawData14bitUncompressed(@path);
+                    //mass.rawData = mass.DeinterlaceUniversal(mass.rawData, true);
+                    //mass.ModifyBlock(mass.rawData, 0, 0, mass.CorrectArea2(mass.rawData, mass.mapData, 2, 4, 0, 0));
+                    //mass.ModifyBlock(mass.rawData, 1, 1, mass.CorrectArea2(mass.rawData, mass.mapData, 2, 4, 1, 1));
+                    //mass.ModifyBlock(mass.rawData, 0, 2, mass.CorrectArea2(mass.rawData, mass.mapData, 2, 4, 0, 2));
+                    //mass.ModifyBlock(mass.rawData, 1, 3, mass.CorrectArea2(mass.rawData, mass.mapData, 2, 4, 1, 3));
+                   // mass.rawData = mass.InterlaceUniversal(mass.rawData, true);
+                   // mass.ExportRawData14bitUncompressed(mass.rawData, @path);
                 }
             }
         }
 
         private void button6_Click(object sender, EventArgs e)
         {
-            rwt.FindFunction(rwt.SliceBlock(rwt.rawData,2,4,0,0),rwt.SliceBlock(rwt.mapData,2,4,0,0),(double)numericUpDown_angle.Value,211,237);
+            //rwt.FindValueAtDegree(rwt.SliceBlock(rwt.rawData,2,4,0,0),rwt.SliceBlock(rwt.mapData,2,4,0,0),(double)numericUpDown_angle.Value,3,0);
+        }
+
+        private void button_correctVertical_Click(object sender, EventArgs e)
+        {
+            int width = rwt.rawData.GetLength(0) / 2;
+            int height = rwt.rawData.GetLength(1) / 4;
+            Point[] corruptZones = new Point[4] {
+                new Point(0,0),
+                new Point(1,1),
+                new Point(0,2),
+                new Point(1,3)
+            };
+
+            int[,] data;
+            int[,] map;
+            Point zone;
+            CubicSpline[] cs;
+
+            for (int i = 0; i < 4; i++)
+            {
+                zone = corruptZones[i];
+                data = rwt.SliceBlock(rwt.rawData, 2, 4, zone.X,zone.Y);
+                map = rwt.SliceBlock(rwt.mapData, 2, 4, zone.X, zone.Y);
+                cs = rwt.InterpolateColumn(data, map);
+                for (int xxx = 0; xxx < width; xxx++)
+                {
+                    for (int yyy = 0; yyy < height; yyy++)
+                    {
+                        if (map[xxx, yyy] == 0)
+                        {
+                            data[xxx, yyy] = (int)rwt.interpolateFromColumn(xxx, yyy, cs);
+                        }
+                    }
+                }
+                rwt.ModifyBlock(rwt.rawData, zone.X,zone.Y, data);
+            }
+        }
+
+        private void button_correctHorizontal_Click(object sender, EventArgs e)
+        {
+            int width = rwt.rawData.GetLength(0) / 2;
+            int height = rwt.rawData.GetLength(1) / 4;
+            Point[] corruptZones = new Point[4] {
+                new Point(0,0),
+                new Point(1,1),
+                new Point(0,2),
+                new Point(1,3)
+            };
+
+            int[,] data;
+            int[,] map;
+            Point zone;
+            CubicSpline[] cs;
+
+            for (int i = 0; i < 4; i++)
+            {
+                zone = corruptZones[i];
+                data = rwt.SliceBlock(rwt.rawData, 2, 4, zone.X, zone.Y);
+                map = rwt.SliceBlock(rwt.mapData, 2, 4, zone.X, zone.Y);
+                cs = rwt.InterpolateRow(data, map);
+                for (int yyy = 0; yyy < height; yyy++)
+                {
+                    for (int xxx = 0; xxx < width; xxx++)
+                    {
+                        if (map[xxx, yyy] == 0)
+                        {
+                            data[xxx, yyy] = (int)rwt.interpolateFromRow(xxx, yyy, cs);
+                        }
+                    }
+                }
+                rwt.ModifyBlock(rwt.rawData, zone.X, zone.Y, data);
+            }
         }
     }   
 }

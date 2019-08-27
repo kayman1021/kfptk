@@ -68,13 +68,15 @@
             this.button_EXP_EOS = new System.Windows.Forms.Button();
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
+            this.button_correctHorizontal = new System.Windows.Forms.Button();
+            this.button_correctVertical = new System.Windows.Forms.Button();
             this.tabPage2 = new System.Windows.Forms.TabPage();
             this.button5 = new System.Windows.Forms.Button();
             this.listBox_MASS_DUAL_ISO = new System.Windows.Forms.ListBox();
             this.button4 = new System.Windows.Forms.Button();
             this.tabPage3 = new System.Windows.Forms.TabPage();
-            this.numericUpDown_angle = new System.Windows.Forms.NumericUpDown();
             this.button6 = new System.Windows.Forms.Button();
+            this.numericUpDown_angle = new System.Windows.Forms.NumericUpDown();
             this.groupBox_Export_TIFF.SuspendLayout();
             this.groupBox_Export_FPM.SuspendLayout();
             this.groupBox_Tools.SuspendLayout();
@@ -523,6 +525,8 @@
             // 
             // tabPage1
             // 
+            this.tabPage1.Controls.Add(this.button_correctHorizontal);
+            this.tabPage1.Controls.Add(this.button_correctVertical);
             this.tabPage1.Controls.Add(this.groupBox_Import);
             this.tabPage1.Controls.Add(this.button_EXP_EOS);
             this.tabPage1.Controls.Add(this.groupBox_Tools);
@@ -537,6 +541,26 @@
             this.tabPage1.TabIndex = 0;
             this.tabPage1.Text = "SANDBOX";
             this.tabPage1.UseVisualStyleBackColor = true;
+            // 
+            // button_correctHorizontal
+            // 
+            this.button_correctHorizontal.Location = new System.Drawing.Point(521, 688);
+            this.button_correctHorizontal.Name = "button_correctHorizontal";
+            this.button_correctHorizontal.Size = new System.Drawing.Size(145, 23);
+            this.button_correctHorizontal.TabIndex = 25;
+            this.button_correctHorizontal.Text = "Correct Horizontal";
+            this.button_correctHorizontal.UseVisualStyleBackColor = true;
+            this.button_correctHorizontal.Click += new System.EventHandler(this.button_correctHorizontal_Click);
+            // 
+            // button_correctVertical
+            // 
+            this.button_correctVertical.Location = new System.Drawing.Point(521, 659);
+            this.button_correctVertical.Name = "button_correctVertical";
+            this.button_correctVertical.Size = new System.Drawing.Size(145, 23);
+            this.button_correctVertical.TabIndex = 24;
+            this.button_correctVertical.Text = "Correct Vertical";
+            this.button_correctVertical.UseVisualStyleBackColor = true;
+            this.button_correctVertical.Click += new System.EventHandler(this.button_correctVertical_Click);
             // 
             // tabPage2
             // 
@@ -590,13 +614,6 @@
             this.tabPage3.Text = "tabPage3";
             this.tabPage3.UseVisualStyleBackColor = true;
             // 
-            // numericUpDown_angle
-            // 
-            this.numericUpDown_angle.Location = new System.Drawing.Point(34, 49);
-            this.numericUpDown_angle.Name = "numericUpDown_angle";
-            this.numericUpDown_angle.Size = new System.Drawing.Size(120, 20);
-            this.numericUpDown_angle.TabIndex = 0;
-            // 
             // button6
             // 
             this.button6.Location = new System.Drawing.Point(225, 49);
@@ -606,6 +623,13 @@
             this.button6.Text = "button6";
             this.button6.UseVisualStyleBackColor = true;
             this.button6.Click += new System.EventHandler(this.button6_Click);
+            // 
+            // numericUpDown_angle
+            // 
+            this.numericUpDown_angle.Location = new System.Drawing.Point(34, 49);
+            this.numericUpDown_angle.Name = "numericUpDown_angle";
+            this.numericUpDown_angle.Size = new System.Drawing.Size(120, 20);
+            this.numericUpDown_angle.TabIndex = 0;
             // 
             // Form1
             // 
@@ -688,6 +712,8 @@
         private System.Windows.Forms.TabPage tabPage3;
         private System.Windows.Forms.Button button6;
         private System.Windows.Forms.NumericUpDown numericUpDown_angle;
+        private System.Windows.Forms.Button button_correctHorizontal;
+        private System.Windows.Forms.Button button_correctVertical;
     }
 }
 

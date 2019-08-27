@@ -29,7 +29,6 @@ namespace p00
                 int pixelcount = width * height;
                 reader.ReadBytes(start_addr);
                 Byte[] bytebuffer = reader.ReadBytes(datalength);
-                //for (int i = 0; i < pixelcount; i++) { output[i % width, i / width] = (int)(bytebuffer[2 * i]) + (int)(bytebuffer[2 * i + 1] * 256); }
                 for (int i = 0; i < pixelcount; i++) { output[i % width, i / width] = (bytebuffer[i<<1]) + ((bytebuffer[(i<<1) + 1]) <<8); }
             }
             Console.WriteLine();

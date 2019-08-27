@@ -19,7 +19,5 @@ namespace p00
     {
         public int[,] rawData;
         public int[,] mapData;
-        //public CubicSpline[] splineHorizontal;
-        //public CubicSpline[] splineVertical;
     }
 }

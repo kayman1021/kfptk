@@ -1,77 +1,28 @@
 ﻿using MathNet.Numerics.Interpolation;
 using System.Collections;
 using System.Numerics;
+using MathNet.Numerics.Statistics;
+using MathNet.Numerics;
+using System;
+using System.Linq;
 
 namespace p00
 {
     partial class RawData
     {
-        public bool IsEmptyRow(int[,] input, int rownumber)
-        {
-            bool temp = true;
-            for (int i = 0; i < input.GetLength(0); i++)
-            {
-                if (input[i, rownumber] == ushort.MaxValue)
-                {
-                    temp = temp && true;
-                }
-                else
-                {
-                    temp = temp && false;
-                }
-            }
-            return temp;
-        }
 
-        public bool IsEmptyColumn(int[,] input, int columnnumber)
-        {
-            bool temp = true;
-            for (int i = 0; i < input.GetLength(1); i++)
-            {
-                if (input[columnnumber, i] == ushort.MaxValue)
-                {
-                    temp = temp && true;
-                }
-                else
-                {
-                    temp = temp && false;
-                }
-            }
-            return temp;
-        }
-
-        public double CalculateMSE(int[] input)
-        {
-            double sum = 0;
-            for (int i = 0; i < 5; i++)
-            {
-                sum += input[i];
-            }
-            double average = sum / 5;
-            sum = 0;
-            double temp = 0;
-            for (int i = 0; i < 5; i++)
-            {
-                temp = average - input[i];
-                sum += temp * temp;
-            }
-
-
-
-            return sum/input.Length;
-        }
 
         public double CalculateMSE_double(double[] input)
         {
             double sum = 0;
-            for (int i = 0; i < 5; i++)
+            for (int i = 0; i < input.Length; i++)
             {
                 sum += input[i];
             }
-            double average = sum / 5;
+            double average = sum / input.Length;
             sum = 0;
             double temp = 0;
-            for (int i = 0; i < 5; i++)
+            for (int i = 0; i < input.Length; i++)
             {
                 temp = average - input[i];
                 sum += temp * temp;
@@ -79,16 +30,24 @@ namespace p00
 
 
 
-            return sum/input.Length;
+            return sum / (float)input.Length;
         }
-
 
         public struct ouputValues
         {
             public int x;
             public int y;
-            public int pixelvalue;
-            public double MSEvalue;
+            public int value;
+            public double error;
+            //public int i;
+        }
+
+        public struct outputDouble
+        {
+            public double x;
+            public double y;
+            public double value;
+            public int radius;
         }
 
         public struct pointDouble
@@ -97,539 +56,389 @@ namespace p00
             public double y;
         }
 
-        public struct CorrectedValue
+        public double degToRad(double angleInDegree)
         {
-            public int pixelvalue;
-            public double MSEvalue;
+            return angleInDegree * System.Math.PI / 180;
         }
 
-
-        public ouputValues FindFunction(int[,]data,int[,]map,double degree, int xxx, int yyy)
+        public ouputValues FindValueAtDegree(int[,] data, int[,] map, double degree, int xxx, int yyy, CubicSpline[] helperHOR, CubicSpline[] helperVER)
         {
             int oldvalue = data[xxx, yyy];
-            double cos = (float)System.Math.Cos(degree * System.Math.PI / 180);
-            double sin = (float)System.Math.Sin(degree * System.Math.PI / 180);
+            int width = data.GetLength(0);
+            int height = data.GetLength(1);
+            double DegInRad = degToRad(degree);
 
-            double function_findY =(float) sin/cos;
-            double function_findX = (float)cos/sin;
-
-            ArrayList toInterpolateHorizontal = new ArrayList();
-            ArrayList toInterpolateVertical = new ArrayList();
-            double valY, valX;
-            for (int i = -5; i <= 5; i++)
+            ArrayList tempPoints = new ArrayList();
+            double valueX;
+            double valueY;
+            int limitUpper = 9;
+            int limitLower = -1 * limitUpper;
+            for (int i = limitLower; i <= limitUpper; i++)
             {
-                valY = i * function_findY;
-                valX = i * function_findX;
                 if (i != 0)
                 {
-                    if (valY <= 5 && valY >= -5 && i + xxx >= 0 && valY + yyy < data.GetLength(1))
+                    valueX = i + xxx;
+                    valueY = (System.Math.Tan(DegInRad)*i)+yyy;
+                    if (valueX >= 0 && valueX < width && valueY >= 0 && valueY < height&& valueY-yyy>= limitLower && valueY-yyy<= limitUpper)
                     {
-                        toInterpolateVertical.Add(new pointDouble() { x = i+xxx, y = valY+yyy });
+                        tempPoints.Add(new outputDouble() { x = valueX, y = valueY, value = interpolateFromColumn((int)valueX, valueY, helperVER), radius = i });
 
                     }
-                    if (valX <= 5 && valX >= -5&&valX+xxx>=0&&i+yyy<data.GetLength(0))
+                    valueX = (i/System.Math.Tan(DegInRad))+xxx;
+                    valueY = i + yyy;
+                    if (valueX >= 0 && valueX < width && valueY >= 0 && valueY < height && valueX-xxx >= limitLower && valueX-xxx <= limitUpper)
                     {
-                        toInterpolateHorizontal.Add(new pointDouble() { x = valX+xxx, y = i+yyy });
-
+                        tempPoints.Add(new outputDouble() { x =valueX, y = valueY, value = interpolateFromRow(valueX,(int)valueY, helperHOR), radius = i });
                     }
                 }
             }
             System.Console.WriteLine();
-            System.Console.WriteLine();
-            ArrayList arrayCoordinates=new ArrayList();
+
+            ArrayList arrayAxis = new ArrayList();
             ArrayList arrayValues = new ArrayList();
-            pointDouble temp;
-            for (int i = 0; i < toInterpolateVertical.Count; i++)
+            outputDouble temp;
+            for (int i = 0; i < tempPoints.Count; i++)
             {
-                temp =(pointDouble)toInterpolateVertical[i];
-                arrayCoordinates.Add(System.Math.Sqrt((temp.x * temp.x )+ (temp.y* temp.y)));
-                arrayValues.Add(makeSplineVertical(data,map,temp.x, temp.y));
+                temp = (outputDouble)tempPoints[i];
+                arrayAxis.Add(temp.radius / System.Math.Abs(temp.radius) * getVectorLength(xxx - temp.x, yyy - temp.y));
+                arrayValues.Add(temp.value);
             }
-            if (!isArrayListEqual(toInterpolateVertical,toInterpolateHorizontal))
+
+            if (arrayAxis.Count <= 4)
             {
-                for (int i = 0; i < toInterpolateHorizontal.Count; i++)
-                {
-                    temp = (pointDouble)toInterpolateHorizontal[i];
-                    arrayCoordinates.Add(System.Math.Sqrt((temp.x * temp.x) + (temp.y * temp.y)));
-                    arrayValues.Add(makeSplineHorizontal(data, map, temp.x, temp.y));
-                }
-            }
-            
-
-
-
-            System.Console.WriteLine();
-            CubicSpline notFinal = CubicSpline.InterpolateNaturalInplace(arrayCoordinates.ToArray(typeof(double)) as double[], arrayValues.ToArray(typeof(double)) as double[]);
-            double nf = notFinal.Interpolate(System.Math.Sqrt((xxx * xxx) + (yyy * yyy)));
-            arrayValues.Add(nf);
-            System.Console.WriteLine();
-            double MSE=CalculateMSE_double(arrayValues.ToArray(typeof(double)) as double[]);
-            System.Console.WriteLine();
-            return new ouputValues() {x=xxx,y=yyy,MSEvalue=MSE,pixelvalue=(int)nf };
-        }
-
-        public bool isArrayListEqual(ArrayList left, ArrayList right)
-        {
-            if (left.Count!=right.Count)
-            {
-                return false;
+                return new ouputValues() { x = xxx, y = yyy, value = 0, error = double.MaxValue };
             }
             else
             {
-                pointDouble tempL;
-                pointDouble tempR;
-                for (int i = 0; i < left.Count; i++)
-                {
-                    tempL = (pointDouble)left[i];
-                    tempR = (pointDouble)right[i];
-                    if (tempL.x!=tempR.x||tempL.y!=tempR.y)
-                    {
-                        return false;
-                    }
-                }
-                return true;
-            }
-        }
-
-
-        public ouputValues[] CorrectLine(int[,] data, int[,] map, int line)
-        {
-            int counter = 0;
-            for (int m = 0; m < data.GetLength(0); m++)
-            {
-                if (map[m, line] == ushort.MaxValue)
-                {
-                    counter++;
-                }
+                CubicSpline tempSpline = CubicSpline.InterpolateNatural(arrayAxis.ToArray(typeof(double)) as double[], arrayValues.ToArray(typeof(double)) as double[]);
+                double interpolatedValue = tempSpline.Interpolate(0);
+                arrayValues.Add(interpolatedValue);
+                arrayAxis.Add((double)0);
+                double[] aAxis = arrayAxis.ToArray(typeof(double)) as double[];
+                double[] aValues = arrayValues.ToArray(typeof(double)) as double[];
+                Tuple<double, double> p = Fit.Line(aAxis, aValues);
+                double[] q = Fit.Polynomial(aAxis, aValues, 3, MathNet.Numerics.LinearRegression.DirectRegressionMethod.QR);
+                double q1 = q[0];
+                double q2 = q[1];
+                double q3 = q[2];
+                double a = p.Item1;
+                double b = p.Item2;
+                //double thismofo=GoodnessOfFit.RSquared(aAxis.Select(x => a + b * x), aValues);
+                double thismofo = GoodnessOfFit.RSquared(aAxis.Select(x => q1+q2*x+q3*x*x), aValues);
+                Console.WriteLine();
+                return new ouputValues() { x = xxx, y = yyy, value = (int)interpolatedValue, error =thismofo };
+                //return new ouputValues() { x = xxx, y = yyy, pixelvalue = (int)interpolatedValue, MSEvalue = ArrayStatistics.Variance(CalculateMSE_double(arrayValues.ToArray(typeof(double)) as double[]) };
             }
 
-            double[] x_double = new double[counter];
-            double[] y_double = new double[counter];
-            ouputValues[] values = new ouputValues[counter];
-            counter = 0;
-
-            for (int i = 0; i < data.GetLength(0); i++)
-            {
-                if (map[i, line] == ushort.MaxValue)
-                {
-                    x_double[counter] = i;
-                    y_double[counter] = data[i, line];
-                    counter++;
-                }
-            }
-
-
-
-            CubicSpline cs = CubicSpline.InterpolateNatural(x_double, y_double);
-            int arrayLength = data.GetLength(0);
-            counter = 0;
-
-            int[] dataMSE;
-            for (int i = 0; i < arrayLength; i++)
-            {
-                dataMSE = new int[5];
-                if (map[i, line] == ushort.MinValue)
-                {
-
-
-                    if (i >= 2 && i + 2 <= arrayLength - 1)
-                    {
-                        //dataMSE[0] = (int)cs.Interpolate(i - 2);
-                        //dataMSE[1] = (int)cs.Interpolate(i - 1);
-                        dataMSE[0] = data[i - 2, line];
-                        dataMSE[1] = data[i - 1, line];
-                        dataMSE[2] = (int)cs.Interpolate(i);
-                        dataMSE[3] = data[i + 1, line];
-                        dataMSE[4] = data[i + 2, line];
-                        //dataMSE[3] = (int)cs.Interpolate(i + 1);
-                        //dataMSE[4] = (int)cs.Interpolate(i + 2);
-                    }
-                    else
-                    {
-                        if (i == 0)
-                        {
-                            dataMSE[0] = (int)cs.Interpolate(i);
-
-                            dataMSE[1] = data[i + 1, line];
-                            dataMSE[2] = data[i + 2, line];
-                            dataMSE[3] = data[i + 3, line];
-                            dataMSE[4] = data[i + 4, line];
-
-
-                            //dataMSE[1] = (int)cs.Interpolate(i + 1);
-                            //dataMSE[2] = (int)cs.Interpolate(i + 2);
-                            //dataMSE[3] = (int)cs.Interpolate(i + 3);
-                            //dataMSE[4] = (int)cs.Interpolate(i + 4);
-                        }
-                        if (i == 1)
-                        {
-                            //dataMSE[0] = (int)cs.Interpolate(i - 1);
-                            dataMSE[0] = data[i - 1, line];
-                            dataMSE[1] = (int)cs.Interpolate(i);
-                            dataMSE[2] = data[i + 1, line];
-                            dataMSE[3] = data[i + 2, line];
-                            dataMSE[4] = data[i + 3, line];
-
-
-                            //dataMSE[2] = (int)cs.Interpolate(i + 1);
-                            //dataMSE[3] = (int)cs.Interpolate(i + 2);
-                            //dataMSE[4] = (int)cs.Interpolate(i + 3);
-                        }
-                        if (i == arrayLength - 1)
-                        {
-                            //dataMSE[0] = (int)cs.Interpolate(i - 4);
-                            //dataMSE[1] = (int)cs.Interpolate(i - 3);
-                            //dataMSE[2] = (int)cs.Interpolate(i - 2);
-                            //dataMSE[3] = (int)cs.Interpolate(i - 1);
-                            dataMSE[0] = data[i - 4, line];
-                            dataMSE[1] = data[i - 3, line];
-                            dataMSE[2] = data[i - 2, line];
-                            dataMSE[3] = data[i - 1, line];
-
-
-
-                            dataMSE[4] = (int)cs.Interpolate(i);
-                        }
-                        if (i == arrayLength - 2)
-                        {
-                            //dataMSE[0] = (int)cs.Interpolate(i - 3);
-                            //dataMSE[1] = (int)cs.Interpolate(i - 2);
-                            //dataMSE[2] = (int)cs.Interpolate(i - 1);
-
-                            dataMSE[0] = data[i - 3, line];
-                            dataMSE[1] = data[i - 2, line];
-                            dataMSE[2] = data[i - 1, line];
-
-                            dataMSE[3] = (int)cs.Interpolate(i);
-
-                            dataMSE[4] = data[i, line];
-                            //dataMSE[4] = (int)cs.Interpolate(i + 1);
-                        }
-                    }
-                    values[counter] = new ouputValues
-                    {
-                        x = i,
-                        y = line,
-                        pixelvalue = (int)cs.Interpolate(i),
-                        MSEvalue = CalculateMSE(dataMSE)
-                    };
-                    counter++;
-                }
-            }
-            return values;
-        }
-
-        public int[,] CorrectArea(int[,] rawData, int[,] mapData, int slicesX, int slicesY, int indexX, int indexY)
-        {
-            int[,] raw = SliceBlock(rawData, slicesX, slicesY, indexX, indexY);
-            int[,] map = SliceBlock(mapData, slicesX, slicesY, indexX, indexY);
-            int lengthX = raw.GetLength(0);
-            int lengthY = raw.GetLength(1);
-            CorrectedValue[,] zone1 = new CorrectedValue[lengthX, lengthY];
-            for (int i = 0; i < lengthY; i++)
-            {
-                for (int j = 0; j < lengthX; j++)
-                {
-                    zone1[j, i] = new CorrectedValue
-                    {
-                        pixelvalue = int.MaxValue,
-                        MSEvalue = double.MaxValue
-                    };
-                }
-            }
-            for (int yyy = 0; yyy < lengthY; yyy++)
-            {
-                if (!IsEmptyRow(map, yyy))
-                {
-                    ouputValues[] horizontal = CorrectLine(raw, map, yyy);
-                    for (int counter = 0; counter < horizontal.GetLength(0); counter++)
-                    {
-
-                        ouputValues temp = horizontal[counter];
-                        if (zone1[temp.x, temp.y].MSEvalue > temp.MSEvalue)
-                        {
-                            zone1[temp.x, temp.y] = new CorrectedValue
-                            {
-                                pixelvalue = temp.pixelvalue,
-                                MSEvalue = temp.MSEvalue
-                            };
-                        }
-
-                    }
-                }
-            }
-
-            for (int xxx = 0; xxx < lengthX; xxx++)
-            {
-                if (!IsEmptyColumn(map, xxx))
-                {
-                    ouputValues[] vertical = CorrectLine(TransposeArray(raw), TransposeArray(map), xxx);
-                    for (int counter = 0; counter < vertical.GetLength(0); counter++)
-                    {
-
-                        ouputValues temp = vertical[counter];
-                        if (zone1[temp.y, temp.x].MSEvalue > temp.MSEvalue)
-                        {
-                            zone1[temp.y, temp.x] = new RawData.CorrectedValue
-                            {
-                                pixelvalue = temp.pixelvalue,
-                                MSEvalue = temp.MSEvalue
-                            };
-                        }
-
-                    }
-                }
-            }
-
-            for (int yyy = 0; yyy < map.GetLength(1); yyy++)
-            {
-                for (int xxx = 0; xxx < map.GetLength(0); xxx++)
-                {
-                    if (map[xxx, yyy] == ushort.MinValue)
-                    {
-                        raw[xxx, yyy] = zone1[xxx, yyy].pixelvalue;
-                    }
-                }
-            }
-            return raw;
         }
 
 
 
 
-
-        public ouputValues[] CorrectLine2(int[] dataLine, int[] mapLine, int number, bool direction)
-        {
-            ArrayList output = new ArrayList();
-
-
-            int counter = 0;
-            for (int m = 0; m < dataLine.Length; m++)
-            {
-                if (mapLine[m] == ushort.MaxValue)
-                {
-                    counter++;
-                }
-            }
-
-
-
-            double[] posotion = new double[counter];
-            double[] rawValue = new double[counter];
-            ouputValues[] values = new ouputValues[counter];
-            counter = 0;
-
-            for (int i = 0; i < dataLine.Length; i++)
-            {
-                if (mapLine[i] == ushort.MaxValue)
-                {
-                    posotion[counter] = i;
-                    rawValue[counter] = dataLine[i];
-                    counter++;
-                }
-            }
-
-
-
-            CubicSpline cs = CubicSpline.InterpolateNatural(posotion, rawValue);
-            int arrayLength = dataLine.Length;
-            counter = 0;
-
-            int[] dataMSE;
-            for (int i = 0; i < dataLine.Length; i++)
-            {
-                dataMSE = new int[5];
-                if (mapLine[i] == ushort.MinValue)
-                {
-
-
-                    if (i >= 2 && i + 2 <= dataLine.Length - 1)
-                    {
-                        dataMSE[0] = dataLine[i - 2];
-                        dataMSE[1] = dataLine[i - 1];
-                        dataMSE[2] = (int)cs.Interpolate(i);
-                        dataMSE[3] = dataLine[i + 1];
-                        dataMSE[4] = dataLine[i + 2];
-                    }
-                    else
-                    {
-                        if (i == 0)
-                        {
-                            dataMSE[0] = (int)cs.Interpolate(i);
-
-                            dataMSE[1] = dataLine[i + 1];
-                            dataMSE[2] = dataLine[i + 2];
-                            dataMSE[3] = dataLine[i + 3];
-                            dataMSE[4] = dataLine[i + 4];
-                        }
-                        if (i == 1)
-                        {
-                            dataMSE[0] = dataLine[i - 1];
-                            dataMSE[1] = (int)cs.Interpolate(i);
-                            dataMSE[2] = dataLine[i + 1];
-                            dataMSE[3] = dataLine[i + 2];
-                            dataMSE[4] = dataLine[i + 3];
-                        }
-                        if (i == dataLine.Length - 1)
-                        {
-                            dataMSE[0] = dataLine[i - 4];
-                            dataMSE[1] = dataLine[i - 3];
-                            dataMSE[2] = dataLine[i - 2];
-                            dataMSE[3] = dataLine[i - 1];
-                            dataMSE[4] = (int)cs.Interpolate(i);
-                        }
-                        if (i == dataLine.Length - 2)
-                        {
-                            dataMSE[0] = dataLine[i - 3];
-                            dataMSE[1] = dataLine[i - 2];
-                            dataMSE[2] = dataLine[i - 1];
-                            dataMSE[3] = (int)cs.Interpolate(i);
-                            dataMSE[4] = dataLine[i];
-                        }
-                    }
-                    if (direction)
-                    {
-                        values[counter] = new ouputValues
-                        {
-                            x = number,
-                            y = i,
-                            pixelvalue = (int)cs.Interpolate(i),
-                            MSEvalue = CalculateMSE(dataMSE)
-                        };
-                        counter++;
-                    }
-                    else
-                    {
-                        values[counter] = new ouputValues
-                        {
-                            x = i,
-                            y = number,
-                            pixelvalue = (int)cs.Interpolate(i),
-                            MSEvalue = CalculateMSE(dataMSE)
-                        };
-                        counter++;
-                    }
-                }
-            }
-            return values;
-        }
-
-
-
-        public int[,] CorrectArea2(int[,] rawData, int[,] mapData, int slicesX, int slicesY, int indexX, int indexY)
-        {
-            int[,] raw = SliceBlock(rawData, slicesX, slicesY, indexX, indexY);
-            int[,] map = SliceBlock(mapData, slicesX, slicesY, indexX, indexY);
-            int lengthX = raw.GetLength(0);
-            int lengthY = raw.GetLength(1);
-            CorrectedValue[,] zone1 = new CorrectedValue[lengthX, lengthY];
-            for (int i = 0; i < lengthY; i++)
-            {
-                for (int j = 0; j < lengthX; j++)
-                {
-                    zone1[j, i] = new CorrectedValue
-                    {
-                        pixelvalue = int.MaxValue,
-                        MSEvalue = double.MaxValue
-                    };
-                }
-            }
-            for (int yyy = 0; yyy < lengthY; yyy++)
-            {
-                if (!IsEmptyRow(map, yyy))
-                {
-                    ouputValues[] horizontal = CorrectLine2(copyRow(raw, yyy), copyRow(map, yyy), yyy, false);
-                    for (int counter = 0; counter < horizontal.GetLength(0); counter++)
-                    {
-
-                        ouputValues temp = horizontal[counter];
-                        if (zone1[temp.x, temp.y].MSEvalue > temp.MSEvalue)
-                        {
-                            zone1[temp.x, temp.y] = new CorrectedValue
-                            {
-                                pixelvalue = temp.pixelvalue,
-                                MSEvalue = temp.MSEvalue
-                            };
-                        }
-
-                    }
-                }
-            }
-
-            for (int xxx = 0; xxx < lengthX; xxx++)
-            {
-                if (!IsEmptyColumn(map, xxx))
-                {
-                    ouputValues[] vertical = CorrectLine2(copyColumn(raw, xxx), copyColumn(map, xxx), xxx, true);
-                    for (int counter = 0; counter < vertical.GetLength(0); counter++)
-                    {
-
-                        ouputValues temp = vertical[counter];
-                        if (zone1[temp.y, temp.x].MSEvalue > temp.MSEvalue)
-                        {
-                            zone1[temp.y, temp.x] = new RawData.CorrectedValue
-                            {
-                                pixelvalue = temp.pixelvalue,
-                                MSEvalue = temp.MSEvalue
-                            };
-                        }
-
-                    }
-                }
-            }
-
-            for (int yyy = 0; yyy < map.GetLength(1); yyy++)
-            {
-                for (int xxx = 0; xxx < map.GetLength(0); xxx++)
-                {
-                    if (map[xxx, yyy] == ushort.MinValue)
-                    {
-                        raw[xxx, yyy] = zone1[xxx, yyy].pixelvalue;
-                    }
-                }
-            }
-            return raw;
-        }
-
-
-
-
-        public double makeSplineHorizontal(int[,] data, int[,] map, double yyy, double input)
+        public ArrayList FindValueAtArea(int[,] data, int[,] map, ArrayList angles, CubicSpline[] helperHOR, CubicSpline[] helperVER)
         {
             int width = data.GetLength(0);
             int height = data.GetLength(1);
-            ArrayList coordinateList = new ArrayList();
-            ArrayList valueList = new ArrayList();
+            int variations = angles.Count;
+            ArrayList output = new ArrayList();
             for (int xxx = 0; xxx < width; xxx++)
             {
-                if (map[xxx, (int)yyy] == ushort.MaxValue)
+                for (int yyy = 0; yyy < height; yyy++)
                 {
-                    coordinateList.Add((double)xxx);
-                    valueList.Add((double)data[xxx, (int)yyy]);
+                    if (map[xxx, yyy] == ushort.MinValue)
+                    {
+                        for (int i = 0; i < variations; i++)
+                        {
+                            output.Add(FindValueAtDegree(data, map, (double)(angles[i]), xxx, yyy, helperHOR, helperVER));
+                        }
+                    }
                 }
             }
-            CubicSpline splineHorizontal = CubicSpline.InterpolateNatural(coordinateList.ToArray(typeof(double)) as double[], valueList.ToArray(typeof(double)) as double[]);
-            return splineHorizontal.Interpolate(input);
+            return output;
         }
 
-        public double makeSplineVertical(int[,]data, int[,]map,double xxx, double input)
+
+        public void CA(int[,] inputData, int[,] inputMap, int slicesX, int slicesY, int indexX, int indexY)
         {
+            int[,] data = SliceBlock(rawData, slicesX, slicesY, indexX, indexY);
+            int[,] map = SliceBlock(mapData, slicesX, slicesY, indexX, indexY);
             int width = data.GetLength(0);
             int height = data.GetLength(1);
-            ArrayList coordinateList = new ArrayList();
-            ArrayList valueList = new ArrayList();
-            for (int yyy = 0; yyy < height; yyy++)
+            CubicSpline[] helperHOR = InterpolateRow(data, map);
+            CubicSpline[] helperVER = InterpolateColumn(data, map);
+            ArrayList angles = new ArrayList();
+            for (int i = 0; i < 180; i=i+15)
             {
-                if (map[(int)xxx, yyy] == ushort.MaxValue)
+                angles.Add((double)i);
+            }
+            
+            int counter = 0;
+            for (int xxx = 0; xxx < width; xxx++)
+            {
+                for (int yyy = 0; yyy < height; yyy++)
                 {
-                    coordinateList.Add((double)yyy);
-                    valueList.Add((double)data[(int)xxx, yyy]);
+                    if (map[xxx,yyy]==0)
+                    {
+                        counter++;
+                    }
                 }
             }
-            CubicSpline splineHorizontal = CubicSpline.InterpolateNatural(coordinateList.ToArray(typeof(double)) as double[], valueList.ToArray(typeof(double)) as double[]);
-            System.Console.WriteLine();
-            double temp= splineHorizontal.Interpolate(input);
-            return temp;
+            ArrayList result = new ArrayList();
+            for (int xxx = 0; xxx < width; xxx++)
+            {
+                for (int yyy = 0; yyy < height; yyy++)
+                {
+                    if (map[xxx, yyy] == 0)
+                    {
+                        //result.Add(new pointDouble() { x = xxx, y = yyy });
+                        result.Add(new ArrayList() { new pointDouble() { x = xxx, y = yyy } });
+                    }
+                }
+            }
+            CB(data, map, helperHOR, helperVER, angles, result);
+        }
+
+
+        public void CB(int[,]data,int[,]map, CubicSpline[] helperHOR, CubicSpline[] helperVER, ArrayList angles, ArrayList results)
+        {
+            int oldvalue;
+            int width = data.GetLength(0);
+            int height = data.GetLength(1);
+            double DegInRad;
+            int xxx, yyy;
+            int limitUpper = 9;
+            int limitLower = -limitUpper;
+            int badpixelsCount = results.Count;
+            for (int i = 0; i < angles.Count; i++)
+            {
+                DegInRad = degToRad((double)angles[i]);
+
+                double localX;
+                double localY;
+                double globalX;
+                double globalY;
+                ArrayList anglePoints = new ArrayList();
+                for (int radius = limitLower; radius < limitUpper; radius++)
+                {
+                    if (radius!=0)
+                    {
+                        localX = radius;
+                        localY = (System.Math.Tan(DegInRad) * radius);
+                        if (localY >= limitLower && localY <= limitUpper)
+                        {
+                            anglePoints.Add(new pointDouble() {x=localX,y=localY });
+                        }
+                        localX = radius / System.Math.Tan(DegInRad);
+                        localY = radius;
+                        if (localX >= limitLower && localX <= limitUpper)
+                        {
+                            anglePoints.Add(new pointDouble() { x = localX, y = localY });
+                        }
+                    }
+                }
+
+                for (int j = 0; j < badpixelsCount; j++)
+                {
+                    ArrayList temp1 = (ArrayList)results[j];
+                    pointDouble temp2 = (pointDouble)temp1[0];
+                    xxx = (int)temp2.x;
+                    yyy = (int)temp2.y;
+                    oldvalue = data[xxx, yyy];
+                    ArrayList tempPoints = new ArrayList();
+
+
+                    for (int k = 0; k < anglePoints.Count; k++)
+                    {
+                        localX = ((pointDouble)anglePoints[k]).x;
+                        localY = ((pointDouble)anglePoints[k]).y;
+                        globalX = localX + xxx;
+                        globalY = localY + yyy;
+                        if (globalX>=0&& globalX <width&& globalY >= 0 && globalY < height)
+                        {
+                            if (Math.Abs(localX % 1) <= (Double.Epsilon * 100))
+                            {
+                                tempPoints.Add(new outputDouble() { x = globalX, y = globalY, value = interpolateFromColumn((int)globalX, globalY, helperVER), radius = (int)localX });
+                            }
+                            else
+                            {
+                                if (Math.Abs(localY % 1) <= (Double.Epsilon * 100))
+                                {
+                                    tempPoints.Add(new outputDouble() { x = globalX, y = globalY, value = interpolateFromRow(globalX, (int)globalY, helperHOR), radius = (int)localY });
+                                }
+                                else
+                                {
+                                    Console.WriteLine("WRONG");
+                                }
+                            }
+                            
+                        }
+                    }
+
+
+                    for (int radius = limitLower; radius <= limitUpper; radius++)
+                    {
+                        if (radius!=0)
+                        {
+                            localX = radius;
+                            localY = (System.Math.Tan(DegInRad) * radius);
+                            globalX = localX + xxx;
+                            globalY = localY + yyy;
+                            if (globalX >= 0 && globalX < width && globalY >= 0 && globalY< height && localY >= limitLower && localY <= limitUpper)
+                            {
+                                tempPoints.Add(new outputDouble() { x = globalX, y = globalY, value = interpolateFromColumn((int)globalX, globalY, helperVER), radius = radius });
+                            }
+
+                            localX = radius / System.Math.Tan(DegInRad);
+                            localY = radius;
+                            globalX = localX + xxx;
+                            globalY = localY + yyy;
+                            if (globalX >= 0 && globalX < width && globalY >= 0 && globalY < height && localX >= limitLower && localX  <= limitUpper)
+                            {
+                                tempPoints.Add(new outputDouble() { x = globalX, y = globalY, value = interpolateFromRow(globalX, (int)globalY, helperHOR), radius = radius });
+                            }
+                        }
+
+
+                    }
+                }
+            }
+        }
+
+
+        public int[,] CorrectArea(int[,] inputData, int[,] inputMap, int slicesX, int slicesY, int indexX, int indexY)
+        {
+            int[,] data = SliceBlock(rawData, slicesX, slicesY, indexX, indexY);
+            int[,] map = SliceBlock(mapData, slicesX, slicesY, indexX, indexY);
+            CubicSpline[] helperHOR = InterpolateRow(data, map);
+            CubicSpline[] helperVER = InterpolateColumn(data, map);
+            ArrayList angles = new ArrayList();
+            /*angles.Add((double)0);
+            angles.Add((double)15);
+            angles.Add((double)30);
+            angles.Add((double)45);
+            angles.Add((double)60);
+            angles.Add((double)75);
+            angles.Add((double)90);
+            angles.Add((double)105);
+            angles.Add((double)120);
+            angles.Add((double)135);
+            angles.Add((double)150);
+            angles.Add((double)165);*/
+            for (int i = 0; i < 180; i++)
+            {
+                angles.Add((double)i);
+            }
+            ArrayList likelyValues = new ArrayList();
+            likelyValues = FindValueAtArea(data, map, angles, helperHOR, helperVER);
+
+            int width = data.GetLength(0);
+            int height = data.GetLength(1);
+            ouputValues[,] optimals = new ouputValues[width, height];
+
+            for (int xxx = 0; xxx < width; xxx++)
+            {
+                for (int yyy = 0; yyy < height; yyy++)
+                {
+                    if (map[xxx, yyy] == ushort.MinValue)
+                    {
+                        optimals[xxx, yyy] = new ouputValues() { x = xxx, y = yyy, error = double.MaxValue, value = 0 };
+                    }
+                }
+            }
+
+            for (int i = 0; i < likelyValues.Count; i++)
+            {
+                ouputValues temp = (ouputValues)likelyValues[i];
+                if (temp.error <= optimals[temp.x, temp.y].error)
+                {
+                    optimals[temp.x, temp.y] = temp;
+                }
+            }
+
+            for (int xxx = 0; xxx < width; xxx++)
+            {
+                for (int yyy = 0; yyy < height; yyy++)
+                {
+                    if (map[xxx, yyy] == ushort.MinValue)
+                    {
+                        ouputValues temp = (ouputValues)optimals[xxx, yyy];
+                        data[xxx, yyy] = temp.value;
+                    }
+                }
+            }
+
+            return data;
+
+        }
+
+
+
+
+
+        public CubicSpline[] InterpolateRow(int[,] data, int[,] map)
+        {
+            ArrayList output = new ArrayList();
+            int width = data.GetLength(0);
+            int height = data.GetLength(1);
+            int counter;
+
+            for (int yyy = 0; yyy < height; yyy++)
+            {
+                counter = 0;
+                ArrayList axis = new ArrayList();
+                ArrayList value = new ArrayList();
+                for (int xxx = 0; xxx < width; xxx++)
+                {
+
+                    if (map[xxx, yyy] == ushort.MaxValue)
+                    {
+                        axis.Add((double)counter);
+                        value.Add((double)(data[xxx, yyy]));
+                    }
+                    counter++;
+                }
+                output.Add(CubicSpline.InterpolateNatural(axis.ToArray(typeof(double)) as double[], value.ToArray(typeof(double)) as double[]));
+            }
+            return output.ToArray(typeof(CubicSpline)) as CubicSpline[];
+        }
+        public CubicSpline[] InterpolateColumn(int[,] data, int[,] map)
+        {
+            ArrayList output = new ArrayList();
+            int width = data.GetLength(0);
+            int height = data.GetLength(1);
+            int counter;
+
+            for (int xxx = 0; xxx < width; xxx++)
+            {
+                counter = 0;
+                ArrayList axis = new ArrayList();
+                ArrayList value = new ArrayList();
+                for (int yyy = 0; yyy < height; yyy++)
+                {
+
+                    if (map[xxx, yyy] == ushort.MaxValue)
+                    {
+                        axis.Add((double)counter);
+                        value.Add((double)(data[xxx, yyy]));
+                        //counter++;
+                    }
+                    counter++;
+                }
+                output.Add(CubicSpline.InterpolateNatural(axis.ToArray(typeof(double)) as double[], value.ToArray(typeof(double)) as double[]));
+            }
+            return output.ToArray(typeof(CubicSpline)) as CubicSpline[];
+        }
+        public double interpolateFromRow(double axisValue, int rowValue, CubicSpline[] Rows)
+        {
+            return Rows[rowValue].Interpolate(axisValue);
+        }
+        public double interpolateFromColumn(int columnValue, double axisValue, CubicSpline[] Columns)
+        {
+            return Columns[columnValue].Interpolate(axisValue);
+        }
+        public double getVectorLength(double x, double y)
+        {
+            return System.Math.Sqrt((x * x) + (y * y));
         }
     }
 }
