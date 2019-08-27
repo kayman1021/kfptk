@@ -47,6 +47,9 @@
             this.button_KeepTopHalf = new System.Windows.Forms.Button();
             this.button_KeepBottomHalf = new System.Windows.Forms.Button();
             this.button_AlternateDualISO = new System.Windows.Forms.Button();
+            this.button_ImportFPMFromImage = new System.Windows.Forms.Button();
+            this.textBox_ImportFPMFromImage = new System.Windows.Forms.TextBox();
+            this.button_BrowseFPMImage = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // textBox_ImportRaw
@@ -61,7 +64,7 @@
             // textBox_ExportTiff
             // 
             this.textBox_ExportTiff.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F);
-            this.textBox_ExportTiff.Location = new System.Drawing.Point(12, 500);
+            this.textBox_ExportTiff.Location = new System.Drawing.Point(12, 698);
             this.textBox_ExportTiff.Multiline = true;
             this.textBox_ExportTiff.Name = "textBox_ExportTiff";
             this.textBox_ExportTiff.Size = new System.Drawing.Size(500, 24);
@@ -81,7 +84,7 @@
             // button_ExportTiff
             // 
             this.button_ExportTiff.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F);
-            this.button_ExportTiff.Location = new System.Drawing.Point(518, 530);
+            this.button_ExportTiff.Location = new System.Drawing.Point(518, 728);
             this.button_ExportTiff.Name = "button_ExportTiff";
             this.button_ExportTiff.Size = new System.Drawing.Size(150, 24);
             this.button_ExportTiff.TabIndex = 4;
@@ -92,7 +95,7 @@
             // button_Deinterlace
             // 
             this.button_Deinterlace.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F);
-            this.button_Deinterlace.Location = new System.Drawing.Point(12, 100);
+            this.button_Deinterlace.Location = new System.Drawing.Point(12, 348);
             this.button_Deinterlace.Name = "button_Deinterlace";
             this.button_Deinterlace.Size = new System.Drawing.Size(160, 24);
             this.button_Deinterlace.TabIndex = 5;
@@ -103,7 +106,7 @@
             // button_Interlace
             // 
             this.button_Interlace.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F);
-            this.button_Interlace.Location = new System.Drawing.Point(178, 100);
+            this.button_Interlace.Location = new System.Drawing.Point(178, 348);
             this.button_Interlace.Name = "button_Interlace";
             this.button_Interlace.Size = new System.Drawing.Size(160, 24);
             this.button_Interlace.TabIndex = 6;
@@ -114,7 +117,7 @@
             // button_ExportIntArray
             // 
             this.button_ExportIntArray.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F);
-            this.button_ExportIntArray.Location = new System.Drawing.Point(518, 630);
+            this.button_ExportIntArray.Location = new System.Drawing.Point(518, 828);
             this.button_ExportIntArray.Name = "button_ExportIntArray";
             this.button_ExportIntArray.Size = new System.Drawing.Size(150, 24);
             this.button_ExportIntArray.TabIndex = 9;
@@ -136,7 +139,7 @@
             // textBox_ExportIntArray
             // 
             this.textBox_ExportIntArray.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F);
-            this.textBox_ExportIntArray.Location = new System.Drawing.Point(12, 600);
+            this.textBox_ExportIntArray.Location = new System.Drawing.Point(12, 798);
             this.textBox_ExportIntArray.Multiline = true;
             this.textBox_ExportIntArray.Name = "textBox_ExportIntArray";
             this.textBox_ExportIntArray.Size = new System.Drawing.Size(500, 24);
@@ -156,7 +159,7 @@
             // button_ExportTiffBrowse
             // 
             this.button_ExportTiffBrowse.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F);
-            this.button_ExportTiffBrowse.Location = new System.Drawing.Point(518, 500);
+            this.button_ExportTiffBrowse.Location = new System.Drawing.Point(518, 698);
             this.button_ExportTiffBrowse.Name = "button_ExportTiffBrowse";
             this.button_ExportTiffBrowse.Size = new System.Drawing.Size(306, 24);
             this.button_ExportTiffBrowse.TabIndex = 13;
@@ -167,7 +170,7 @@
             // button_ExportIntArrayBrowse
             // 
             this.button_ExportIntArrayBrowse.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F);
-            this.button_ExportIntArrayBrowse.Location = new System.Drawing.Point(518, 600);
+            this.button_ExportIntArrayBrowse.Location = new System.Drawing.Point(518, 798);
             this.button_ExportIntArrayBrowse.Name = "button_ExportIntArrayBrowse";
             this.button_ExportIntArrayBrowse.Size = new System.Drawing.Size(306, 24);
             this.button_ExportIntArrayBrowse.TabIndex = 14;
@@ -178,7 +181,7 @@
             // button_SeperateDualISO
             // 
             this.button_SeperateDualISO.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F);
-            this.button_SeperateDualISO.Location = new System.Drawing.Point(12, 300);
+            this.button_SeperateDualISO.Location = new System.Drawing.Point(12, 498);
             this.button_SeperateDualISO.Name = "button_SeperateDualISO";
             this.button_SeperateDualISO.Size = new System.Drawing.Size(160, 24);
             this.button_SeperateDualISO.TabIndex = 15;
@@ -189,7 +192,7 @@
             // button_Transpose
             // 
             this.button_Transpose.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F);
-            this.button_Transpose.Location = new System.Drawing.Point(12, 400);
+            this.button_Transpose.Location = new System.Drawing.Point(12, 598);
             this.button_Transpose.Name = "button_Transpose";
             this.button_Transpose.Size = new System.Drawing.Size(160, 24);
             this.button_Transpose.TabIndex = 16;
@@ -200,7 +203,7 @@
             // button_DeinterlaceDualISO
             // 
             this.button_DeinterlaceDualISO.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F);
-            this.button_DeinterlaceDualISO.Location = new System.Drawing.Point(12, 330);
+            this.button_DeinterlaceDualISO.Location = new System.Drawing.Point(12, 528);
             this.button_DeinterlaceDualISO.Name = "button_DeinterlaceDualISO";
             this.button_DeinterlaceDualISO.Size = new System.Drawing.Size(160, 24);
             this.button_DeinterlaceDualISO.TabIndex = 17;
@@ -211,7 +214,7 @@
             // button_InterlaceDualISO
             // 
             this.button_InterlaceDualISO.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F);
-            this.button_InterlaceDualISO.Location = new System.Drawing.Point(178, 330);
+            this.button_InterlaceDualISO.Location = new System.Drawing.Point(178, 528);
             this.button_InterlaceDualISO.Name = "button_InterlaceDualISO";
             this.button_InterlaceDualISO.Size = new System.Drawing.Size(160, 24);
             this.button_InterlaceDualISO.TabIndex = 18;
@@ -222,7 +225,7 @@
             // button_KeepTopHalf
             // 
             this.button_KeepTopHalf.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F);
-            this.button_KeepTopHalf.Location = new System.Drawing.Point(12, 200);
+            this.button_KeepTopHalf.Location = new System.Drawing.Point(178, 628);
             this.button_KeepTopHalf.Name = "button_KeepTopHalf";
             this.button_KeepTopHalf.Size = new System.Drawing.Size(160, 24);
             this.button_KeepTopHalf.TabIndex = 19;
@@ -233,7 +236,7 @@
             // button_KeepBottomHalf
             // 
             this.button_KeepBottomHalf.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F);
-            this.button_KeepBottomHalf.Location = new System.Drawing.Point(178, 200);
+            this.button_KeepBottomHalf.Location = new System.Drawing.Point(12, 628);
             this.button_KeepBottomHalf.Name = "button_KeepBottomHalf";
             this.button_KeepBottomHalf.Size = new System.Drawing.Size(160, 24);
             this.button_KeepBottomHalf.TabIndex = 20;
@@ -244,7 +247,7 @@
             // button_AlternateDualISO
             // 
             this.button_AlternateDualISO.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F);
-            this.button_AlternateDualISO.Location = new System.Drawing.Point(178, 300);
+            this.button_AlternateDualISO.Location = new System.Drawing.Point(178, 498);
             this.button_AlternateDualISO.Name = "button_AlternateDualISO";
             this.button_AlternateDualISO.Size = new System.Drawing.Size(160, 24);
             this.button_AlternateDualISO.TabIndex = 21;
@@ -252,11 +255,45 @@
             this.button_AlternateDualISO.UseVisualStyleBackColor = true;
             this.button_AlternateDualISO.Click += new System.EventHandler(this.button_AlternateDualISO_Click);
             // 
+            // button_ImportFPMFromImage
+            // 
+            this.button_ImportFPMFromImage.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F);
+            this.button_ImportFPMFromImage.Location = new System.Drawing.Point(518, 130);
+            this.button_ImportFPMFromImage.Name = "button_ImportFPMFromImage";
+            this.button_ImportFPMFromImage.Size = new System.Drawing.Size(150, 24);
+            this.button_ImportFPMFromImage.TabIndex = 22;
+            this.button_ImportFPMFromImage.Text = "Import Image";
+            this.button_ImportFPMFromImage.UseVisualStyleBackColor = true;
+            this.button_ImportFPMFromImage.Click += new System.EventHandler(this.button_ImportFPMFromImage_Click);
+            // 
+            // textBox_ImportFPMFromImage
+            // 
+            this.textBox_ImportFPMFromImage.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F);
+            this.textBox_ImportFPMFromImage.Location = new System.Drawing.Point(12, 100);
+            this.textBox_ImportFPMFromImage.Multiline = true;
+            this.textBox_ImportFPMFromImage.Name = "textBox_ImportFPMFromImage";
+            this.textBox_ImportFPMFromImage.Size = new System.Drawing.Size(500, 24);
+            this.textBox_ImportFPMFromImage.TabIndex = 23;
+            // 
+            // button_BrowseFPMImage
+            // 
+            this.button_BrowseFPMImage.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F);
+            this.button_BrowseFPMImage.Location = new System.Drawing.Point(518, 100);
+            this.button_BrowseFPMImage.Name = "button_BrowseFPMImage";
+            this.button_BrowseFPMImage.Size = new System.Drawing.Size(306, 24);
+            this.button_BrowseFPMImage.TabIndex = 24;
+            this.button_BrowseFPMImage.Text = "Browse for Pixelmap Image";
+            this.button_BrowseFPMImage.UseVisualStyleBackColor = true;
+            this.button_BrowseFPMImage.Click += new System.EventHandler(this.button_BrowseFPMImage_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(863, 689);
+            this.ClientSize = new System.Drawing.Size(1023, 910);
+            this.Controls.Add(this.button_BrowseFPMImage);
+            this.Controls.Add(this.textBox_ImportFPMFromImage);
+            this.Controls.Add(this.button_ImportFPMFromImage);
             this.Controls.Add(this.button_AlternateDualISO);
             this.Controls.Add(this.button_KeepBottomHalf);
             this.Controls.Add(this.button_KeepTopHalf);
@@ -304,6 +341,9 @@
         private System.Windows.Forms.Button button_KeepTopHalf;
         private System.Windows.Forms.Button button_KeepBottomHalf;
         private System.Windows.Forms.Button button_AlternateDualISO;
+        private System.Windows.Forms.Button button_ImportFPMFromImage;
+        private System.Windows.Forms.TextBox textBox_ImportFPMFromImage;
+        private System.Windows.Forms.Button button_BrowseFPMImage;
     }
 }
 
