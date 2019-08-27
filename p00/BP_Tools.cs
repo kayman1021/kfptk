@@ -23,7 +23,7 @@ namespace p00
             int resolutionY = input.RowCount;
             int blockSizeX = resolutionX / UniqueSenselsX;
             int blockSizeY = resolutionY / UniqueSenselsY;
-            Matrix<ushort> output =Matrix<ushort>.Build.Dense(resolutionX, resolutionY);
+            Matrix<ushort> output = Matrix<ushort>.Build.Dense(resolutionX, resolutionY);
             for (int xxx = 0; xxx < resolutionX; xxx++)
             {
                 int tempx = DeinterlaceCoordinate(resolutionX, UniqueSenselsX, xxx);
@@ -50,7 +50,7 @@ namespace p00
             int resolutionY = input.RowCount;
             int blockSizeX = resolutionX / UniqueSenselsX;
             int blockSizeY = resolutionY / UniqueSenselsY;
-            Matrix<ushort> output =Matrix<ushort>.Build.Dense(resolutionX, resolutionY);
+            Matrix<ushort> output = Matrix<ushort>.Build.Dense(resolutionX, resolutionY);
             for (int xxx = 0; xxx < resolutionX; xxx++)
             {
                 int tempx = InterlaceCoordinate(resolutionX, UniqueSenselsX, xxx);
@@ -78,7 +78,7 @@ namespace p00
         {
             int sliceWidth = input.ColumnCount / slicesX;
             int sliceHeight = input.RowCount / slicesY;
-            Matrix<ushort> output = Matrix<ushort>.Build.Dense( sliceWidth, sliceHeight);
+            Matrix<ushort> output = Matrix<ushort>.Build.Dense(sliceWidth, sliceHeight);
 
             for (int yyy = 0; yyy < sliceHeight; yyy++)
             {

@@ -29,7 +29,7 @@ namespace p00
                 int pixelcount = width * height;
                 reader.ReadBytes(start_addr);
                 Byte[] bytebuffer = reader.ReadBytes(datalength);
-                for (int i = 0; i < pixelcount; i++) { output[i % width, i / width] = (bytebuffer[i<<1]) + ((bytebuffer[(i<<1) + 1]) <<8); }
+                for (int i = 0; i < pixelcount; i++) { output[i % width, i / width] = (bytebuffer[i << 1]) + ((bytebuffer[(i << 1) + 1]) << 8); }
             }
             Console.WriteLine();
             return output;
@@ -162,7 +162,7 @@ namespace p00
         {
             int xxx = input.GetLength(0);
             int yyy = input.GetLength(1);
-            int arraylength = xxx*yyy;
+            int arraylength = xxx * yyy;
             int[] output = new int[arraylength];
             for (int i = 0; i < arraylength; i++)
             {
@@ -193,7 +193,7 @@ namespace p00
             byte[] bytebuffer_data;
             using (Tiff input = Tiff.Open(@filename, "r"))
             {
-                pixelcount = input.GetField(TiffTag.IMAGEWIDTH)[0].ToInt()*input.GetField(TiffTag.IMAGELENGTH)[0].ToInt();
+                pixelcount = input.GetField(TiffTag.IMAGEWIDTH)[0].ToInt() * input.GetField(TiffTag.IMAGELENGTH)[0].ToInt();
             }
             using (BinaryReader reader = new BinaryReader(File.Open(filename, FileMode.Open)))
             {
@@ -202,7 +202,7 @@ namespace p00
                 start_addr = filelength - datalength;
                 bytebuffer_filecopy = reader.ReadBytes(filelength);
                 bytebuffer_data = new byte[datalength];
-                
+
                 int[] intArray = ArrayConvert2Dto1D(data);
                 BitArray bitbuffer = new BitArray(bytebuffer_filecopy);
                 bool[] intDataAsBoolArray = new bool[pixelcount * 14];
@@ -227,22 +227,22 @@ namespace p00
             int length = input.Length;
             BitArray output = input;
             bool tmp;
-            for (int i = 0; i < length; i=i+8)
+            for (int i = 0; i < length; i = i + 8)
             {
                 tmp = output[i];
                 output[i] = output[i + 7];
                 output[i + 7] = tmp;
 
-                tmp = output[i+1];
-                output[i+1] = output[i + 6];
+                tmp = output[i + 1];
+                output[i + 1] = output[i + 6];
                 output[i + 6] = tmp;
 
-                tmp = output[i+2];
-                output[i+2] = output[i + 5];
+                tmp = output[i + 2];
+                output[i + 2] = output[i + 5];
                 output[i + 5] = tmp;
 
-                tmp = output[i+3];
-                output[i+3] = output[i + 4];
+                tmp = output[i + 3];
+                output[i + 3] = output[i + 4];
                 output[i + 4] = tmp;
             }
             return output;
@@ -271,24 +271,24 @@ namespace p00
                 int[] intbuffer = new int[pixelcount];
 
 
-                bitbuffer=Reverse_Bitarray(bitbuffer);
+                bitbuffer = Reverse_Bitarray(bitbuffer);
 
                 bool temp;
                 int sum;
                 for (int bbb = 0; bbb < bitbuffer.Length; bbb += bitsPerSample)
                 {
                     sum = 0;
-                    for (int aaa = 0; aaa <bitsPerSample; aaa++)
+                    for (int aaa = 0; aaa < bitsPerSample; aaa++)
                     {
                         temp = bitbuffer[aaa + bbb];
-                       
+
                         /*if (temp)
                         {
                             sum += (int)(Math.Pow((double)(2), (double)(bitsPerSample - 1 - aaa)));
                         }*/
                         if (temp)
                         {
-                        sum+= 1<< (bitsPerSample - 1 - aaa);
+                            sum += 1 << (bitsPerSample - 1 - aaa);
                         }
                     }
                     intbuffer[bbb / bitsPerSample] = sum;

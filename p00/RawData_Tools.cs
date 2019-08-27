@@ -111,9 +111,9 @@
             return output;
         }
 
-        public int[]copyRow(int[,]input, int rowNumber)
+        public int[] copyRow(int[,] input, int rowNumber)
         {
-            int[]output = new int [input.GetLength(0)];
+            int[] output = new int[input.GetLength(0)];
             int rowLength = output.Length;
             for (int i = 0; i < rowLength; i++)
             {
@@ -128,7 +128,7 @@
             int columnLength = output.Length;
             for (int i = 0; i < columnLength; i++)
             {
-                output[i] = input[columnLength,i];
+                output[i] = input[columnLength, i];
             }
             return output;
         }

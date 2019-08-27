@@ -8,7 +8,7 @@ namespace p00
 {
     public partial class Form1 : Form
     {
-        
+
         RawData rwt = new RawData();
 
 
@@ -176,7 +176,7 @@ namespace p00
 
         private void button3_Click_1(object sender, EventArgs e)
         {
-            rwt.ExportRawDataXiaomi(rwt.rawData,@textBox_Import_DNG_Text.Text);
+            rwt.ExportRawDataXiaomi(rwt.rawData, @textBox_Import_DNG_Text.Text);
         }
 
         private void button_EXP_EOS_Click(object sender, EventArgs e)
@@ -217,18 +217,18 @@ namespace p00
                     }
                 }
 
-                foreach (string  path in listBox_MASS_DUAL_ISO.Items)
+                foreach (string path in listBox_MASS_DUAL_ISO.Items)
                 {
-                   // RawData mass = new RawData();
-                   // mass.mapData = rwt.mapData;
-                   // mass.rawData = mass.ImportRawData14bitUncompressed(@path);
+                    // RawData mass = new RawData();
+                    // mass.mapData = rwt.mapData;
+                    // mass.rawData = mass.ImportRawData14bitUncompressed(@path);
                     //mass.rawData = mass.DeinterlaceUniversal(mass.rawData, true);
                     //mass.ModifyBlock(mass.rawData, 0, 0, mass.CorrectArea2(mass.rawData, mass.mapData, 2, 4, 0, 0));
                     //mass.ModifyBlock(mass.rawData, 1, 1, mass.CorrectArea2(mass.rawData, mass.mapData, 2, 4, 1, 1));
                     //mass.ModifyBlock(mass.rawData, 0, 2, mass.CorrectArea2(mass.rawData, mass.mapData, 2, 4, 0, 2));
                     //mass.ModifyBlock(mass.rawData, 1, 3, mass.CorrectArea2(mass.rawData, mass.mapData, 2, 4, 1, 3));
-                   // mass.rawData = mass.InterlaceUniversal(mass.rawData, true);
-                   // mass.ExportRawData14bitUncompressed(mass.rawData, @path);
+                    // mass.rawData = mass.InterlaceUniversal(mass.rawData, true);
+                    // mass.ExportRawData14bitUncompressed(mass.rawData, @path);
                 }
             }
         }
@@ -257,7 +257,7 @@ namespace p00
             for (int i = 0; i < 4; i++)
             {
                 zone = corruptZones[i];
-                data = rwt.SliceBlock(rwt.rawData, 2, 4, zone.X,zone.Y);
+                data = rwt.SliceBlock(rwt.rawData, 2, 4, zone.X, zone.Y);
                 map = rwt.SliceBlock(rwt.mapData, 2, 4, zone.X, zone.Y);
                 cs = rwt.InterpolateColumn(data, map);
                 for (int xxx = 0; xxx < width; xxx++)
@@ -270,7 +270,7 @@ namespace p00
                         }
                     }
                 }
-                rwt.ModifyBlock(rwt.rawData, zone.X,zone.Y, data);
+                rwt.ModifyBlock(rwt.rawData, zone.X, zone.Y, data);
             }
         }
 
@@ -312,7 +312,7 @@ namespace p00
 
         private void button7_Click(object sender, EventArgs e)
         {
-           // rwt.CA(rwt.rawData, rwt.mapData, 2, 4, 0, 0);
+            // rwt.CA(rwt.rawData, rwt.mapData, 2, 4, 0, 0);
 
 
             rwt.ModifyBlock(rwt.rawData, 0, 0, rwt.CA(rwt.rawData, rwt.mapData, 2, 4, 0, 0));
@@ -320,5 +320,5 @@ namespace p00
             rwt.ModifyBlock(rwt.rawData, 0, 2, rwt.CA(rwt.rawData, rwt.mapData, 2, 4, 0, 2));
             rwt.ModifyBlock(rwt.rawData, 1, 3, rwt.CA(rwt.rawData, rwt.mapData, 2, 4, 1, 3));
         }
-    }   
+    }
 }
