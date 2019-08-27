@@ -110,27 +110,5 @@
             }
             return output;
         }
-
-        public int[]copyRow(int[,]input, int rowNumber)
-        {
-            int[]output = new int [input.GetLength(0)];
-            int rowLength = output.Length;
-            for (int i = 0; i < rowLength; i++)
-            {
-                output[i] = input[i, rowNumber];
-            }
-            return output;
-        }
-
-        public int[] copyColumn(int[,] input, int columnNumber)
-        {
-            int[] output = new int[input.GetLength(1)];
-            int columnLength = output.Length;
-            for (int i = 0; i < columnLength; i++)
-            {
-                output[i] = input[columnLength,i];
-            }
-            return output;
-        }
     }
 }
