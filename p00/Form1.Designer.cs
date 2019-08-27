@@ -52,9 +52,6 @@
             this.textBox_Import_DNG_Text = new System.Windows.Forms.TextBox();
             this.button_Import_DNG_Import = new System.Windows.Forms.Button();
             this.button_Import_DNG_Browse = new System.Windows.Forms.Button();
-            this.radioButton_Select_Left = new System.Windows.Forms.RadioButton();
-            this.radioButton_Select_Right = new System.Windows.Forms.RadioButton();
-            this.groupBox_Select = new System.Windows.Forms.GroupBox();
             this.groupBox_Import = new System.Windows.Forms.GroupBox();
             this.groupBox_Import_Mapped = new System.Windows.Forms.GroupBox();
             this.textBox_Import_Mapped_Text = new System.Windows.Forms.TextBox();
@@ -68,12 +65,12 @@
             this.button1 = new System.Windows.Forms.Button();
             this.button2 = new System.Windows.Forms.Button();
             this.button3 = new System.Windows.Forms.Button();
+            this.button4 = new System.Windows.Forms.Button();
             this.groupBox_Export_TIFF.SuspendLayout();
             this.groupBox_Export_FPM.SuspendLayout();
             this.groupBox_Tools.SuspendLayout();
             this.groupBox_Import_FPM.SuspendLayout();
             this.groupBox_Import_DNG.SuspendLayout();
-            this.groupBox_Select.SuspendLayout();
             this.groupBox_Import.SuspendLayout();
             this.groupBox_Import_Mapped.SuspendLayout();
             this.groupBox_Import_TIFF.SuspendLayout();
@@ -347,43 +344,6 @@
             this.button_Import_DNG_Browse.UseVisualStyleBackColor = true;
             this.button_Import_DNG_Browse.Click += new System.EventHandler(this.button_Import_DNG_Browse_Click);
             // 
-            // radioButton_Select_Left
-            // 
-            this.radioButton_Select_Left.AutoSize = true;
-            this.radioButton_Select_Left.Checked = true;
-            this.radioButton_Select_Left.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F);
-            this.radioButton_Select_Left.Location = new System.Drawing.Point(12, 25);
-            this.radioButton_Select_Left.Name = "radioButton_Select_Left";
-            this.radioButton_Select_Left.Size = new System.Drawing.Size(87, 24);
-            this.radioButton_Select_Left.TabIndex = 15;
-            this.radioButton_Select_Left.TabStop = true;
-            this.radioButton_Select_Left.Text = "Edit Left";
-            this.radioButton_Select_Left.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            this.radioButton_Select_Left.UseVisualStyleBackColor = true;
-            // 
-            // radioButton_Select_Right
-            // 
-            this.radioButton_Select_Right.AutoSize = true;
-            this.radioButton_Select_Right.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F);
-            this.radioButton_Select_Right.Location = new System.Drawing.Point(368, 25);
-            this.radioButton_Select_Right.Name = "radioButton_Select_Right";
-            this.radioButton_Select_Right.Size = new System.Drawing.Size(97, 24);
-            this.radioButton_Select_Right.TabIndex = 16;
-            this.radioButton_Select_Right.Text = "Edit Right";
-            this.radioButton_Select_Right.UseVisualStyleBackColor = true;
-            // 
-            // groupBox_Select
-            // 
-            this.groupBox_Select.Controls.Add(this.radioButton_Select_Left);
-            this.groupBox_Select.Controls.Add(this.radioButton_Select_Right);
-            this.groupBox_Select.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F);
-            this.groupBox_Select.Location = new System.Drawing.Point(12, 268);
-            this.groupBox_Select.Name = "groupBox_Select";
-            this.groupBox_Select.Size = new System.Drawing.Size(720, 100);
-            this.groupBox_Select.TabIndex = 17;
-            this.groupBox_Select.TabStop = false;
-            this.groupBox_Select.Text = "Select Edit Side";
-            // 
             // groupBox_Import
             // 
             this.groupBox_Import.Controls.Add(this.groupBox_Import_Mapped);
@@ -526,21 +486,32 @@
             this.button3.Name = "button3";
             this.button3.Size = new System.Drawing.Size(238, 23);
             this.button3.TabIndex = 22;
-            this.button3.Text = "deinterlace universal";
+            this.button3.Text = "deinterlace universal DUAL";
             this.button3.UseVisualStyleBackColor = true;
             this.button3.Click += new System.EventHandler(this.button3_Click);
+            // 
+            // button4
+            // 
+            this.button4.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F);
+            this.button4.Location = new System.Drawing.Point(690, 874);
+            this.button4.Name = "button4";
+            this.button4.Size = new System.Drawing.Size(238, 23);
+            this.button4.TabIndex = 23;
+            this.button4.Text = "deinterlace universal SINGLE";
+            this.button4.UseVisualStyleBackColor = true;
+            this.button4.Click += new System.EventHandler(this.button4_Click);
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(977, 909);
+            this.Controls.Add(this.button4);
             this.Controls.Add(this.button3);
             this.Controls.Add(this.button2);
             this.Controls.Add(this.button1);
             this.Controls.Add(this.groupBox_Export);
             this.Controls.Add(this.groupBox_Import);
-            this.Controls.Add(this.groupBox_Select);
             this.Controls.Add(this.groupBox_Tools);
             this.Name = "Form1";
             this.Text = "Form1";
@@ -553,8 +524,6 @@
             this.groupBox_Import_FPM.PerformLayout();
             this.groupBox_Import_DNG.ResumeLayout(false);
             this.groupBox_Import_DNG.PerformLayout();
-            this.groupBox_Select.ResumeLayout(false);
-            this.groupBox_Select.PerformLayout();
             this.groupBox_Import.ResumeLayout(false);
             this.groupBox_Import_Mapped.ResumeLayout(false);
             this.groupBox_Import_Mapped.PerformLayout();
@@ -590,9 +559,6 @@
         private System.Windows.Forms.ComboBox comboBox_Import_DNG_Select;
         private System.Windows.Forms.Button button_Import_DNG_Browse;
         private System.Windows.Forms.TextBox textBox_Import_DNG_Text;
-        private System.Windows.Forms.RadioButton radioButton_Select_Left;
-        private System.Windows.Forms.RadioButton radioButton_Select_Right;
-        private System.Windows.Forms.GroupBox groupBox_Select;
         private System.Windows.Forms.GroupBox groupBox_Import;
         private System.Windows.Forms.GroupBox groupBox_Import_Mapped;
         private System.Windows.Forms.TextBox textBox_Import_Mapped_Text;
@@ -607,6 +573,7 @@
         private System.Windows.Forms.Button button1;
         private System.Windows.Forms.Button button2;
         private System.Windows.Forms.Button button3;
+        private System.Windows.Forms.Button button4;
     }
 }
 

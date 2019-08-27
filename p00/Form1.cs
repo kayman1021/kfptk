@@ -86,58 +86,23 @@ namespace p00
         }
         private void button_Tools_Deinterlace_Click(object sender, EventArgs e)
         {
-            int[,] input;
-            if (radioButton_Select_Left.Checked) { input = rwt.rawData; }
-            else { input = rwt.mapData; }
-            input = rwt.Deinterlace(input, false);
-            input = rwt.Deinterlace(input, true);
-            if (radioButton_Select_Left.Checked) { rwt.rawData = input; }
-            else { rwt.mapData = input; }
+            rwt.rawData = rwt.DeinterlaceUniversal(rwt.rawData, false);
         }
         private void button_Tools_DeinterlaceDualISO_Click(object sender, EventArgs e)
         {
-            int[,] input;
-            if (radioButton_Select_Left.Checked) { input = rwt.rawData; }
-            else { input = rwt.mapData; }
-
-            input = rwt.DeinterlaceDualISO(input);
-            //input = rwt.Deinterlace(input, false);
-
-            if (radioButton_Select_Left.Checked) { rwt.rawData = input; }
-            else { rwt.mapData = input; }
+            rwt.rawData = rwt.DeinterlaceUniversal(rwt.rawData, true);
         }
         private void button_Tools_Transpose_Click(object sender, EventArgs e)
         {
-            int[,] input;
-            if (radioButton_Select_Left.Checked) { input = rwt.rawData; }
-            else { input = rwt.mapData; }
-
-            input = rwt.TransposeArray(input);
-
-            if (radioButton_Select_Left.Checked) { rwt.rawData = input; }
-            else { rwt.mapData = input; }
+            rwt.rawData = rwt.TransposeArray(rwt.rawData);
         }
         private void button_Tools_Interlace_Click(object sender, EventArgs e)
         {
-            int[,] input;
-            if (radioButton_Select_Left.Checked) { input = rwt.rawData; }
-            else { input = rwt.mapData; }
-            input = rwt.Interlace(input, false);
-            input = rwt.Interlace(input, true);
-            if (radioButton_Select_Left.Checked) { rwt.rawData = input; }
-            else { rwt.mapData = input; }
+            rwt.rawData = rwt.InterlaceUniversal(rwt.rawData, false);
         }
         private void button_Tools_InterlaceDualISO_Click(object sender, EventArgs e)
         {
-            int[,] input;
-            if (radioButton_Select_Left.Checked) { input = rwt.rawData; }
-            else { input = rwt.mapData; }
-
-            //input = rwt.Interlace(input, true);
-            input = rwt.InterlaceDualISO(input);
-
-            if (radioButton_Select_Left.Checked) { rwt.rawData = input; }
-            else { rwt.mapData = input; }
+            rwt.rawData = rwt.InterlaceUniversal(rwt.rawData, true);
         }
         private void button_Tools_SwapSides_Click(object sender, EventArgs e)
         {
@@ -194,6 +159,11 @@ namespace p00
         private void button3_Click(object sender, EventArgs e)
         {
             rwt.rawData = rwt.DeinterlaceUniversal(rwt.rawData, true);
+        }
+
+        private void button4_Click(object sender, EventArgs e)
+        {
+            rwt.rawData = rwt.DeinterlaceUniversal(rwt.rawData, false);
         }
     }   
 }
