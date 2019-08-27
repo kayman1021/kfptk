@@ -16,6 +16,7 @@ namespace p00
     partial class RawData
     {
         public int[,] rawData;
-        public int[,] pixelData;
+        public int[,] mapData;
+        //public correctedValue[,] correctedValues;
     }
 }

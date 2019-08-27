@@ -213,6 +213,12 @@ namespace p00
             input2 = temp;
         }
 
+
+
+
+
+
+        //(rwt.pixelData, 2, 2, 1, 1);
         public int[,] SliceBlock(int[,] input,int slicesX,int slicesY, int x, int y)
         {
             int sliceWidth = input.GetLength(0) / slicesX;
@@ -223,7 +229,10 @@ namespace p00
             {
                 for (int xxx = 0; xxx < sliceWidth; xxx++)
                 {
-                    output[xxx, yyy] = input[x * sliceWidth + xxx, y * sliceHeight + yyy];
+                    int debugX = x * sliceWidth + xxx;
+                    int debugY = y * sliceHeight + yyy;
+                    output[xxx, yyy] = input[debugX,debugY];
+                    //output[xxx, yyy] = input[x * sliceWidth + xxx, y * sliceHeight + yyy];
                 }
             }
             return output;
