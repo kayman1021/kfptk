@@ -7,13 +7,13 @@ using MathNet.Numerics.LinearAlgebra;
 
 namespace p00
 {
-    partial class BP_Data
+    public partial class BP_Data
     {
         public int DeinterlaceCoordinate(int arraylength, int sensels, int input)
         {
             return ((arraylength / sensels) * (input % sensels)) + (input / sensels);
         }
-        public Matrix<ushort> DeinterlaceUniversal(Matrix<ushort> input, bool IsDualISO)
+        public Matrix<double> DeinterlaceUniversal(Matrix<double> input, bool IsDualISO)
         {
             int UniqueSenselsX = 2;
             int UniqueSenselsY;
@@ -23,14 +23,14 @@ namespace p00
             int resolutionY = input.RowCount;
             int blockSizeX = resolutionX / UniqueSenselsX;
             int blockSizeY = resolutionY / UniqueSenselsY;
-            Matrix<ushort> output = Matrix<ushort>.Build.Dense(resolutionX, resolutionY);
+            Matrix<double> output = Matrix<double>.Build.Dense(resolutionY, resolutionX);
             for (int xxx = 0; xxx < resolutionX; xxx++)
             {
                 int tempx = DeinterlaceCoordinate(resolutionX, UniqueSenselsX, xxx);
                 for (int yyy = 0; yyy < resolutionY; yyy++)
                 {
                     int tempy = DeinterlaceCoordinate(resolutionY, UniqueSenselsY, yyy);
-                    output[tempx, tempy] = (ushort)input[xxx, yyy];
+                    output[tempy, tempx] = (double)input[yyy, xxx];
                 }
 
             }
@@ -40,7 +40,7 @@ namespace p00
         {
             return ((input % (arraylength / sensels)) * sensels) + (input / (arraylength / sensels));
         }
-        public Matrix<ushort> InterlaceUniversal(Matrix<ushort> input, bool IsDualISO)
+        public Matrix<double> InterlaceUniversal(Matrix<double> input, bool IsDualISO)
         {
             int UniqueSenselsX = 2;
             int UniqueSenselsY;
@@ -50,35 +50,35 @@ namespace p00
             int resolutionY = input.RowCount;
             int blockSizeX = resolutionX / UniqueSenselsX;
             int blockSizeY = resolutionY / UniqueSenselsY;
-            Matrix<ushort> output = Matrix<ushort>.Build.Dense(resolutionX, resolutionY);
+            Matrix<double> output = Matrix<double>.Build.Dense(resolutionY, resolutionX);
             for (int xxx = 0; xxx < resolutionX; xxx++)
             {
                 int tempx = InterlaceCoordinate(resolutionX, UniqueSenselsX, xxx);
                 for (int yyy = 0; yyy < resolutionY; yyy++)
                 {
                     int tempy = InterlaceCoordinate(resolutionY, UniqueSenselsY, yyy);
-                    output[tempx, tempy] = input[xxx, yyy];
+                    output[tempy, tempx] = input[yyy, xxx];
                 }
 
             }
             return output;
         }
-        public Matrix<ushort> TransposeArray(Matrix<ushort> input)
+        public Matrix<double> TransposeArray(Matrix<double> input)
         {
             return input.Transpose();
         }
-        public void SwapSides(Matrix<ushort> input1, Matrix<ushort> input2)
+        public void SwapSides(Matrix<double> input1, Matrix<double> input2)
         {
-            Matrix<ushort> temp;
+            Matrix<double> temp;
             temp = input1;
             input1 = input2;
             input2 = temp;
         }
-        public Matrix<ushort> SliceBlock(Matrix<ushort> input, int slicesX, int slicesY, int x, int y)
+        public Matrix<double> SliceBlock(Matrix<double> input, int slicesX, int slicesY, int x, int y)
         {
             int sliceWidth = input.ColumnCount / slicesX;
             int sliceHeight = input.RowCount / slicesY;
-            Matrix<ushort> output = Matrix<ushort>.Build.Dense(sliceWidth, sliceHeight);
+            Matrix<double> output = Matrix<double>.Build.Dense(sliceHeight, sliceWidth);
 
             for (int yyy = 0; yyy < sliceHeight; yyy++)
             {
@@ -86,46 +86,25 @@ namespace p00
                 {
                     int debugX = x * sliceWidth + xxx;
                     int debugY = y * sliceHeight + yyy;
-                    output[xxx, yyy] = input[debugX, debugY];
+                    output[yyy, xxx] = input[debugY, debugX];
                 }
             }
             return output;
         }
-        public Matrix<ushort> ModifyBlock(Matrix<ushort> input, int x, int y, Matrix<ushort> blockData)
+
+        public Matrix<double> ModifyBlock(Matrix<double> input, int x, int y, Matrix<double> blockData)
         {
             int sliceWidth = blockData.ColumnCount;
             int sliceHeight = blockData.RowCount;
 
-            Matrix<ushort> output = input;
+            Matrix<double> output = input;
 
             for (int yyy = 0; yyy < sliceHeight; yyy++)
             {
                 for (int xxx = 0; xxx < sliceWidth; xxx++)
                 {
-                    output[x * sliceWidth + xxx, y * sliceHeight + yyy] = blockData[xxx, yyy];
+                    output[y * sliceHeight + yyy, x * sliceWidth + xxx] = blockData[yyy, xxx];
                 }
-            }
-            return output;
-        }
-
-        public ushort[] copyRow(Matrix<ushort> input, int rowNumber)
-        {
-            ushort[] output = new ushort[input.ColumnCount];
-            int rowLength = output.Length;
-            for (int i = 0; i < rowLength; i++)
-            {
-                output[i] = input[i, rowNumber];
-            }
-            return output;
-        }
-
-        public ushort[] copyColumn(Matrix<ushort> input, int columnNumber)
-        {
-            ushort[] output = new ushort[input.RowCount];
-            int columnLength = output.Length;
-            for (int i = 0; i < columnLength; i++)
-            {
-                output[i] = input[columnLength, i];
             }
             return output;
         }

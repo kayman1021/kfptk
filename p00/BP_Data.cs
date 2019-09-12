@@ -3,14 +3,20 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Drawing;
 using MathNet.Numerics.LinearAlgebra;
+using MathNet.Numerics;
+using System.Collections;
+using System.IO;
+using BitMiracle.LibTiff.Classic;
+using MathNet.Numerics.Interpolation;
 
-namespace BP
+namespace p00
 {
     //public enum dngFileType { Xiaomi16bit, MLVApp14bit };
-    partial class BP_Data
+    public partial class BP_Data
     {
-        public Matrix<ushort> Left;
-        public Matrix<ushort> Right;
+        public Matrix<double> Left;
+        public Matrix<double> Right;
     }
 }

@@ -10,7 +10,7 @@ using MathNet.Numerics;
 
 namespace p00
 {
-    public enum InterpolationMethod { Linear, Quadratic,Cubic,Quartic,Quintic };
+    public enum InterpolationMethod { Constant = 0, Linear = 1, Quadratic = 2, Cubic = 3, Quartic = 4 };
 
     public struct InterpolatedUnit
     {
@@ -21,105 +21,454 @@ namespace p00
         public InterpolationMethod method;
     }
 
-    partial class BP_Data
+    public partial class BP_Data
     {
-        public List<InterpolatedUnit> optimalResults(Matrix<ushort>input, Matrix<ushort>map)
+        public Matrix<double> ggg(Matrix<double> input, Matrix<double> map)
         {
+            int radius = 3;
+            int upper = 0;
+            int lower = 0;
+            List<InterpolatedUnit> tempList = new List<InterpolatedUnit>();
+
+            Matrix<double> mmm = input;
+
+            for (int yyy = 0; yyy < mmm.RowCount; yyy++)
+            {
+                Vector<double> vec = mmm.Row(yyy);
+                Vector<double> mappam = map.Row(yyy);
+                for (int xxx = 0; xxx < vec.Count; xxx++)
+                {
+                    if (mappam[xxx] == 0)
+                    {
+                        if (xxx >= radius)
+                        {
+                            if (xxx <= vec.Count - 1 - radius)
+                            {
+                                lower = xxx - radius;
+                                upper = xxx + radius;
+                                ///////////////////////////////////full radius
+                            }
+                            else
+                            {
+                                if (xxx != vec.Count - 1)
+                                {
+                                    lower = xxx - radius;
+                                    upper = vec.Count - 1;
+                                    ///////////upper limit
+                                }
+                            }
+                        }
+                        else
+                        {
+                            if (xxx != 0)
+                            {
+                                lower = 0;
+                                upper = xxx + radius;
+                            }
+                        }
+                        double[] values = new double[upper - lower + 1];
+                        double[] fittedValues = new double[upper - lower + 1];
+                        double[] places = new double[upper - lower + 1];
+                        int counter = 0;
+                        for (int vvv = lower; vvv <= upper; vvv++)
+                        {
+                            values[counter] = vec[vvv];
+                            places[counter] = vvv;
+                            counter++;
+                        }
+                        double goodnessOfFit;
+                        double calculatedValue;
+                        double[] FIT;
+
+                        FIT = Fit.Polynomial(places, values, 1);
+                        for (int i = 0; i < places.Length; i++)
+                        {
+                            fittedValues[i] = Polynomial.Evaluate(lower + i, FIT);
+                        }
+                        calculatedValue = Polynomial.Evaluate(xxx, FIT);
+                        goodnessOfFit = GoodnessOfFit.RSquared(fittedValues, values);
+                        input[yyy, xxx] = calculatedValue;
+                        Console.WriteLine();
+                    }
+                }
+            }
+
+            for (int yyy = 0; yyy < mmm.RowCount; yyy++)
+            {
+                Vector<double> vec = mmm.Row(yyy);
+                Vector<double> mappam = map.Row(yyy);
+                for (int xxx = 0; xxx < vec.Count; xxx++)
+                {
+                    if (mappam[xxx] == 0)
+                    {
+                        if (xxx >= radius)
+                        {
+                            if (xxx <= vec.Count - 1 - radius)
+                            {
+                                lower = xxx - radius;
+                                upper = xxx + radius;
+                                ///////////////////////////////////full radius
+                            }
+                            else
+                            {
+                                if (xxx != vec.Count - 1)
+                                {
+                                    lower = xxx - radius;
+                                    upper = vec.Count - 1;
+                                    ///////////upper limit
+                                }
+                            }
+                        }
+                        else
+                        {
+                            if (xxx != 0)
+                            {
+                                lower = 0;
+                                upper = xxx + radius;
+                            }
+                        }
+                        double[] values = new double[upper - lower + 1];
+                        double[] fittedValues = new double[upper - lower + 1];
+                        double[] places = new double[upper - lower + 1];
+                        int counter = 0;
+                        for (int vvv = lower; vvv <= upper; vvv++)
+                        {
+                            values[counter] = vec[vvv];
+                            places[counter] = vvv;
+                            counter++;
+                        }
+                        double goodnessOfFit;
+                        double calculatedValue;
+                        double[] FIT;
+
+                        FIT = Fit.Polynomial(places, values, 2);
+                        for (int i = 0; i < places.Length; i++)
+                        {
+                            fittedValues[i] = Polynomial.Evaluate(lower + i, FIT);
+                        }
+                        calculatedValue = Polynomial.Evaluate(xxx, FIT);
+                        goodnessOfFit = GoodnessOfFit.RSquared(fittedValues, values);
+                        input[yyy, xxx] = calculatedValue;
+                        Console.WriteLine();
+                    }
+                }
+            }
+
+            for (int yyy = 0; yyy < mmm.RowCount; yyy++)
+            {
+                Vector<double> vec = mmm.Row(yyy);
+                Vector<double> mappam = map.Row(yyy);
+                for (int xxx = 0; xxx < vec.Count; xxx++)
+                {
+                    if (mappam[xxx] == 0)
+                    {
+                        if (xxx >= radius)
+                        {
+                            if (xxx <= vec.Count - 1 - radius)
+                            {
+                                lower = xxx - radius;
+                                upper = xxx + radius;
+                                ///////////////////////////////////full radius
+                            }
+                            else
+                            {
+                                if (xxx != vec.Count - 1)
+                                {
+                                    lower = xxx - radius;
+                                    upper = vec.Count - 1;
+                                    ///////////upper limit
+                                }
+                            }
+                        }
+                        else
+                        {
+                            if (xxx != 0)
+                            {
+                                lower = 0;
+                                upper = xxx + radius;
+                            }
+                        }
+                        double[] values = new double[upper - lower + 1];
+                        double[] fittedValues = new double[upper - lower + 1];
+                        double[] places = new double[upper - lower + 1];
+                        int counter = 0;
+                        for (int vvv = lower; vvv <= upper; vvv++)
+                        {
+                            values[counter] = vec[vvv];
+                            places[counter] = vvv;
+                            counter++;
+                        }
+                        double goodnessOfFit;
+                        double calculatedValue;
+                        double[] FIT;
+
+                        FIT = Fit.Polynomial(places, values, 2);
+                        for (int i = 0; i < places.Length; i++)
+                        {
+                            fittedValues[i] = Polynomial.Evaluate(lower + i, FIT);
+                        }
+                        calculatedValue = Polynomial.Evaluate(xxx, FIT);
+                        goodnessOfFit = GoodnessOfFit.RSquared(fittedValues, values);
+                        input[yyy, xxx] = calculatedValue;
+                        Console.WriteLine();
+                    }
+                }
+            }
+
+            for (int yyy = 0; yyy < mmm.RowCount; yyy++)
+            {
+                Vector<double> vec = mmm.Row(yyy);
+                Vector<double> mappam = map.Row(yyy);
+                for (int xxx = 0; xxx < vec.Count; xxx++)
+                {
+                    if (mappam[xxx] == 0)
+                    {
+                        if (xxx >= radius)
+                        {
+                            if (xxx <= vec.Count - 1 - radius)
+                            {
+                                lower = xxx - radius;
+                                upper = xxx + radius;
+                                ///////////////////////////////////full radius
+                            }
+                            else
+                            {
+                                if (xxx != vec.Count - 1)
+                                {
+                                    lower = xxx - radius;
+                                    upper = vec.Count - 1;
+                                    ///////////upper limit
+                                }
+                            }
+                        }
+                        else
+                        {
+                            if (xxx != 0)
+                            {
+                                lower = 0;
+                                upper = xxx + radius;
+                            }
+                        }
+                        double[] values = new double[upper - lower + 1];
+                        double[] fittedValues = new double[upper - lower + 1];
+                        double[] places = new double[upper - lower + 1];
+                        int counter = 0;
+                        for (int vvv = lower; vvv <= upper; vvv++)
+                        {
+                            values[counter] = vec[vvv];
+                            places[counter] = vvv;
+                            counter++;
+                        }
+                        double goodnessOfFit;
+                        double calculatedValue;
+                        double[] FIT;
+
+                        FIT = Fit.Polynomial(places, values, 3);
+                        for (int i = 0; i < places.Length; i++)
+                        {
+                            fittedValues[i] = Polynomial.Evaluate(lower + i, FIT);
+                        }
+                        calculatedValue = Polynomial.Evaluate(xxx, FIT);
+                        goodnessOfFit = GoodnessOfFit.RSquared(fittedValues, values);
+                        input[yyy, xxx] = calculatedValue;
+                        Console.WriteLine();
+                    }
+                }
+            }
+
+            for (int yyy = 0; yyy < mmm.RowCount; yyy++)
+            {
+                Vector<double> vec = mmm.Row(yyy);
+                Vector<double> mappam = map.Row(yyy);
+                for (int xxx = 0; xxx < vec.Count; xxx++)
+                {
+                    if (mappam[xxx] == 0)
+                    {
+                        if (xxx >= radius)
+                        {
+                            if (xxx <= vec.Count - 1 - radius)
+                            {
+                                lower = xxx - radius;
+                                upper = xxx + radius;
+                                ///////////////////////////////////full radius
+                            }
+                            else
+                            {
+                                if (xxx != vec.Count - 1)
+                                {
+                                    lower = xxx - radius;
+                                    upper = vec.Count - 1;
+                                    ///////////upper limit
+                                }
+                            }
+                        }
+                        else
+                        {
+                            if (xxx != 0)
+                            {
+                                lower = 0;
+                                upper = xxx + radius;
+                            }
+                        }
+                        double[] values = new double[upper - lower + 1];
+                        double[] fittedValues = new double[upper - lower + 1];
+                        double[] places = new double[upper - lower + 1];
+                        int counter = 0;
+                        for (int vvv = lower; vvv <= upper; vvv++)
+                        {
+                            values[counter] = vec[vvv];
+                            places[counter] = vvv;
+                            counter++;
+                        }
+                        double goodnessOfFit;
+                        double calculatedValue;
+                        double[] FIT;
+
+                        FIT = Fit.Polynomial(places, values, 3);
+                        for (int i = 0; i < places.Length; i++)
+                        {
+                            fittedValues[i] = Polynomial.Evaluate(lower + i, FIT);
+                        }
+                        calculatedValue = Polynomial.Evaluate(xxx, FIT);
+                        goodnessOfFit = GoodnessOfFit.RSquared(fittedValues, values);
+                        input[yyy, xxx] = calculatedValue;
+                        Console.WriteLine();
+                    }
+                }
+            }
+
+            for (int yyy = 0; yyy < mmm.RowCount; yyy++)
+            {
+                Vector<double> vec = mmm.Row(yyy);
+                Vector<double> mappam = map.Row(yyy);
+                for (int xxx = 0; xxx < vec.Count; xxx++)
+                {
+                    if (mappam[xxx] == 0)
+                    {
+                        if (xxx >= radius)
+                        {
+                            if (xxx <= vec.Count - 1 - radius)
+                            {
+                                lower = xxx - radius;
+                                upper = xxx + radius;
+                                ///////////////////////////////////full radius
+                            }
+                            else
+                            {
+                                if (xxx != vec.Count - 1)
+                                {
+                                    lower = xxx - radius;
+                                    upper = vec.Count - 1;
+                                    ///////////upper limit
+                                }
+                            }
+                        }
+                        else
+                        {
+                            if (xxx != 0)
+                            {
+                                lower = 0;
+                                upper = xxx + radius;
+                            }
+                        }
+                        double[] values = new double[upper - lower + 1];
+                        double[] fittedValues = new double[upper - lower + 1];
+                        double[] places = new double[upper - lower + 1];
+                        int counter = 0;
+                        for (int vvv = lower; vvv <= upper; vvv++)
+                        {
+                            values[counter] = vec[vvv];
+                            places[counter] = vvv;
+                            counter++;
+                        }
+                        double goodnessOfFit;
+                        double calculatedValue;
+                        double[] FIT;
+
+                        FIT = Fit.Polynomial(places, values, 3);
+                        for (int i = 0; i < places.Length; i++)
+                        {
+                            fittedValues[i] = Polynomial.Evaluate(lower + i, FIT);
+                        }
+                        calculatedValue = Polynomial.Evaluate(xxx, FIT);
+                        goodnessOfFit = GoodnessOfFit.RSquared(fittedValues, values);
+                        input[yyy, xxx] = calculatedValue;
+                        Console.WriteLine();
+                    }
+                }
+            }
+
+            return input;
+        }
+
+        public List<InterpolatedUnit> getvalues(int radius, int order, Matrix<double> input, Matrix<double> map, bool direction)
+        {
+            int upper = 0;
+            int lower = 0;
             List<InterpolatedUnit> output = new List<InterpolatedUnit>();
 
-            //build vertical and horizontal spline matrix
+            Matrix<double> mmm = input;
 
-            List<List<double>> vertical_place = new List<List<double>>();
-            List<List<double>> vertical_value = new List<List<double>>();
-            List<List<double>> horizontal_place = new List<List<double>>();
-            List<List<double>> horizontal_value = new List<List<double>>();
-            //Matrix<ushort> vertical = input;
-            for (int xxx = 0; xxx < input.ColumnCount; xxx++)
+            for (int yyy = 0; yyy < mmm.RowCount; yyy++)
             {
-                List<double> place = new List<double>();
-                List<double> value = new List<double>();
-                Vector<ushort> asvector =input.Column(xxx);
-                for (int yyy = 0; yyy < asvector.Count; yyy++)
+                Vector<double> vec = mmm.Row(yyy);
+                Vector<double> mappam = map.Row(yyy);
+                for (int xxx = 0; xxx < vec.Count; xxx++)
                 {
-                    if (asvector[yyy]!=ushort.MinValue)
+                    if (mappam[xxx] == 0)
                     {
-                        place.Add(yyy);
-                        value.Add(asvector[yyy]);
-                    }
-                }
-                vertical_place.Add(place);
-                vertical_place.Add(value);
-            }
-            for (int yyy = 0; yyy < input.RowCount; yyy++)
-            {
-                List<double> place = new List<double>();
-                List<double> value = new List<double>();
-                Vector<ushort> asvector = input.Column(yyy);
-                for (int xxx = 0; xxx < asvector.Count; xxx++)
-                {
-                    if (asvector[xxx] != ushort.MinValue)
-                    {
-                        place.Add(xxx);
-                        value.Add(asvector[xxx]);
-                    }
-                }
-                horizontal_place.Add(place);
-                horizontal_place.Add(value);
-            }
-
-
-            for (int xxx = 0; xxx < input.ColumnCount; xxx++)
-            {
-                List<double> place = vertical_place[xxx];
-                List<double> value = vertical_value[xxx];
-                CubicSpline cs = CubicSpline.InterpolateNatural(place, value);
-                for (int yyy = 0; yyy < input.RowCount; yyy++)
-                {
-                    //double[] t = Fit.Polynomial(place.ToArray(), value.ToArray(), 5);
-                    //GoodnessOfFit.RSquared(place_cs.Where(x => x <= 0 || x < input.RowCount||x>=yyy-2||x<=yyy+2), value_cs);
-                    if (map[xxx,yyy]==ushort.MinValue)
-                    {
-                        place.Add(yyy);
-                        value.Add(cs.Interpolate(yyy));
-                        //output.Add(new InterpolatedUnit() {x=(uint)xxx,y=(uint)yyy,value=cs.Interpolate(yyy)});
-                    }
-                }
-                cs = CubicSpline.InterpolateNatural(place, value);
-                for (int yyy = 0; yyy < input.RowCount; yyy++)
-                {
-                    if (map[xxx, yyy] == ushort.MinValue)
-                    {
-                        if (yyy <= 0 || yyy < input.RowCount || yyy >= yyy - 2 || yyy <= yyy + 2)
+                        if (xxx >= radius)
                         {
-                            var p = place.Skip(yyy - 2).Take(4);
-                            var v = value.Skip(yyy - 2).Take(4);
-                            double[] t = Fit.Polynomial(p.ToArray(), v.ToArray(), 5);
-                            Func<double, double> f = Fit.PolynomialFunc(p.ToArray(), v.ToArray(), 5,MathNet.Numerics.LinearRegression.DirectRegressionMethod.NormalEquations);
-                            GoodnessOfFit.RSquared(p.Select(x => t[0]+t[1]*x+t[2]*x*x+t[3]*x*x*x+t[4]*x*x*x*x+t[5]*x*x*x*x*x), v);
+                            if (xxx <= vec.Count - 1 - radius)
+                            {
+                                lower = xxx - radius;
+                                upper = xxx + radius;
+                                ///////////////////////////////////full radius
+                            }
+                            else
+                            {
+                                if (xxx != vec.Count - 1)
+                                {
+                                    lower = xxx - radius;
+                                    upper = vec.Count - 1;
+                                    ///////////upper limit
+                                }
+                            }
                         }
+                        else
+                        {
+                            if (xxx != 0)
+                            {
+                                lower = 0;
+                                upper = xxx + radius;
+                            }
+                        }
+                        double[] values = new double[upper - lower + 1];
+                        double[] fittedValues = new double[upper - lower + 1];
+                        double[] places = new double[upper - lower + 1];
+                        int counter = 0;
+                        for (int vvv = lower; vvv <= upper; vvv++)
+                        {
+                            values[counter] = vec[vvv];
+                            places[counter] = vvv;
+                            counter++;
+                        }
+                        double goodnessOfFit;
+                        double calculatedValue;
+                        double[] FIT;
+
+                        FIT = Fit.Polynomial(places, values, order);
+                        for (int i = 0; i < places.Length; i++)
+                        {
+                            fittedValues[i] = Polynomial.Evaluate(lower + i, FIT);
+                        }
+                        calculatedValue = Polynomial.Evaluate(xxx, FIT);
+                        goodnessOfFit = GoodnessOfFit.RSquared(fittedValues, values);
+                        output.Add(new InterpolatedUnit { x = (uint)xxx, y = (uint)yyy, value = calculatedValue, goodnessOfFit = goodnessOfFit, method = (InterpolationMethod)order });
+                        Console.WriteLine();
                     }
                 }
             }
-            for (int yyy = 0; yyy < input.RowCount; yyy++)
-            {
-                for (int xxx = 0; xxx < input.ColumnCount; xxx++)
-                {
-                    if (map[xxx, yyy] == ushort.MinValue)
-                    {
-                        //do some row interpolation
-                        //add best result to output list
-                    }
-                }
-            }
-            //for trough other directions
-
-
-
-
-
-
-
-
 
             return output;
         }

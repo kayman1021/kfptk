@@ -9,23 +9,21 @@ using System.IO;
 using BitMiracle.LibTiff.Classic;
 using MathNet.Numerics.LinearAlgebra;
 
-namespace BP
+namespace p00
 {
-    partial class BP_Data
+    public partial class BP_Data
     {
-        public Matrix<ushort> ImportRawDataXiaomi(string filename)
+        public Matrix<double> ImportRawDataXiaomi(string filename)
         {
             const int bitsPerSample = 16;
             const int bitsPerByte = 8;
             int width, height;
-            Matrix<ushort> _output;
-            int[,] output;
+            Matrix<double> output;
             using (Tiff input = Tiff.Open(@filename, "r"))
             {
                 width = input.GetField(TiffTag.IMAGEWIDTH)[0].ToInt();
                 height = input.GetField(TiffTag.IMAGELENGTH)[0].ToInt();
-                _output = Matrix<ushort>.Build.Dense(width, height, ushort.MinValue);
-                output = new int[width, height];
+                output = Matrix<double>.Build.Dense(height, width);
             }
             using (BinaryReader reader = new BinaryReader(File.Open(@filename, FileMode.Open)))
             {
@@ -35,12 +33,12 @@ namespace BP
                 int pixelcount = width * height;
                 reader.ReadBytes(start_addr);
                 Byte[] bytebuffer = reader.ReadBytes(datalength);
-                for (int i = 0; i < pixelcount; i++) { _output[i % width, i / width] = (ushort)(bytebuffer[i << 1] + ((bytebuffer[(i << 1) + 1]) << 8)); }
+                for (int i = 0; i < pixelcount; i++) { output[i / width, i % width] = (double)(bytebuffer[i << 1] + ((bytebuffer[(i << 1) + 1]) << 8)); }
             }
             Console.WriteLine();
-            return _output;
+            return output;
         }
-        public void ExportRawDataXiaomi(Matrix<ushort> data, string filename)
+        public void ExportRawDataXiaomi(Matrix<double> data, string filename)
         {
             int bitsPerSample = 16;
             int width = data.ColumnCount;
@@ -62,7 +60,7 @@ namespace BP
                 intdump = new int[filelength / 2];
 
                 bytedump = reader.ReadBytes(filelength);
-                for (int i = 0; i < filelength / 2; i++) { intdump[i] = (int)(bytedump[2 * i]) + (int)(bytedump[2 * i + 1] * 256); }
+                for (int i = 0; i < filelength >> 1; i++) { intdump[i] = bytedump[i << 1] + (bytedump[(i << 1) + 1] << 8); }
             }
 
             //Array.Copy(rawData, 0, intdump, start_addr / 2, pixelcount);
@@ -81,43 +79,43 @@ namespace BP
             for (int i = 0; i < intdump.Length; i++)
             {
                 temp = intdump[i];
-                boolB[0] = Convert.ToBoolean(temp / 32768);
+                boolB[0] = Convert.ToBoolean(temp >> 15);
                 temp = temp % 32768;
-                boolB[1] = Convert.ToBoolean(temp / 16384);
+                boolB[1] = Convert.ToBoolean(temp >> 14);
                 temp = temp % 16384;
-                boolB[2] = Convert.ToBoolean(temp / 8192);
+                boolB[2] = Convert.ToBoolean(temp >> 13);
                 temp = temp % 8192;
-                boolB[3] = Convert.ToBoolean(temp / 4096);
+                boolB[3] = Convert.ToBoolean(temp >> 12);
                 temp = temp % 4096;
-                boolB[4] = Convert.ToBoolean(temp / 2048);
+                boolB[4] = Convert.ToBoolean(temp >> 11);
                 temp = temp % 2048;
-                boolB[5] = Convert.ToBoolean(temp / 1024);
+                boolB[5] = Convert.ToBoolean(temp >> 10);
                 temp = temp % 1024;
-                boolB[6] = Convert.ToBoolean(temp / 512);
+                boolB[6] = Convert.ToBoolean(temp >> 9);
                 temp = temp % 512;
-                boolB[7] = Convert.ToBoolean(temp / 256);
+                boolB[7] = Convert.ToBoolean(temp >> 8);
                 temp = temp % 256;
 
-                boolA[0] = Convert.ToBoolean(temp / 128);
+                boolA[0] = Convert.ToBoolean(temp >> 7);
                 temp = temp % 128; ;
-                boolA[1] = Convert.ToBoolean(temp / 64);
+                boolA[1] = Convert.ToBoolean(temp >> 6);
                 temp = temp % 64;
-                boolA[2] = Convert.ToBoolean(temp / 32);
+                boolA[2] = Convert.ToBoolean(temp >> 5);
                 temp = temp % 32;
-                boolA[3] = Convert.ToBoolean(temp / 16);
+                boolA[3] = Convert.ToBoolean(temp >> 4);
                 temp = temp % 16;
-                boolA[4] = Convert.ToBoolean(temp / 8);
+                boolA[4] = Convert.ToBoolean(temp >> 3);
                 temp = temp % 8;
-                boolA[5] = Convert.ToBoolean(temp / 4);
+                boolA[5] = Convert.ToBoolean(temp >> 2);
                 temp = temp % 4;
-                boolA[6] = Convert.ToBoolean(temp / 2);
+                boolA[6] = Convert.ToBoolean(temp >> 1);
                 temp = temp % 2;
-                boolA[7] = Convert.ToBoolean(temp / 1);
+                boolA[7] = Convert.ToBoolean(temp);
                 temp = temp % 1;
 
 
-                bytedump[2 * i] = BoolArrayToByte(boolA);
-                bytedump[(2 * i) + 1] = BoolArrayToByte(boolB);
+                bytedump[i << 1] = BoolArrayToByte(boolA);
+                bytedump[(i << 1) + 1] = BoolArrayToByte(boolB);
             }
 
             byteArrayWriter(bytedump, filename);
@@ -160,11 +158,11 @@ namespace BP
             }
             if (input[7])
             {
-                outut += 1;
+                outut++;
             }
             return outut;
         }
-        public int[] ArrayConvert2Dto1D(Matrix<ushort> input)
+        public int[] ArrayConvert2Dto1D(Matrix<double> input)
         {
             int xxx = input.ColumnCount;
             int yyy = input.RowCount;
@@ -172,7 +170,7 @@ namespace BP
             int[] output = new int[arraylength];
             for (int i = 0; i < arraylength; i++)
             {
-                output[i] = input[i % xxx, i / xxx];
+                output[i] = (int)input[i / xxx, i % xxx];
             }
             return output;
         }
@@ -189,7 +187,7 @@ namespace BP
             }
             return output;
         }
-        public void ExportRawData14bitUncompressed(Matrix<ushort> data, string filename)
+        public void ExportRawData14bitUncompressed(Matrix<double> data, string filename)
         {
             int filelength;
             int datalength;
@@ -220,7 +218,7 @@ namespace BP
                 bool[] tmp = new bool[8];
                 for (int i = 0; i < datalength; i++)
                 {
-                    Array.Copy(intDataAsBoolArray, i * 8, tmp, 0, 8);
+                    Array.Copy(intDataAsBoolArray, i << 3, tmp, 0, 8);
                     bytebuffer_data[i] = BoolArrayToByte(tmp);
                 }
 
@@ -253,15 +251,16 @@ namespace BP
             }
             return output;
         }
-        public Matrix<ushort> ImportRawData14bitUncompressed(string filename)
+        public Matrix<double> ImportRawData14bitUncompressed(string filename)
         {
             int width, height;
-            Matrix<ushort> output;
+            Matrix<double> output;
             using (Tiff input = Tiff.Open(@filename, "r"))
             {
                 width = input.GetField(TiffTag.IMAGEWIDTH)[0].ToInt();
                 height = input.GetField(TiffTag.IMAGELENGTH)[0].ToInt();
-                output = Matrix<ushort>.Build.Dense(width, height);
+                //output  = Matrix<ushort>.Build.Diagonal( width, height);
+                output = CreateMatrix.Dense<double>(height, width);
             }
             int bitsPerSample = 14;
             using (BinaryReader reader = new BinaryReader(File.Open(filename, FileMode.Open)))
@@ -292,11 +291,12 @@ namespace BP
                     intbuffer[bbb / bitsPerSample] = sum;
                 }
                 Console.WriteLine();
-                for (int i = 0; i < intbuffer.Length; i++) { output[i % width, i / width] = (ushort)intbuffer[i]; }
+                for (int i = 0; i < intbuffer.Length; i++) { output[i / width, i % width] = (double)intbuffer[i]; }
+                Console.WriteLine();
                 return output;
             }
         }
-        public void ExportRawDataTiff(string filename, Matrix<ushort> input)
+        public void ExportRawDataTiff(string filename, Matrix<double> input)
         {
             int width = input.ColumnCount;
             int height = input.RowCount;
@@ -316,20 +316,20 @@ namespace BP
                 output.SetField(TiffTag.ROWSPERSTRIP, height);
                 output.SetField(TiffTag.FILLORDER, FillOrder.MSB2LSB);
                 byte[] bytebuffer = new byte[width * 16 / 8];
-                int rawValue;
+                double rawValue;
                 for (int yyy = 0; yyy < height; yyy++)
                 {
                     for (int xxx = 0; xxx < width; xxx++)
                     {
-                        rawValue = input[xxx, yyy];
-                        bytebuffer[xxx * 2] = (byte)(rawValue % 256);
-                        bytebuffer[xxx * 2 + 1] = (byte)(rawValue / 256);
+                        rawValue = input[yyy, xxx];
+                        bytebuffer[xxx << 1] = (byte)(rawValue % 256);
+                        bytebuffer[(xxx << 1) + 1] = (byte)(rawValue / 256);
                     }
                     output.WriteScanline(bytebuffer, yyy);
                 }
             }
         }
-        public void ExportRawDataArray(string filename, Matrix<ushort> input)
+        public void ExportRawDataArray(string filename, Matrix<double> input)
         {
             int width = input.ColumnCount;
             int height = input.RowCount;
@@ -338,31 +338,31 @@ namespace BP
             string newline = "\r\n";
             for (int yyy = 0; yyy < height; yyy++)
             {
-                for (int xxx = 0; xxx < width; xxx++) { sb.Append(input[xxx, yyy] + spacer); }
+                for (int xxx = 0; xxx < width; xxx++) { sb.Append(input[yyy, xxx] + spacer); }
                 sb.Append(newline);
             }
             File.WriteAllText(@filename, sb.ToString());
         }
-        public Matrix<ushort> BitmapToIntArray(Bitmap input)
+        public Matrix<double> BitmapToIntArray(Bitmap input)
         {
-            Matrix<ushort> output = Matrix<ushort>.Build.Dense(input.Width, input.Height);
+            Matrix<double> output = Matrix<double>.Build.Dense(input.Height, input.Width);
             Color color;
-            ushort temp;
+            double temp;
             for (int yyy = 0; yyy < input.Height; yyy++)
             {
                 for (int xxx = 0; xxx < input.Width; xxx++)
                 {
                     color = input.GetPixel(xxx, yyy);
-                    temp = (ushort)(color.R * color.G * color.B);
+                    temp = (double)(color.R * color.G * color.B);
                     if (temp > 0)
                     {
-                        temp = (int)(ushort.MaxValue);
+                        temp = (double)(ushort.MaxValue);
                     }
                     else
                     {
-                        temp = (int)(ushort.MinValue);
+                        temp = (double)(ushort.MinValue);
                     }
-                    output[xxx, yyy] = temp;
+                    output[yyy, xxx] = temp;
                 }
             }
             Console.WriteLine();
@@ -371,12 +371,12 @@ namespace BP
 
             return output;
         }
-        public Matrix<ushort> ImportPixelMapFromPicture(string filename)
+        public Matrix<double> ImportPixelMapFromPicture(string filename)
         {
-            Matrix<ushort> output = BitmapToIntArray(new Bitmap(@filename));
-            return output;
+            //Matrix<ushort> output = BitmapToIntArray(new Bitmap(@filename));
+            return BitmapToIntArray(new Bitmap(@filename));
         }
-        public Matrix<ushort> ImportPixelMapFromFPM(string filename, Matrix<ushort> getResolutionOfThis)
+        public Matrix<double> ImportPixelMapFromFPM(string filename, Matrix<double> getResolutionOfThis)
         {
             string input = System.IO.File.ReadAllText(@filename);
             string[] stringArray = input.Split(new string[] { "\n" }, StringSplitOptions.None);
@@ -401,19 +401,19 @@ namespace BP
                 pointArray[i] = new Point(xxx, yyy);
             }
 
-            Matrix<ushort> output = Matrix<ushort>.Build.Dense(getResolutionOfThis.ColumnCount, getResolutionOfThis.RowCount);
+            Matrix<double> output = Matrix<double>.Build.Dense(getResolutionOfThis.RowCount, getResolutionOfThis.ColumnCount);
             for (int i = 0; i < pointArray.Length; i++)
             {
-                output[pointArray[i].X, pointArray[i].Y] = ushort.MinValue;
+                output[pointArray[i].Y, pointArray[i].X] = ushort.MinValue;
             }
 
             return output;
         }
-        public Matrix<ushort> ImportRawDataTiff(string filename)
+        public Matrix<double> ImportRawDataTiff(string filename)
         {
             return null;
         }
-        public void ExportFPM(string filename, Matrix<ushort> data)
+        public void ExportFPM(string filename, Matrix<double> data)
         {
             StringBuilder sb = new StringBuilder();
             int temp;
@@ -423,7 +423,7 @@ namespace BP
             {
                 for (int xxx = 0; xxx < width; xxx++)
                 {
-                    temp = data[xxx, yyy];
+                    temp = (int)data[yyy, xxx];
                     if (temp <= 0)
                     {
                         sb.Append(xxx + " \t " + yyy + "\n");

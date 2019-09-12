@@ -232,7 +232,7 @@ namespace p00
             int height = data.GetLength(1);
             double DegInRad;
             int xxx, yyy;
-            int limitUpper = 5;
+            int limitUpper =5;
             int limitLower = -limitUpper;
             int badpixelsCount = results.Count;
             for (int i = 0; i < angles.Count; i++)
@@ -360,7 +360,7 @@ namespace p00
 
                     //Tuple<double, double> fitLine = Fit.Line(aAxis, aValues);
                     //double goodnessLine = GoodnessOfFit.RSquared(aAxis.Select(x => fitLine.Item2 + fitLine.Item1 * x), aValues);
-                    if (aAxis.Length < 4)
+                    if (aAxis.Length<4)
                     {
                         output.Add(new outputValues() { x = xxx, y = yyy, value = 0, error = 0 });
                     }
@@ -387,7 +387,7 @@ namespace p00
 
 
 
-        public int[,] optimizer(int[,] data, int[,] map, ArrayList input)
+        public int[,] optimizer(int[,] data, int[,] map,ArrayList input)
         {
             int width = data.GetLength(0);
             int height = data.GetLength(1);
@@ -395,8 +395,8 @@ namespace p00
             optValue[,] pic = new optValue[width, height];
             for (int i = 0; i < input.Count; i++)
             {
-                outputValues temp = (outputValues)input[i];
-                if (pic[temp.x, temp.y].error <= temp.error)
+                outputValues temp =(outputValues) input[i];
+                if (pic[temp.x,temp.y].error<=temp.error)
                 {
                     pic[temp.x, temp.y].error = temp.error;
                     pic[temp.x, temp.y].value = temp.value;
@@ -407,7 +407,7 @@ namespace p00
             {
                 for (int yyy = 0; yyy < height; yyy++)
                 {
-                    if (map[xxx, yyy] == 0)
+                    if (map[xxx,yyy]==0)
                     {
                         Console.WriteLine();
                         data[xxx, yyy] = pic[xxx, yyy].value;
@@ -437,7 +437,7 @@ namespace p00
             angles.Add((double)135);
             angles.Add((double)150);
             angles.Add((double)165);*/
-            for (int i = 0; i < 180; i = i + 15)
+            for (int i = 0; i < 180; i=i+15)
             {
                 angles.Add((double)i);
             }
