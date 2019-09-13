@@ -349,7 +349,17 @@ namespace p00
         private void button8_Click(object sender, EventArgs e)
         {
 
-            rrwwtt.Left = rrwwtt.ggg(rrwwtt.Left, rrwwtt.Right);
+            rrwwtt.Left = rrwwtt.ggg(rrwwtt.Left, rrwwtt.Right, 1, 3);
+            //rrwwtt.Left = rrwwtt.ggg(rrwwtt.Left, rrwwtt.Right, 1, 3);
+            //rrwwtt.Left = rrwwtt.ggg(rrwwtt.Left, rrwwtt.Right, 1, 3);
+
+            //rrwwtt.Left = rrwwtt.ggg(rrwwtt.Left, rrwwtt.Right, 2, 3);
+            //rrwwtt.Left = rrwwtt.ggg(rrwwtt.Left, rrwwtt.Right, 2, 3);
+            //rrwwtt.Left = rrwwtt.ggg(rrwwtt.Left, rrwwtt.Right, 2, 3);
+
+            //rrwwtt.Left = rrwwtt.ggg(rrwwtt.Left, rrwwtt.Right, 3, 3);
+            //rrwwtt.Left = rrwwtt.ggg(rrwwtt.Left, rrwwtt.Right, 3, 3);
+            //rrwwtt.Left = rrwwtt.ggg(rrwwtt.Left, rrwwtt.Right, 3, 3);
         }
 
         private void button9_Click(object sender, EventArgs e)
