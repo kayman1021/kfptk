@@ -132,7 +132,11 @@ namespace p00
             //temp = rwt.rawData;
             //rwt.rawData = rwt.mapData;
             //rwt.mapData = temp;
-            rrwwtt.SwapSides(rrwwtt.Left, rrwwtt.Right);
+            //rrwwtt.SwapSides(rrwwtt.Left, rrwwtt.Right);
+            Matrix<double> temp = Matrix<double>.Build.Dense(rrwwtt.Left.RowCount, rrwwtt.Left.ColumnCount);
+            temp = rrwwtt.Left;
+            rrwwtt.Left = rrwwtt.Right;
+            rrwwtt.Right = temp;
         }
         private void button_Export_TIFF_Browse_Click(object sender, EventArgs e)
         {
@@ -349,7 +353,7 @@ namespace p00
         private void button8_Click(object sender, EventArgs e)
         {
 
-            rrwwtt.Left = rrwwtt.ggg(rrwwtt.Left, rrwwtt.Right, 1, 3);
+            rrwwtt.Left = rrwwtt.ggg(rrwwtt.Left, rrwwtt.Right, 3, 3);
             //rrwwtt.Left = rrwwtt.ggg(rrwwtt.Left, rrwwtt.Right, 1, 3);
             //rrwwtt.Left = rrwwtt.ggg(rrwwtt.Left, rrwwtt.Right, 1, 3);
 
