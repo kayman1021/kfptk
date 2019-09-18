@@ -11,6 +11,7 @@ using MathNet.Numerics;
 namespace p00
 {
     public enum InterpolationMethod { Constant = 0, Linear = 1, Quadratic = 2, Cubic = 3, Quartic = 4 };
+    public enum Direction {Horizontal=0,Vertical=1,Diagonal1=2,Diagonal2=3 };
 
     public struct InterpolatedUnit
     {
@@ -19,11 +20,34 @@ namespace p00
         public int location;
         public double value;
         public double goodnessOfFit;
+        public Direction direction;
+        public double[] valueArray;
         //public InterpolationMethod method;
     }
 
+
+
     public partial class BP_Data
     {
+        public double ErrorOfFit(double[] measured, double[] fitted)
+        {
+            double sum = 0;
+            if (measured.Length == fitted.Length)
+            {
+                for (int i = 0; i < measured.Length; i++)
+                {
+                    sum += measured[i] - fitted[i] * measured[i] - fitted[i];
+                }
+            }
+            else
+            {
+                Console.WriteLine();
+            }
+            return Math.Sqrt(sum);
+        }
+
+
+
         public Matrix<double> ggg(Matrix<double> input, Matrix<double> map,int order,int radius)
         {
             int width = input.ColumnCount;
@@ -40,23 +64,44 @@ namespace p00
                     }
                 }
             }
-            arrayOfList = getvalues(radius, order, input, map, true, arrayOfList);
-            //arrayOfList = getvalues(radius, order, input, map, true, arrayOfList);
-            //tempList.AddRange(getvalues(radius, order, input, map, true));
-            arrayOfList = getvalues(radius, order, TransposeArray(input), TransposeArray(map), false,arrayOfList);
+            /*arrayOfList = getvalues(radius, order, input, map, true, arrayOfList);
+            arrayOfList = getvalues(radius, order, TransposeArray(input), TransposeArray(map), false,arrayOfList);*/
+
+            arrayOfList = getvalues(radius, 1, input, map, true, arrayOfList);
+            arrayOfList = getvalues(radius, 1, TransposeArray(input), TransposeArray(map), false, arrayOfList);
+            arrayOfList = getvalues(radius, 2, input, map, true, arrayOfList);
+            arrayOfList = getvalues(radius, 2, TransposeArray(input), TransposeArray(map), false, arrayOfList);
+            arrayOfList = getvalues(radius, 3, input, map, true, arrayOfList);
+            arrayOfList = getvalues(radius, 3, TransposeArray(input), TransposeArray(map), false, arrayOfList);
+
+
+
+            Console.WriteLine();
 
             for (int i = 0; i < arrayOfList.Length; i++)
             {
                 if (arrayOfList[i]!=null)
                 {
                     List<InterpolatedUnit> temp = arrayOfList[i];
+                    if (i==102416)
+                    {
+                        Console.WriteLine();
+                    }
                     InterpolatedUnit bestGoodness = new InterpolatedUnit { };
                     InterpolatedUnit temp3;
                     for (int j = 0; j < temp.Count; j++)
                     {
                         temp3 = temp[j];
-                        if (temp3.goodnessOfFit>bestGoodness.goodnessOfFit)
+                        /*if (temp3.location==95666)
                         {
+                            Console.WriteLine();
+                        }*/
+                        if (temp3.goodnessOfFit>=bestGoodness.goodnessOfFit||double.IsNaN(temp3.goodnessOfFit))
+                        {
+                            if (double.IsNaN(temp3.goodnessOfFit)||double.IsNaN(bestGoodness.goodnessOfFit))
+                            {
+                                Console.WriteLine();
+                            }
                             bestGoodness = temp3;
                         }
                     }
@@ -97,8 +142,15 @@ namespace p00
                 Vector<double> mappam = map.Row(yyy);
                 for (int xxx = 0; xxx < vec.Count; xxx++)
                 {
+
+
+
                     if (mappam[xxx] == 0)
                     {
+                        if ((xxx == 415 && yyy == 132) || (yyy == 415 && xxx == 132))
+                        {
+                            Console.WriteLine();
+                        }
                         if (xxx >=0 + radius)
                         {
                             if (xxx <= vec.Count - 1 - radius)
@@ -119,6 +171,7 @@ namespace p00
                                 upper = xxx + radius;
                         }
 
+                        Console.WriteLine();
 
                         if (xxx==0||xxx==width-1)
                         {
@@ -167,14 +220,15 @@ namespace p00
                             }
 
                             goodnessOfFit = GoodnessOfFit.RSquared(fittedValues, values2);
+                            Console.WriteLine();
                             if (direction)
                             {
-                                arrayOfList[(yyy * width) + xxx].Add(new InterpolatedUnit { x = (int)xxx, y = (int)yyy, value = calculatedValue, goodnessOfFit = goodnessOfFit, location = (yyy * width) + xxx });
+                                arrayOfList[(yyy * width) + xxx].Add(new InterpolatedUnit { x = (int)xxx, y = (int)yyy, value = calculatedValue, goodnessOfFit = goodnessOfFit, location = (yyy * width) + xxx,direction=Direction.Horizontal,valueArray=values2 });
                             }
                             else
                             {
                                 Console.WriteLine();
-                                arrayOfList[(xxx * height) + yyy].Add(new InterpolatedUnit { x = (int)yyy, y = (int)xxx, value = calculatedValue, goodnessOfFit = goodnessOfFit, location = (xxx * height) + yyy });
+                                arrayOfList[(xxx * height) + yyy].Add(new InterpolatedUnit { x = (int)yyy, y = (int)xxx, value = calculatedValue, goodnessOfFit = goodnessOfFit, location = (xxx * height) + yyy,direction=Direction.Vertical,valueArray=values2 });
                             }
 
                             Console.WriteLine();
