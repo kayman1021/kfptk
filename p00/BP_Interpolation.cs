@@ -22,7 +22,7 @@ namespace p00
         public double goodnessOfFit;
         public Direction direction;
         public double[] valueArray;
-        //public InterpolationMethod method;
+        public InterpolationMethod method;
     }
 
 
@@ -36,7 +36,7 @@ namespace p00
             {
                 for (int i = 0; i < measured.Length; i++)
                 {
-                    sum += measured[i] - fitted[i] * measured[i] - fitted[i];
+                    sum += (measured[i] - fitted[i]) * (measured[i] - fitted[i]);
                 }
             }
             else
@@ -48,7 +48,7 @@ namespace p00
 
 
 
-        public Matrix<double> ggg(Matrix<double> input, Matrix<double> map,int order,int radius)
+        public Matrix<double> ggg(Matrix<double> input, Matrix<double> map,int radius)
         {
             int width = input.ColumnCount;
             int height = input.RowCount;
@@ -71,8 +71,8 @@ namespace p00
             arrayOfList = getvalues(radius, 1, TransposeArray(input), TransposeArray(map), false, arrayOfList);
             arrayOfList = getvalues(radius, 2, input, map, true, arrayOfList);
             arrayOfList = getvalues(radius, 2, TransposeArray(input), TransposeArray(map), false, arrayOfList);
-            arrayOfList = getvalues(radius, 3, input, map, true, arrayOfList);
-            arrayOfList = getvalues(radius, 3, TransposeArray(input), TransposeArray(map), false, arrayOfList);
+            //arrayOfList = getvalues(radius, 3, input, map, true, arrayOfList);
+            //arrayOfList = getvalues(radius, 3, TransposeArray(input), TransposeArray(map), false, arrayOfList);
 
 
 
@@ -83,11 +83,11 @@ namespace p00
                 if (arrayOfList[i]!=null)
                 {
                     List<InterpolatedUnit> temp = arrayOfList[i];
-                    if (i==102416)
+                    if (i==(237*564)+295)
                     {
                         Console.WriteLine();
                     }
-                    InterpolatedUnit bestGoodness = new InterpolatedUnit { };
+                    InterpolatedUnit bestGoodness = new InterpolatedUnit {goodnessOfFit=99999999};
                     InterpolatedUnit temp3;
                     for (int j = 0; j < temp.Count; j++)
                     {
@@ -96,12 +96,8 @@ namespace p00
                         {
                             Console.WriteLine();
                         }*/
-                        if (temp3.goodnessOfFit>=bestGoodness.goodnessOfFit||double.IsNaN(temp3.goodnessOfFit))
+                        if (temp3.goodnessOfFit<=bestGoodness.goodnessOfFit)
                         {
-                            if (double.IsNaN(temp3.goodnessOfFit)||double.IsNaN(bestGoodness.goodnessOfFit))
-                            {
-                                Console.WriteLine();
-                            }
                             bestGoodness = temp3;
                         }
                     }
@@ -175,7 +171,7 @@ namespace p00
 
                         if (xxx==0||xxx==width-1)
                         {
-                            arrayOfList[(yyy * width) + xxx].Add(new InterpolatedUnit { x = xxx, y = yyy, value = 0, goodnessOfFit = (double)0, location = (yyy * width) + xxx });
+                            arrayOfList[(yyy * width) + xxx].Add(new InterpolatedUnit { x = xxx, y = yyy, value = 0, goodnessOfFit = (double)99999999, location = (yyy * width) + xxx });
                         }
                         else
                         {
@@ -219,16 +215,17 @@ namespace p00
                                 values2[i] = values[i - 1];
                             }
 
-                            goodnessOfFit = GoodnessOfFit.RSquared(fittedValues, values2);
+                            //goodnessOfFit = GoodnessOfFit.RSquared(fittedValues, values2);
+                            goodnessOfFit = ErrorOfFit(values2, fittedValues);
                             Console.WriteLine();
                             if (direction)
                             {
-                                arrayOfList[(yyy * width) + xxx].Add(new InterpolatedUnit { x = (int)xxx, y = (int)yyy, value = calculatedValue, goodnessOfFit = goodnessOfFit, location = (yyy * width) + xxx,direction=Direction.Horizontal,valueArray=values2 });
+                                arrayOfList[(yyy * width) + xxx].Add(new InterpolatedUnit { x = (int)xxx, y = (int)yyy, value = calculatedValue, goodnessOfFit = goodnessOfFit, location = (yyy * width) + xxx,direction=Direction.Horizontal,valueArray=values2,method=(InterpolationMethod)order });
                             }
                             else
                             {
                                 Console.WriteLine();
-                                arrayOfList[(xxx * height) + yyy].Add(new InterpolatedUnit { x = (int)yyy, y = (int)xxx, value = calculatedValue, goodnessOfFit = goodnessOfFit, location = (xxx * height) + yyy,direction=Direction.Vertical,valueArray=values2 });
+                                arrayOfList[(xxx * height) + yyy].Add(new InterpolatedUnit { x = (int)yyy, y = (int)xxx, value = calculatedValue, goodnessOfFit = goodnessOfFit, location = (xxx * height) + yyy,direction=Direction.Vertical,valueArray=values2, method = (InterpolationMethod)order });
                             }
 
                             Console.WriteLine();
