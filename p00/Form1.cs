@@ -17,8 +17,8 @@ namespace p00
         public Form1()
         {
             InitializeComponent();
-            comboBox_Import_DNG_Select.Items.Add(dngFileType.MLVApp14bit);
-            comboBox_Import_DNG_Select.Items.Add(dngFileType.Xiaomi16bit);
+            comboBox_Import_DNG_Select.Items.Add(DngFileType.MLVApp14bit);
+            comboBox_Import_DNG_Select.Items.Add(DngFileType.Xiaomi16bit);
             comboBox_Import_DNG_Select.SelectedIndex = 0;
         }
 
@@ -34,12 +34,12 @@ namespace p00
         }
         private void button_Import_DNG_Import_Click(object sender, EventArgs e)
         {
-            if ((dngFileType)comboBox_Import_DNG_Select.SelectedItem == dngFileType.MLVApp14bit)
+            if ((DngFileType)comboBox_Import_DNG_Select.SelectedItem == DngFileType.MLVApp14bit)
             {
                 //rwt.rawData = rwt.ImportRawData14bitUncompressed(textBox_Import_DNG_Text.Text);
                 rrwwtt.Left = rrwwtt.ImportRawData14bitUncompressed(textBox_Import_DNG_Text.Text);
             }
-            if ((dngFileType)comboBox_Import_DNG_Select.SelectedItem == dngFileType.Xiaomi16bit)
+            if ((DngFileType)comboBox_Import_DNG_Select.SelectedItem == DngFileType.Xiaomi16bit)
             {
                 //rwt.rawData = rwt.ImportRawDataXiaomi(textBox_Import_DNG_Text.Text);
                 rrwwtt.Left = rrwwtt.ImportRawDataXiaomi(textBox_Import_DNG_Text.Text);
