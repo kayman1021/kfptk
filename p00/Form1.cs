@@ -96,7 +96,7 @@ namespace p00
         {
             //rwt.mapData = rwt.ImportPixelMapFromPicture(textBox_Import_Mapped_Text.Text);
             rrwwtt.Right = rrwwtt.ImportPixelMapFromPicture(textBox_Import_Mapped_Text.Text);
-            Console.WriteLine();
+            //Console.WriteLine();
         }
         private void button_Tools_Deinterlace_Click(object sender, EventArgs e)
         {
@@ -109,7 +109,7 @@ namespace p00
             rrwwtt.Left = rrwwtt.DeinterlaceUniversal(rrwwtt.Left, true);
             //rwt.makeSplineHorizontal();
             //rwt.makeSplineVertical();
-            Console.WriteLine();
+            //Console.WriteLine();
         }
         private void button_Tools_Transpose_Click(object sender, EventArgs e)
         {
@@ -370,6 +370,14 @@ namespace p00
         {
             rrwwtt.Left = rrwwtt.SliceBlock(rrwwtt.Left, 2, 4, 0, 0);
             rrwwtt.Right = rrwwtt.SliceBlock(rrwwtt.Right, 2, 4, 0, 0);
+        }
+
+        private void button10_Click(object sender, EventArgs e)
+        {
+            rrwwtt.Left = rrwwtt.Prefit(rrwwtt.Left, rrwwtt.Right);
+            rrwwtt.Left = rrwwtt.Collector(rrwwtt.Left, rrwwtt.Right, 3);
+            rrwwtt.Left = rrwwtt.Collector(rrwwtt.Left, rrwwtt.Right, 3);
+            rrwwtt.Left = rrwwtt.Collector(rrwwtt.Left, rrwwtt.Right, 3);
         }
     }
 }

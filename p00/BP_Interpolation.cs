@@ -13,82 +13,147 @@ namespace p00
     public enum InterpolationMethod { Constant = 0, Linear = 1, Quadratic = 2, Cubic = 3, Quartic = 4 };
     public enum Direction { Horizontal = 0, Vertical = 1, Diagonal1 = 2, Diagonal2 = 3 };
     public enum DngFileType { Xiaomi16bit, MLVApp14bit };
-    public enum BorderType {UpperLeft,Upper,UpperRight,Right,LowerRight,Lower,LowerLeft,Left,None }
-
-    public struct InterpolatedUnit
-    {
-        public int x;
-        public int y;
-        public int location;
-        public double value;
-        public double goodnessOfFit;
-        public Direction direction;
-        public double[] valueArray;
-        public InterpolationMethod method;
-    }
-
-    public struct Limits
-    {
-        public int limitLeft,limitRight,limitUp,limitDown;
-    }
-
+    public enum BorderType { UpperLeft, Upper, UpperRight, Right, LowerRight, Lower, LowerLeft, Left, None }
+    public struct InterpolatedUnit { public int x; public int y; public int location; public double value; public double goodnessOfFit; public Direction direction; public double[] valueArray; public InterpolationMethod method; }
 
     public partial class BP_Data
     {
-        public void Collector(Matrix<double>data, Matrix<double>map)
+        public Matrix<double> Collector(Matrix<double> data, Matrix<double> map, int radius)
         {
+            int height = data.RowCount;
+            int width = data.ColumnCount;
 
-        }
+            List<InterpolatedUnit>[,] allValue = new List<InterpolatedUnit>[width, height];
+            Matrix<double> copyData = data;
+            Matrix<double> copyMap = map;
+            copyData = data;
 
-        /*public List<InterpolatedUnit> Interpolator(Vector<double>input, int position)
-        {
-            int length = input.Count;
-            Vector<double> valuables = Vector.Build.Dense(length - 1);
-            Vector<double> places = Vector.Build.Dense(length - 1);
-            int counter = 0;
-            for (int i = 0; i < length; i++)
+            for (int xxx = 0; xxx < width; xxx++)
             {
-                if (i!=position)
+                for (int yyy = 0; yyy < height; yyy++)
                 {
-                    valuables[counter] = input[i];
-                    places[counter] = i;
-                    counter++;
+                    List<InterpolatedUnit> results = new List<InterpolatedUnit>();
+                    if (copyMap[yyy, xxx] == 0)
+                    {
+                        if (yyy - radius >= 0 && yyy + radius <= height && xxx - radius >= 0 && xxx + radius <= width)
+                        {
+                            int size = (radius * 2) + 1;
+                            Matrix<double> subData = copyData.SubMatrix(yyy - radius, size, xxx - radius, size);
+                            Matrix<double> subMap = copyMap.SubMatrix(yyy - radius, size, xxx - radius, size);
+
+                            InterpolatedUnit tempUnit = new InterpolatedUnit();
+
+                            double[] tempData = new double[size];
+                            //double[] tempMap = new double[size];
+                            double[] places = new double[tempData.Length];
+                            for (int i = 0; i < places.Length; i++)
+                            {
+                                places[i] = i;
+                            }
+
+
+                            tempData = (subData.Row(radius)).AsArray();
+                            //tempMap = (subMap.Row(radius)).AsArray();
+                            for (int i = 1; i <= 2; i++)
+                            {
+                                //Console.WriteLine();
+                                tempUnit = Fitter(tempData, places, i);
+                                //Console.WriteLine();
+                                //tempUnit.method = (InterpolationMethod)i;
+                                //tempUnit.direction = Direction.Horizontal;
+                                //tempUnit.x = xxx;
+                                //tempUnit.y = yyy;
+                                results.Add(tempUnit);
+                            }
+
+                            tempData = (subData.Column(radius)).AsArray();
+                            //tempMap = (subMap.Column(radius)).AsArray();
+                            for (int i = 1; i <= 2; i++)
+                            {
+                                tempUnit = Fitter(tempData, places, i);
+                                //tempUnit.method = (InterpolationMethod)i;
+                                //tempUnit.direction = Direction.Vertical;
+                                //tempUnit.x = xxx;
+                                //tempUnit.y = yyy;
+                                results.Add(tempUnit);
+                            }
+
+                            tempData = (subData.Diagonal()).AsArray();
+                            //tempMap = (subMap.Diagonal()).AsArray();
+                            for (int i = 1; i <= 2; i++)
+                            {
+                                tempUnit = Fitter(tempData, places, i);
+                                //tempUnit.method = (InterpolationMethod)i;
+                                //tempUnit.direction = Direction.Diagonal1;
+                                //tempUnit.x = xxx;
+                                //tempUnit.y = yyy;
+                                results.Add(tempUnit);
+                            }
+
+                            tempData = (FlipMatrixHorizontally(subData).Diagonal()).AsArray();
+                            //tempMap = (FlipMatrixHorizontally(subMap).Diagonal()).AsArray();
+                            for (int i = 1; i <= 2; i++)
+                            {
+                                tempUnit = Fitter(tempData, places, i);//////////////////////////////////////////////////////////////////////
+                                //tempUnit.method = (InterpolationMethod)i;
+                                //tempUnit.direction = Direction.Diagonal2;
+                                //tempUnit.x = xxx;
+                                //tempUnit.y = yyy;
+                                results.Add(tempUnit);
+                            }
+                            //Console.WriteLine();
+                        }
+
+                        else
+                        {
+                            //BORDER, ONLY VERTICAL OR HORIZONTAL
+                        }
+                    }
+                    else
+                    {
+                        //Nothing to do
+                    }
+                    allValue[xxx, yyy] = results;
+                    //Console.WriteLine();
+                }
+            }
+            //Console.WriteLine();
+            for (int xxx = 0; xxx < width; xxx++)
+            {
+                for (int yyy = 0; yyy < height; yyy++)
+                {
+                    if (allValue[xxx, yyy].Count != 0)
+                    {
+                        InterpolatedUnit bestGoodness = new InterpolatedUnit { goodnessOfFit = 99999999 };
+                        List<InterpolatedUnit> temp3 = allValue[xxx, yyy];
+                        for (int i = 0; i < temp3.Count; i++)
+                        {
+                            if (temp3[i].goodnessOfFit <= bestGoodness.goodnessOfFit)
+                            {
+                                bestGoodness = temp3[i];
+                            }
+                        }
+                        copyData[yyy, xxx] = bestGoodness.value;
+                    }
                 }
             }
 
-            double[] FIT;
-
-            FIT = Fit.Polynomial(places, valuables, order);
-            for (int i = 0; i < places.Length + 1; i++)
-            {
-                fittedValues[i] = Polynomial.Evaluate(lower + i, FIT);
-            }
-
-
-        }*/
-
-        public InterpolatedUnit Fitter(double[] values, double[] places, int position, int order)
-        {
-            //List<double> temp= values.AsEnumerable<double>;
-
-
-            double[] fit = Fit.Polynomial(places, values, order);
-            double[] fittedValues=new double[places.Length + 1];
-            for (int i = 0; i < fittedValues.Length; i++)
-            {
-                fittedValues[i] = Polynomial.Evaluate(i,fit);
-            }
-            List<double> values2 = values.Cast<double>().ToList();
-            double calculatedValue = (int)fittedValues[position];
-
-            values2.Insert(position, calculatedValue);
-            double[] values3 = values2.ToArray();
-            double error= ErrorOfFit(values2.Cast<double>().ToArray(), fittedValues);
-
-            return new InterpolatedUnit { value = calculatedValue, goodnessOfFit = error, valueArray = values3 };
+            return copyData;
         }
 
-        public InterpolatedUnit Fitter2(double[] values, double[] places, int position, int order)
+        public Matrix<double> FlipMatrixHorizontally(Matrix<double> data)
+        {
+            Matrix<double> output = Matrix<double>.Build.Dense(data.RowCount, data.ColumnCount);
+            int counter = data.ColumnCount - 1;
+            for (int i = 0; i < data.ColumnCount; i++)
+            {
+                output.SetColumn(0, data.Row(counter));
+                counter--;
+            }
+            return output;
+        }
+
+        public InterpolatedUnit Fitter(double[] values, double[] places, int order)
         {
             double[] fit = Fit.Polynomial(places, values, order);
             double[] fittedValues = new double[places.Length];
@@ -97,90 +162,54 @@ namespace p00
                 fittedValues[i] = Polynomial.Evaluate(i, fit);
             }
             double error = ErrorOfFit(values, fittedValues);
-            return new InterpolatedUnit { value =(int)Polynomial.Evaluate(position,fit), goodnessOfFit = error};
+            return new InterpolatedUnit { value = (int)Polynomial.Evaluate(values.Length / 2, fit), goodnessOfFit = error };
         }
 
-        public Matrix<double>Prefit(Matrix<double>data,Matrix<double>map)
+        public Matrix<double> Prefit(Matrix<double> data, Matrix<double> map)
         {
             int height = data.RowCount;
             int width = data.ColumnCount;
-            //BorderType borderType = BorderType.None;
+            Matrix<double> output = data;
             for (int xxx = 0; xxx < width; xxx++)
             {
                 for (int yyy = 0; yyy < height; yyy++)
                 {
-                    if (map[yyy,xxx]==0)
+                    if (map[yyy, xxx] == 0)
                     {
                         if (xxx == 0)
                         {
-                            if (yyy == 0)
-                            {
-                                //borderType = BorderType.LowerLeft;
-                                data[yyy, xxx] = (data[yyy+1, xxx] + data[yyy, xxx+1]) / 2d;
-                            }
+                            if (yyy == 0) { output[yyy, xxx] = (data[yyy + 1, xxx] + data[yyy, xxx + 1]) / 2d; }//borderType = BorderType.LowerLeft;   
                             else
                             {
-                                if (yyy == height - 1)
-                                {
-                                    //borderType = BorderType.UpperLeft;
-                                    data[yyy, xxx] = (data[yyy-1, xxx] + data[yyy, xxx+1]) / 2d;
-                                }
-                                else
-                                {
-                                    //borderType = BorderType.Left;
-                                    data[yyy, xxx] = (data[yyy + 1, xxx] + data[yyy - 1, xxx] + data[yyy, xxx + 1]) / 2d;
-                                }
+                                if (yyy == height - 1) { output[yyy, xxx] = (data[yyy - 1, xxx] + data[yyy, xxx + 1]) / 2d; }//borderType = BorderType.UpperLeft;
+                                else { output[yyy, xxx] = (data[yyy + 1, xxx] + data[yyy - 1, xxx] + data[yyy, xxx + 1]) / 2d; }//borderType = BorderType.Left;
                             }
                         }
                         else
                         {
                             if (xxx == width - 1)
                             {
-                                if (yyy == 0)
-                                {
-                                    //borderType = BorderType.LowerRight;
-                                    data[yyy, xxx] = (data[yyy+1, xxx] + data[yyy, xxx-1]) / 2d;
-                                }
+                                if (yyy == 0) { output[yyy, xxx] = (data[yyy + 1, xxx] + data[yyy, xxx - 1]) / 2d; }//borderType = BorderType.LowerRight;
                                 else
                                 {
-                                    if (yyy == height - 1)
-                                    {
-                                        //borderType = BorderType.UpperRight;
-                                        data[yyy, xxx] = (data[yyy - 1, xxx] + data[yyy, xxx - 1]) / 2d;
-                                    }
-                                    else
-                                    {
-                                        //borderType = BorderType.Right;
-                                        data[yyy, xxx] = (data[yyy+1, xxx] + data[yyy-1, xxx] + data[yyy, xxx-1]) /3d;
-                                    }
+                                    if (yyy == height - 1) { data[yyy, xxx] = (data[yyy - 1, xxx] + data[yyy, xxx - 1]) / 2d; }//borderType = BorderType.UpperRight;
+                                    else { output[yyy, xxx] = (data[yyy + 1, xxx] + data[yyy - 1, xxx] + data[yyy, xxx - 1]) / 3d; }//borderType = BorderType.Right;
                                 }
                             }
                             else
                             {
-                                if (yyy == 0)
-                                {
-                                    //borderType = BorderType.Lower;
-                                    data[yyy, xxx]= (data[yyy+1, xxx]+data[yyy, xxx+1]+data[yyy, xxx-1])/3d;
-                                }
+                                if (yyy == 0) { output[yyy, xxx] = (data[yyy + 1, xxx] + data[yyy, xxx + 1] + data[yyy, xxx - 1]) / 3d; }//borderType = BorderType.Lower;     
                                 else
                                 {
-                                    if (yyy == height - 1)
-                                    {
-                                        //borderType = BorderType.Upper;
-                                        data[yyy, xxx] = (data[yyy-1, xxx] + data[yyy, xxx+1] + data[yyy, xxx-1]) /3d;
-                                    }
-                                    else
-                                    {
-                                        //borderType = BorderType.None;
-                                        data[yyy, xxx] = (data[yyy + 1, xxx] + data[yyy - 1, xxx] + data[yyy, xxx + 1] + data[yyy, xxx - 1]) / 4d;
-                                    }
+                                    if (yyy == height - 1) { data[yyy, xxx] = (data[yyy - 1, xxx] + data[yyy, xxx + 1] + data[yyy, xxx - 1]) / 3d; }//borderType = BorderType.Upper;
+                                    else { output[yyy, xxx] = (data[yyy + 1, xxx] + data[yyy - 1, xxx] + data[yyy, xxx + 1] + data[yyy, xxx - 1]) / 4d; }//borderType = BorderType.None;
                                 }
                             }
                         }
                     }
                 }
             }
-            return data;
+            return output;
         }
 
 
@@ -196,7 +225,7 @@ namespace p00
             }
             else
             {
-                Console.WriteLine();
+                //Console.WriteLine();
             }
             return Math.Sqrt(sum) / measured.Length;
         }
@@ -223,7 +252,7 @@ namespace p00
             {
                 if (line < 0)
                 {
-                    if (height+line>=square)
+                    if (height + line >= square)
                     {
                         for (int i = 0; i < square; i++)
                         {
@@ -232,7 +261,7 @@ namespace p00
                     }
                     else
                     {
-                        for (int i = 0; i < height+line; i++)
+                        for (int i = 0; i < height + line; i++)
                         {
                             output[i] = input[i - line, i];
                         }
@@ -286,7 +315,7 @@ namespace p00
 
 
 
-            Console.WriteLine();
+            //Console.WriteLine();
 
             for (int i = 0; i < arrayOfList.Length; i++)
             {
@@ -295,7 +324,7 @@ namespace p00
                     List<InterpolatedUnit> temp = arrayOfList[i];
                     if (i == (237 * 564) + 295)
                     {
-                        Console.WriteLine();
+                        //Console.WriteLine();
                     }
                     InterpolatedUnit bestGoodness = new InterpolatedUnit { goodnessOfFit = 99999999 };
                     InterpolatedUnit temp3;
@@ -323,7 +352,7 @@ namespace p00
 
             if (!direction)
             {
-                Console.WriteLine();
+                //Console.WriteLine();
             }
 
 
@@ -355,7 +384,7 @@ namespace p00
                     {
                         if ((xxx == 415 && yyy == 132) || (yyy == 415 && xxx == 132))
                         {
-                            Console.WriteLine();
+                            //Console.WriteLine();
                         }
                         if (xxx >= 0 + radius)
                         {
@@ -377,7 +406,7 @@ namespace p00
                             upper = xxx + radius;
                         }
 
-                        Console.WriteLine();
+                        //Console.WriteLine();
 
                         if (xxx == 0 || xxx == width - 1)
                         {
@@ -427,18 +456,18 @@ namespace p00
 
                             //goodnessOfFit = GoodnessOfFit.RSquared(fittedValues, values2);
                             goodnessOfFit = ErrorOfFit(values2, fittedValues);
-                            Console.WriteLine();
+                            //Console.WriteLine();
                             if (direction)
                             {
                                 arrayOfList[(yyy * width) + xxx].Add(new InterpolatedUnit { x = (int)xxx, y = (int)yyy, value = calculatedValue, goodnessOfFit = goodnessOfFit, location = (yyy * width) + xxx, direction = Direction.Horizontal, valueArray = values2, method = (InterpolationMethod)order });
                             }
                             else
                             {
-                                Console.WriteLine();
+                                //Console.WriteLine();
                                 arrayOfList[(xxx * height) + yyy].Add(new InterpolatedUnit { x = (int)yyy, y = (int)xxx, value = calculatedValue, goodnessOfFit = goodnessOfFit, location = (xxx * height) + yyy, direction = Direction.Vertical, valueArray = values2, method = (InterpolationMethod)order });
                             }
 
-                            Console.WriteLine();
+                            //Console.WriteLine();
                         }
                     }
                 }

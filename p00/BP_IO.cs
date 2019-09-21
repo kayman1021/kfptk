@@ -35,7 +35,7 @@ namespace p00
                 Byte[] bytebuffer = reader.ReadBytes(datalength);
                 for (int i = 0; i < pixelcount; i++) { output[i / width, i % width] = (double)(bytebuffer[i << 1] + ((bytebuffer[(i << 1) + 1]) << 8)); }
             }
-            Console.WriteLine();
+            //Console.WriteLine();
             return output;
         }
         public void ExportRawDataXiaomi(Matrix<double> data, string filename)
@@ -290,9 +290,9 @@ namespace p00
                     }
                     intbuffer[bbb / bitsPerSample] = sum;
                 }
-                Console.WriteLine();
+                //Console.WriteLine();
                 for (int i = 0; i < intbuffer.Length; i++) { output[i / width, i % width] = (double)intbuffer[i]; }
-                Console.WriteLine();
+                //Console.WriteLine();
                 return output;
             }
         }
@@ -365,7 +365,7 @@ namespace p00
                     output[yyy, xxx] = temp;
                 }
             }
-            Console.WriteLine();
+            //Console.WriteLine();
 
 
 
