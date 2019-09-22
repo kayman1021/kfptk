@@ -13,7 +13,6 @@ using MathNet.Numerics.Interpolation;
 
 namespace p00
 {
-    //public enum dngFileType { Xiaomi16bit, MLVApp14bit };
     public partial class BP_Data
     {
         public Matrix<double> Left;

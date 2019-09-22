@@ -9,10 +9,7 @@ namespace p00
 {
     public partial class Form1 : Form
     {
-
-        //RawData rwt = new RawData();
         BP_Data rrwwtt = new BP_Data();
-
 
         public Form1()
         {
@@ -36,12 +33,10 @@ namespace p00
         {
             if ((DngFileType)comboBox_Import_DNG_Select.SelectedItem == DngFileType.MLVApp14bit)
             {
-                //rwt.rawData = rwt.ImportRawData14bitUncompressed(textBox_Import_DNG_Text.Text);
                 rrwwtt.Left = rrwwtt.ImportRawData14bitUncompressed(textBox_Import_DNG_Text.Text);
             }
             if ((DngFileType)comboBox_Import_DNG_Select.SelectedItem == DngFileType.Xiaomi16bit)
             {
-                //rwt.rawData = rwt.ImportRawDataXiaomi(textBox_Import_DNG_Text.Text);
                 rrwwtt.Left = rrwwtt.ImportRawDataXiaomi(textBox_Import_DNG_Text.Text);
             }
         }
@@ -57,8 +52,6 @@ namespace p00
         }
         private void button_Import_FPM_Import_Click(object sender, EventArgs e)
         {
-            //rwt.mapData = rwt.ImportPixelMapFromFPM(textBox_Import_FPM_Text.Text, rwt.rawData);
-            ////////////////////////////////////////////////////////////////////////////////////////////////////////////////    PUSH ONLY DIMENSIONS? NOT THE WHOLE MATRIX!
             rrwwtt.Left = rrwwtt.ImportPixelMapFromFPM(textBox_Export_FPM_Text.Text, rrwwtt.Left);
         }
         private void button_Import_TIFF_Browse_Click(object sender, EventArgs e)
@@ -73,7 +66,6 @@ namespace p00
         }
         private void button_Import_TIFF_Import_Click(object sender, EventArgs e)
         {
-            //rwt.rawData = rwt.ImportRawDataTiff(textBox_Import_TIFF_Text.Text);
             rrwwtt.Left = rrwwtt.ImportRawDataTiff(textBox_Export_TIFF_Text.Text);
         }
         private void button_Import_Mapped_Browse_Click(object sender, EventArgs e)
@@ -94,45 +86,30 @@ namespace p00
         }
         private void button_Import_Mapped_Import_Click(object sender, EventArgs e)
         {
-            //rwt.mapData = rwt.ImportPixelMapFromPicture(textBox_Import_Mapped_Text.Text);
             rrwwtt.Right = rrwwtt.ImportPixelMapFromPicture(textBox_Import_Mapped_Text.Text);
-            //Console.WriteLine();
         }
         private void button_Tools_Deinterlace_Click(object sender, EventArgs e)
         {
-            //rwt.rawData = rwt.DeinterlaceUniversal(rwt.rawData, false);
             rrwwtt.Left = rrwwtt.DeinterlaceUniversal(rrwwtt.Left, false);
         }
         private void button_Tools_DeinterlaceDualISO_Click(object sender, EventArgs e)
         {
-            //rwt.rawData = rwt.DeinterlaceUniversal(rwt.rawData, true);
             rrwwtt.Left = rrwwtt.DeinterlaceUniversal(rrwwtt.Left, true);
-            //rwt.makeSplineHorizontal();
-            //rwt.makeSplineVertical();
-            //Console.WriteLine();
         }
         private void button_Tools_Transpose_Click(object sender, EventArgs e)
         {
-            //rwt.rawData = rwt.TransposeArray(rwt.rawData);
             rrwwtt.Left = rrwwtt.TransposeArray(rrwwtt.Left);
         }
         private void button_Tools_Interlace_Click(object sender, EventArgs e)
         {
-            //rwt.rawData = rwt.InterlaceUniversal(rwt.rawData, false);
             rrwwtt.Left = rrwwtt.InterlaceUniversal(rrwwtt.Left, false);
         }
         private void button_Tools_InterlaceDualISO_Click(object sender, EventArgs e)
         {
-            //rwt.rawData = rwt.InterlaceUniversal(rwt.rawData, true);
             rrwwtt.Left = rrwwtt.InterlaceUniversal(rrwwtt.Left, true);
         }
         private void button_Tools_SwapSides_Click(object sender, EventArgs e)
         {
-            //int[,] temp;
-            //temp = rwt.rawData;
-            //rwt.rawData = rwt.mapData;
-            //rwt.mapData = temp;
-            //rrwwtt.SwapSides(rrwwtt.Left, rrwwtt.Right);
             Matrix<double> temp = Matrix<double>.Build.Dense(rrwwtt.Left.RowCount, rrwwtt.Left.ColumnCount);
             temp = rrwwtt.Left;
             rrwwtt.Left = rrwwtt.Right;
@@ -151,7 +128,6 @@ namespace p00
         }
         private void button_Export_TIFF_Export_Click(object sender, EventArgs e)
         {
-            //rwt.ExportRawDataTiff(@textBox_Export_TIFF_Text.Text, rwt.rawData);
             rrwwtt.ExportRawDataTiff(@textBox_Export_TIFF_Text.Text, rrwwtt.Left);
         }
         private void button_Export_FPM_Browse_Click(object sender, EventArgs e)
@@ -167,47 +143,26 @@ namespace p00
         }
         private void button_Export_FPM_Export_Click(object sender, EventArgs e)
         {
-            //rwt.ExportFPM(@textBox_Export_FPM_Text.Text, rwt.mapData);
             rrwwtt.ExportFPM(@textBox_Export_FPM_Text.Text, rrwwtt.Left);
-        }
-
-        private void button1_Click(object sender, EventArgs e)
-        {
-            /*//rwt.ModifyBlock(rwt.rawData, 0, 0, rwt.CorrectArea(rwt.rawData, rwt.mapData, 2, 2, 0, 0));
-            //rwt.ModifyBlock(rwt.rawData, 1, 1, rwt.CorrectArea(rwt.rawData, rwt.mapData, 2, 2, 1, 1));
-            rrwwtt.ModifyBlock(rrwwtt.Left, 0, 0, rrwwtt.CorrectArea(rrwwtt.Left, rrwwtt.Right, 2, 2, 0, 0));
-            rrwwtt.ModifyBlock(rrwwtt.Left, 1, 1, rrwwtt.CorrectArea(rrwwtt.Left, rrwwtt.Right, 2, 2, 1, 1));*/
-        }
-
-        private void button2_Click(object sender, EventArgs e)
-        {
-            /*rwt.ModifyBlock(rwt.rawData, 0, 0, rwt.CorrectArea(rwt.rawData, rwt.mapData, 2, 4, 0, 0));
-            rwt.ModifyBlock(rwt.rawData, 1, 1, rwt.CorrectArea(rwt.rawData, rwt.mapData, 2, 4, 1, 1));
-            rwt.ModifyBlock(rwt.rawData, 0, 2, rwt.CorrectArea(rwt.rawData, rwt.mapData, 2, 4, 0, 2));
-            rwt.ModifyBlock(rwt.rawData, 1, 3, rwt.CorrectArea(rwt.rawData, rwt.mapData, 2, 4, 1, 3));*/
         }
 
         private void button3_Click(object sender, EventArgs e)
         {
-            //rwt.rawData = rwt.DeinterlaceUniversal(rwt.rawData, true);
             rrwwtt.Left = rrwwtt.DeinterlaceUniversal(rrwwtt.Left, true);
         }
 
         private void button4_Click(object sender, EventArgs e)
         {
-            //rwt.rawData = rwt.DeinterlaceUniversal(rwt.rawData, false);
             rrwwtt.Left = rrwwtt.DeinterlaceUniversal(rrwwtt.Left, false);
         }
 
         private void button3_Click_1(object sender, EventArgs e)
         {
-            //rwt.ExportRawDataXiaomi(rwt.rawData,@textBox_Import_DNG_Text.Text);
             rrwwtt.ExportRawDataXiaomi(rrwwtt.Left, @textBox_Import_DNG_Text.Text);
         }
 
         private void button_EXP_EOS_Click(object sender, EventArgs e)
         {
-            //rwt.ExportRawData14bitUncompressed(rwt.rawData, textBox_Import_DNG_Text.Text);
             rrwwtt.ExportRawData14bitUncompressed(rrwwtt.Left, @textBox_Import_DNG_Text.Text);
         }
 
@@ -216,7 +171,6 @@ namespace p00
             System.IO.Stream myStream;
             OpenFileDialog thisDialog = new OpenFileDialog();
 
-            //thisDialog.InitialDirectory = "d:\\";
             thisDialog.Filter = "All files (*.*)|*.*";
             thisDialog.FilterIndex = 2;
             thisDialog.RestoreDirectory = true;
@@ -260,137 +214,22 @@ namespace p00
             }
         }
 
-        private void button6_Click(object sender, EventArgs e)
-        {
-            //rwt.FindValueAtDegree(rwt.SliceBlock(rwt.rawData,2,4,0,0),rwt.SliceBlock(rwt.mapData,2,4,0,0),(double)numericUpDown_angle.Value,3,0);
-        }
-
-        private void button_correctVertical_Click(object sender, EventArgs e)
-        {
-            /*//int width = rwt.rawData.GetLength(0) / 2;
-            //int height = rwt.rawData.GetLength(1) / 4;
-            Point[] corruptZones = new Point[4] {
-                new Point(0,0),
-                new Point(1,1),
-                new Point(0,2),
-                new Point(1,3)
-            };
-
-            int[,] data;
-            int[,] map;
-            Point zone;
-            CubicSpline[] cs;
-
-            for (int i = 0; i < 4; i++)
-            {
-                zone = corruptZones[i];
-                data = rrwwtt.SliceBlock(rrwwtt.Left, 2, 4, zone.X,zone.Y);
-                map = rrwwtt.SliceBlock(rrwwtt.Right, 2, 4, zone.X, zone.Y);
-                cs = rrwwtt.InterpolateColumn(data, map);
-                for (int xxx = 0; xxx < width; xxx++)
-                {
-                    for (int yyy = 0; yyy < height; yyy++)
-                    {
-                        if (map[xxx, yyy] == 0)
-                        {
-                            data[xxx, yyy] = (int)rwt.interpolateFromColumn(xxx, yyy, cs);
-                        }
-                    }
-                }
-                rwt.ModifyBlock(rwt.rawData, zone.X,zone.Y, data);
-            }
-        */
-        }
-
-        private void button_correctHorizontal_Click(object sender, EventArgs e)
-        {/*
-            int width = rwt.rawData.GetLength(0) / 2;
-            int height = rwt.rawData.GetLength(1) / 4;
-            Point[] corruptZones = new Point[4] {
-                new Point(0,0),
-                new Point(1,1),
-                new Point(0,2),
-                new Point(1,3)
-            };
-
-            int[,] data;
-            int[,] map;
-            Point zone;
-            CubicSpline[] cs;
-
-            for (int i = 0; i < 4; i++)
-            {
-                zone = corruptZones[i];
-                data = rwt.SliceBlock(rwt.rawData, 2, 4, zone.X, zone.Y);
-                map = rwt.SliceBlock(rwt.mapData, 2, 4, zone.X, zone.Y);
-                cs = rwt.InterpolateRow(data, map);
-                for (int yyy = 0; yyy < height; yyy++)
-                {
-                    for (int xxx = 0; xxx < width; xxx++)
-                    {
-                        if (map[xxx, yyy] == 0)
-                        {
-                            data[xxx, yyy] = (int)rwt.interpolateFromRow(xxx, yyy, cs);
-                        }
-                    }
-                }
-                rwt.ModifyBlock(rwt.rawData, zone.X, zone.Y, data);
-            }
-        */
-        }
-
-        private void button7_Click(object sender, EventArgs e)
-        {
-            // rwt.CA(rwt.rawData, rwt.mapData, 2, 4, 0, 0);
-
-            /*
-                        rwt.ModifyBlock(rwt.rawData, 0, 0, rwt.CA(rwt.rawData, rwt.mapData, 2, 4, 0, 0));
-                        rwt.ModifyBlock(rwt.rawData, 1, 1, rwt.CA(rwt.rawData, rwt.mapData, 2, 4, 1, 1));
-                        rwt.ModifyBlock(rwt.rawData, 0, 2, rwt.CA(rwt.rawData, rwt.mapData, 2, 4, 0, 2));
-                        rwt.ModifyBlock(rwt.rawData, 1, 3, rwt.CA(rwt.rawData, rwt.mapData, 2, 4, 1, 3));*/
-        }
-
-        private void button8_Click(object sender, EventArgs e)
-        {
-
-            rrwwtt.Left = rrwwtt.ggg(rrwwtt.Left, rrwwtt.Right, 3);
-            //rrwwtt.Left = rrwwtt.ggg(rrwwtt.Left, rrwwtt.Right, 1, 3);
-            //rrwwtt.Left = rrwwtt.ggg(rrwwtt.Left, rrwwtt.Right, 1, 3);
-
-            //rrwwtt.Left = rrwwtt.ggg(rrwwtt.Left, rrwwtt.Right, 2, 3);
-            //rrwwtt.Left = rrwwtt.ggg(rrwwtt.Left, rrwwtt.Right, 2, 3);
-            //rrwwtt.Left = rrwwtt.ggg(rrwwtt.Left, rrwwtt.Right, 2, 3);
-
-            //rrwwtt.Left = rrwwtt.ggg(rrwwtt.Left, rrwwtt.Right, 3, 3);
-            //rrwwtt.Left = rrwwtt.ggg(rrwwtt.Left, rrwwtt.Right, 3, 3);
-            //rrwwtt.Left = rrwwtt.ggg(rrwwtt.Left, rrwwtt.Right, 3, 3);
-        }
-
-        private void button9_Click(object sender, EventArgs e)
-        {
-            rrwwtt.Left = rrwwtt.SliceBlock(rrwwtt.Left, 2, 4, 0, 0);
-            rrwwtt.Right = rrwwtt.SliceBlock(rrwwtt.Right, 2, 4, 0, 0);
-        }
-
         private void button10_Click(object sender, EventArgs e)
         {
             int radius = 3;
+            int rounds = 2;
             rrwwtt.ModifyBlock(rrwwtt.Left, 0, 0, rrwwtt.Prefit(rrwwtt.SliceBlock(rrwwtt.Left, 2, 4, 0, 0), rrwwtt.SliceBlock(rrwwtt.Right, 2, 4, 0, 0)));
-            rrwwtt.ModifyBlock(rrwwtt.Left, 0, 0, rrwwtt.Collector(rrwwtt.SliceBlock(rrwwtt.Left, 2, 4, 0, 0), rrwwtt.SliceBlock(rrwwtt.Right, 2, 4, 0, 0), radius));
+            rrwwtt.ModifyBlock(rrwwtt.Left, 1, 1, rrwwtt.Prefit(rrwwtt.SliceBlock(rrwwtt.Left, 2, 4, 1, 1), rrwwtt.SliceBlock(rrwwtt.Right, 2, 4, 1, 1)));
+            rrwwtt.ModifyBlock(rrwwtt.Left, 0, 2, rrwwtt.Prefit(rrwwtt.SliceBlock(rrwwtt.Left, 2, 4, 0, 2), rrwwtt.SliceBlock(rrwwtt.Right, 2, 4, 0, 2)));
+            rrwwtt.ModifyBlock(rrwwtt.Left, 1, 3, rrwwtt.Prefit(rrwwtt.SliceBlock(rrwwtt.Left, 2, 4, 1, 3), rrwwtt.SliceBlock(rrwwtt.Right, 2, 4, 1, 3)));
 
-            rrwwtt.ModifyBlock(rrwwtt.Left, 1, 1, rrwwtt.Prefit(rrwwtt.SliceBlock(rrwwtt.Left, 2, 4, 0, 0), rrwwtt.SliceBlock(rrwwtt.Right, 2, 4, 1, 1)));
-            rrwwtt.ModifyBlock(rrwwtt.Left, 1, 1, rrwwtt.Collector(rrwwtt.SliceBlock(rrwwtt.Left, 2, 4, 0, 0), rrwwtt.SliceBlock(rrwwtt.Right, 2, 4, 1, 1), radius));
-
-            rrwwtt.ModifyBlock(rrwwtt.Left, 0, 2, rrwwtt.Prefit(rrwwtt.SliceBlock(rrwwtt.Left, 2, 4, 0, 0), rrwwtt.SliceBlock(rrwwtt.Right, 2, 4, 0, 2)));
-            rrwwtt.ModifyBlock(rrwwtt.Left, 0, 2, rrwwtt.Collector(rrwwtt.SliceBlock(rrwwtt.Left, 2, 4, 0, 0), rrwwtt.SliceBlock(rrwwtt.Right, 2, 4, 0, 2), radius));
-
-            rrwwtt.ModifyBlock(rrwwtt.Left, 1, 3, rrwwtt.Prefit(rrwwtt.SliceBlock(rrwwtt.Left, 2, 4, 0, 0), rrwwtt.SliceBlock(rrwwtt.Right, 2, 4, 1, 3)));
-            rrwwtt.ModifyBlock(rrwwtt.Left, 1, 3, rrwwtt.Collector(rrwwtt.SliceBlock(rrwwtt.Left, 2, 4, 0, 0), rrwwtt.SliceBlock(rrwwtt.Right, 2, 4, 1, 3), radius));
-
-            //rrwwtt.Left = rrwwtt.Prefit(rrwwtt.Left, rrwwtt.Right);
-            //rrwwtt.Left = rrwwtt.Collector(rrwwtt.Left, rrwwtt.Right, 3);
-            //rrwwtt.Left = rrwwtt.Collector(rrwwtt.Left, rrwwtt.Right, 3);
-            //rrwwtt.Left = rrwwtt.Collector(rrwwtt.Left, rrwwtt.Right, 3);
+            for (int i = 0; i < rounds; i++)
+            {
+                rrwwtt.ModifyBlock(rrwwtt.Left, 0, 0, rrwwtt.Collector(rrwwtt.SliceBlock(rrwwtt.Left, 2, 4, 0, 0), rrwwtt.SliceBlock(rrwwtt.Right, 2, 4, 0, 0), radius));
+                rrwwtt.ModifyBlock(rrwwtt.Left, 1, 1, rrwwtt.Collector(rrwwtt.SliceBlock(rrwwtt.Left, 2, 4, 1, 1), rrwwtt.SliceBlock(rrwwtt.Right, 2, 4, 1, 1), radius));
+                rrwwtt.ModifyBlock(rrwwtt.Left, 0, 2, rrwwtt.Collector(rrwwtt.SliceBlock(rrwwtt.Left, 2, 4, 0, 2), rrwwtt.SliceBlock(rrwwtt.Right, 2, 4, 0, 2), radius));
+                rrwwtt.ModifyBlock(rrwwtt.Left, 1, 3, rrwwtt.Collector(rrwwtt.SliceBlock(rrwwtt.Left, 2, 4, 1, 3), rrwwtt.SliceBlock(rrwwtt.Right, 2, 4, 1, 3), radius));
+            }
         }
     }
 }
