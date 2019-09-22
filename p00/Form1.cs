@@ -374,10 +374,23 @@ namespace p00
 
         private void button10_Click(object sender, EventArgs e)
         {
-            rrwwtt.Left = rrwwtt.Prefit(rrwwtt.Left, rrwwtt.Right);
-            rrwwtt.Left = rrwwtt.Collector(rrwwtt.Left, rrwwtt.Right, 3);
-            rrwwtt.Left = rrwwtt.Collector(rrwwtt.Left, rrwwtt.Right, 3);
-            rrwwtt.Left = rrwwtt.Collector(rrwwtt.Left, rrwwtt.Right, 3);
+            int radius = 3;
+            rrwwtt.ModifyBlock(rrwwtt.Left, 0, 0, rrwwtt.Prefit(rrwwtt.SliceBlock(rrwwtt.Left, 2, 4, 0, 0), rrwwtt.SliceBlock(rrwwtt.Right, 2, 4, 0, 0)));
+            rrwwtt.ModifyBlock(rrwwtt.Left, 0, 0, rrwwtt.Collector(rrwwtt.SliceBlock(rrwwtt.Left, 2, 4, 0, 0), rrwwtt.SliceBlock(rrwwtt.Right, 2, 4, 0, 0), radius));
+
+            rrwwtt.ModifyBlock(rrwwtt.Left, 1, 1, rrwwtt.Prefit(rrwwtt.SliceBlock(rrwwtt.Left, 2, 4, 0, 0), rrwwtt.SliceBlock(rrwwtt.Right, 2, 4, 1, 1)));
+            rrwwtt.ModifyBlock(rrwwtt.Left, 1, 1, rrwwtt.Collector(rrwwtt.SliceBlock(rrwwtt.Left, 2, 4, 0, 0), rrwwtt.SliceBlock(rrwwtt.Right, 2, 4, 1, 1), radius));
+
+            rrwwtt.ModifyBlock(rrwwtt.Left, 0, 2, rrwwtt.Prefit(rrwwtt.SliceBlock(rrwwtt.Left, 2, 4, 0, 0), rrwwtt.SliceBlock(rrwwtt.Right, 2, 4, 0, 2)));
+            rrwwtt.ModifyBlock(rrwwtt.Left, 0, 2, rrwwtt.Collector(rrwwtt.SliceBlock(rrwwtt.Left, 2, 4, 0, 0), rrwwtt.SliceBlock(rrwwtt.Right, 2, 4, 0, 2), radius));
+
+            rrwwtt.ModifyBlock(rrwwtt.Left, 1, 3, rrwwtt.Prefit(rrwwtt.SliceBlock(rrwwtt.Left, 2, 4, 0, 0), rrwwtt.SliceBlock(rrwwtt.Right, 2, 4, 1, 3)));
+            rrwwtt.ModifyBlock(rrwwtt.Left, 1, 3, rrwwtt.Collector(rrwwtt.SliceBlock(rrwwtt.Left, 2, 4, 0, 0), rrwwtt.SliceBlock(rrwwtt.Right, 2, 4, 1, 3), radius));
+
+            //rrwwtt.Left = rrwwtt.Prefit(rrwwtt.Left, rrwwtt.Right);
+            //rrwwtt.Left = rrwwtt.Collector(rrwwtt.Left, rrwwtt.Right, 3);
+            //rrwwtt.Left = rrwwtt.Collector(rrwwtt.Left, rrwwtt.Right, 3);
+            //rrwwtt.Left = rrwwtt.Collector(rrwwtt.Left, rrwwtt.Right, 3);
         }
     }
 }

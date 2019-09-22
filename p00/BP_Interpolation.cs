@@ -24,27 +24,28 @@ namespace p00
             int width = data.ColumnCount;
 
             List<InterpolatedUnit>[,] allValue = new List<InterpolatedUnit>[width, height];
-            Matrix<double> copyData = data;
-            Matrix<double> copyMap = map;
-            copyData = data;
+            //Matrix<double> data = data;
+            //Matrix<double> map = map;
+            //data = data;
 
             for (int xxx = 0; xxx < width; xxx++)
             {
                 for (int yyy = 0; yyy < height; yyy++)
                 {
                     List<InterpolatedUnit> results = new List<InterpolatedUnit>();
-                    if (copyMap[yyy, xxx] == 0)
+                    if (map[yyy, xxx] == 0)
                     {
-                        if (yyy - radius >= 0 && yyy + radius <= height && xxx - radius >= 0 && xxx + radius <= width)
+                        if (yyy - radius >= 0 && yyy + radius < height && xxx - radius >= 0 && xxx + radius < width)
                         {
                             int size = (radius * 2) + 1;
-                            Matrix<double> subData = copyData.SubMatrix(yyy - radius, size, xxx - radius, size);
-                            Matrix<double> subMap = copyMap.SubMatrix(yyy - radius, size, xxx - radius, size);
-
-                            InterpolatedUnit tempUnit = new InterpolatedUnit();
+                            /*if (xxx==560&&yyy==76)
+                            {
+                                Console.WriteLine();
+                            }*/
+                            Matrix<double> subData = data.SubMatrix(yyy - radius, size, xxx - radius, size);
+                            Matrix<double> subMap = map.SubMatrix(yyy - radius, size, xxx - radius, size);
 
                             double[] tempData = new double[size];
-                            //double[] tempMap = new double[size];
                             double[] places = new double[tempData.Length];
                             for (int i = 0; i < places.Length; i++)
                             {
@@ -53,55 +54,28 @@ namespace p00
 
 
                             tempData = (subData.Row(radius)).AsArray();
-                            //tempMap = (subMap.Row(radius)).AsArray();
                             for (int i = 1; i <= 2; i++)
                             {
-                                //Console.WriteLine();
-                                tempUnit = Fitter(tempData, places, i);
-                                //Console.WriteLine();
-                                //tempUnit.method = (InterpolationMethod)i;
-                                //tempUnit.direction = Direction.Horizontal;
-                                //tempUnit.x = xxx;
-                                //tempUnit.y = yyy;
-                                results.Add(tempUnit);
+                                results.Add(Fitter(tempData, places, i));
                             }
 
                             tempData = (subData.Column(radius)).AsArray();
-                            //tempMap = (subMap.Column(radius)).AsArray();
                             for (int i = 1; i <= 2; i++)
                             {
-                                tempUnit = Fitter(tempData, places, i);
-                                //tempUnit.method = (InterpolationMethod)i;
-                                //tempUnit.direction = Direction.Vertical;
-                                //tempUnit.x = xxx;
-                                //tempUnit.y = yyy;
-                                results.Add(tempUnit);
+                                results.Add(Fitter(tempData, places, i));
                             }
 
                             tempData = (subData.Diagonal()).AsArray();
-                            //tempMap = (subMap.Diagonal()).AsArray();
                             for (int i = 1; i <= 2; i++)
                             {
-                                tempUnit = Fitter(tempData, places, i);
-                                //tempUnit.method = (InterpolationMethod)i;
-                                //tempUnit.direction = Direction.Diagonal1;
-                                //tempUnit.x = xxx;
-                                //tempUnit.y = yyy;
-                                results.Add(tempUnit);
+                                results.Add(Fitter(tempData, places, i));
                             }
 
                             tempData = (FlipMatrixHorizontally(subData).Diagonal()).AsArray();
-                            //tempMap = (FlipMatrixHorizontally(subMap).Diagonal()).AsArray();
                             for (int i = 1; i <= 2; i++)
                             {
-                                tempUnit = Fitter(tempData, places, i);//////////////////////////////////////////////////////////////////////
-                                //tempUnit.method = (InterpolationMethod)i;
-                                //tempUnit.direction = Direction.Diagonal2;
-                                //tempUnit.x = xxx;
-                                //tempUnit.y = yyy;
-                                results.Add(tempUnit);
+                                results.Add(Fitter(tempData, places, i));
                             }
-                            //Console.WriteLine();
                         }
 
                         else
@@ -133,12 +107,12 @@ namespace p00
                                 bestGoodness = temp3[i];
                             }
                         }
-                        copyData[yyy, xxx] = bestGoodness.value;
+                        data[yyy, xxx] = bestGoodness.value;
                     }
                 }
             }
 
-            return copyData;
+            return data;
         }
 
         public Matrix<double> FlipMatrixHorizontally(Matrix<double> data)
@@ -178,31 +152,31 @@ namespace p00
                     {
                         if (xxx == 0)
                         {
-                            if (yyy == 0) { output[yyy, xxx] = (data[yyy + 1, xxx] + data[yyy, xxx + 1]) / 2d; }//borderType = BorderType.LowerLeft;   
+                            if (yyy == 0) { output[yyy, xxx] = (int)((data[yyy + 1, xxx] + data[yyy, xxx + 1]) / 2d); }//borderType = BorderType.LowerLeft;   
                             else
                             {
-                                if (yyy == height - 1) { output[yyy, xxx] = (data[yyy - 1, xxx] + data[yyy, xxx + 1]) / 2d; }//borderType = BorderType.UpperLeft;
-                                else { output[yyy, xxx] = (data[yyy + 1, xxx] + data[yyy - 1, xxx] + data[yyy, xxx + 1]) / 2d; }//borderType = BorderType.Left;
+                                if (yyy == height - 1) { output[yyy, xxx] = (int)((data[yyy - 1, xxx] + data[yyy, xxx + 1]) / 2d); }//borderType = BorderType.UpperLeft;
+                                else { output[yyy, xxx] = (int)((data[yyy + 1, xxx] + data[yyy - 1, xxx] + data[yyy, xxx + 1]) / 3d); }//borderType = BorderType.Left;
                             }
                         }
                         else
                         {
                             if (xxx == width - 1)
                             {
-                                if (yyy == 0) { output[yyy, xxx] = (data[yyy + 1, xxx] + data[yyy, xxx - 1]) / 2d; }//borderType = BorderType.LowerRight;
+                                if (yyy == 0) { output[yyy, xxx] = (int)((data[yyy + 1, xxx] + data[yyy, xxx - 1]) / 2d); }//borderType = BorderType.LowerRight;
                                 else
                                 {
-                                    if (yyy == height - 1) { data[yyy, xxx] = (data[yyy - 1, xxx] + data[yyy, xxx - 1]) / 2d; }//borderType = BorderType.UpperRight;
-                                    else { output[yyy, xxx] = (data[yyy + 1, xxx] + data[yyy - 1, xxx] + data[yyy, xxx - 1]) / 3d; }//borderType = BorderType.Right;
+                                    if (yyy == height - 1) { data[yyy, xxx] = (int)((data[yyy - 1, xxx] + data[yyy, xxx - 1]) / 2d); }//borderType = BorderType.UpperRight;
+                                    else { output[yyy, xxx] = (int)((data[yyy + 1, xxx] + data[yyy - 1, xxx] + data[yyy, xxx - 1]) / 3d); }//borderType = BorderType.Right;
                                 }
                             }
                             else
                             {
-                                if (yyy == 0) { output[yyy, xxx] = (data[yyy + 1, xxx] + data[yyy, xxx + 1] + data[yyy, xxx - 1]) / 3d; }//borderType = BorderType.Lower;     
+                                if (yyy == 0) { output[yyy, xxx] = (int)((data[yyy + 1, xxx] + data[yyy, xxx + 1] + data[yyy, xxx - 1]) / 3d); }//borderType = BorderType.Lower;     
                                 else
                                 {
-                                    if (yyy == height - 1) { data[yyy, xxx] = (data[yyy - 1, xxx] + data[yyy, xxx + 1] + data[yyy, xxx - 1]) / 3d; }//borderType = BorderType.Upper;
-                                    else { output[yyy, xxx] = (data[yyy + 1, xxx] + data[yyy - 1, xxx] + data[yyy, xxx + 1] + data[yyy, xxx - 1]) / 4d; }//borderType = BorderType.None;
+                                    if (yyy == height - 1) { data[yyy, xxx] = (int)((data[yyy - 1, xxx] + data[yyy, xxx + 1] + data[yyy, xxx - 1]) / 3d); }//borderType = BorderType.Upper;
+                                    else { output[yyy, xxx] = (int)((data[yyy + 1, xxx] + data[yyy - 1, xxx] + data[yyy, xxx + 1] + data[yyy, xxx - 1]) / 4d); }//borderType = BorderType.None;
                                 }
                             }
                         }
@@ -218,7 +192,7 @@ namespace p00
             double sum = 0;
             if (measured.Length == fitted.Length)
             {
-                for (int i = 0; i < measured.Length; i++)
+                for (int i = 1; i < measured.Length - 1; i++)
                 {
                     sum += (measured[i] - fitted[i]) * (measured[i] - fitted[i]);
                 }
@@ -227,7 +201,7 @@ namespace p00
             {
                 //Console.WriteLine();
             }
-            return Math.Sqrt(sum) / measured.Length;
+            return Math.Sqrt(sum) / (measured.Length - 2);
         }
 
 
@@ -454,20 +428,15 @@ namespace p00
                                 values2[i] = values[i - 1];
                             }
 
-                            //goodnessOfFit = GoodnessOfFit.RSquared(fittedValues, values2);
                             goodnessOfFit = ErrorOfFit(values2, fittedValues);
-                            //Console.WriteLine();
                             if (direction)
                             {
                                 arrayOfList[(yyy * width) + xxx].Add(new InterpolatedUnit { x = (int)xxx, y = (int)yyy, value = calculatedValue, goodnessOfFit = goodnessOfFit, location = (yyy * width) + xxx, direction = Direction.Horizontal, valueArray = values2, method = (InterpolationMethod)order });
                             }
                             else
                             {
-                                //Console.WriteLine();
                                 arrayOfList[(xxx * height) + yyy].Add(new InterpolatedUnit { x = (int)yyy, y = (int)xxx, value = calculatedValue, goodnessOfFit = goodnessOfFit, location = (xxx * height) + yyy, direction = Direction.Vertical, valueArray = values2, method = (InterpolationMethod)order });
                             }
-
-                            //Console.WriteLine();
                         }
                     }
                 }
