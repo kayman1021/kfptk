@@ -8,6 +8,8 @@ using System.Collections;
 using System.IO;
 using BitMiracle.LibTiff.Classic;
 using MathNet.Numerics.LinearAlgebra;
+using System.Drawing.Imaging;
+using System.Runtime.InteropServices;
 
 namespace p00
 {
@@ -251,7 +253,8 @@ namespace p00
             }
             return output;
         }
-        public Matrix<double> ImportRawData14bitUncompressed(string filename)
+
+        public void ImportRawData14bitUncompressed2(string filename)
         {
             int width, height;
             Matrix<double> output;
@@ -263,20 +266,213 @@ namespace p00
                 output = CreateMatrix.Dense<double>(height, width);
             }
             int bitsPerSample = 14;
+            int filelength = (int)(new System.IO.FileInfo(filename).Length);
+            int datalength = (int)(width * height * bitsPerSample / 8f);
+            int start_addr = filelength - datalength;
+            Console.WriteLine();
+            using (FileStream fs = new FileStream(filename, FileMode.Open))
+            {
+                Console.WriteLine();
+                int[] bbb = new int[filelength];
+                for (int i = 0; i < filelength; i++)
+                {
+                    if (i>=start_addr)
+                    {
+                        Console.WriteLine();
+                        bbb[i-start_addr] = fs.ReadByte();
+                    }
+                }
+                Console.WriteLine();
+            }
+
+        }
+
+
+
+
+
+
+
+
+
+
+
+        public Matrix<double> OpenAsPixelmap(Bitmap image)
+        {
+            int width = image.Width;
+            int height = image.Height;
+            Matrix<double> output = Matrix<double>.Build.Dense(height, width, ushort.MaxValue);
+            BitmapData imageData = image.LockBits(new Rectangle(0, 0, width, height), ImageLockMode.ReadOnly, PixelFormat.Format24bppRgb);
+
+            byte[] imageBytes = new byte[Math.Abs(imageData.Stride) * height];
+            IntPtr scan0 = imageData.Scan0;
+
+            Marshal.Copy(scan0, imageBytes, 0, imageBytes.Length);
+
+            for (int i = 0; i < imageBytes.Length; i += 3)
+            {
+                if (imageBytes[i] + imageBytes[i + 1] + imageBytes[i + 2]==0)
+                {
+                    output[(i/3)/width, (i/3)% width] = 0;
+                }
+            }
+            image.UnlockBits(imageData);
+            return output;
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        public Matrix<double> ImportAdobeConverted(string filename)
+        {
+            int width = 5360;
+            int height = 3465;
+            int bitsPerSample = 16;
+            Matrix<double> output= Matrix<double>.Build.Dense(height, width);
             using (BinaryReader reader = new BinaryReader(File.Open(filename, FileMode.Open)))
             {
                 int filelength = (int)(new System.IO.FileInfo(filename).Length);
                 int datalength = (int)(width * height * bitsPerSample / 8f);
                 int start_addr = filelength - datalength;
+                reader.ReadBytes(start_addr);
+                byte[] bytebuffer =reader.ReadBytes(datalength);
+                Console.WriteLine();
+                for (int i = 0; i < (bytebuffer.Length/2); i++)
+                {
+                    output[(i)/width, (i)%width] = bytebuffer[2*i] + (bytebuffer[(2*i) + 1] * 256);
+                }
+                Console.WriteLine();
+            }
+
+            return output;
+        }
+
+
+        public void ExportAdobeConverted(Matrix<double> input, string filename)
+        {
+            int width = input.ColumnCount;
+            int height = input.RowCount;
+            List<byte> rawdata = new List<byte>();
+
+            for (int yyy = 0; yyy < height; yyy++)
+            {
+                for (int xxx = 0; xxx < width; xxx++)
+                {
+                    rawdata.Add(Convert.ToByte((Convert.ToInt32(input[yyy, xxx])) % 256));
+                    rawdata.Add(Convert.ToByte((Convert.ToInt32(input[yyy, xxx])) / 256));
+                }
+            }
+
+            byte[] output = rawdata.ToArray();
+
+            using (BinaryReader reader = new BinaryReader(File.Open(filename, FileMode.Open)))
+            {
+                int filelength = (int)(new System.IO.FileInfo(filename).Length);
+                int datalength = rawdata.Count;
+                int start_addr = filelength - datalength;
+                //reader.ReadBytes(start_addr);
+                byte[] bytebuffer = reader.ReadBytes(filelength);
+
+                for (int i = start_addr; i < filelength; i++)
+                {
+                    bytebuffer[i] = output[i - start_addr];
+                }
+                byteArrayWriter(bytebuffer, filename);
+                Console.WriteLine();
+            }
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+            public Matrix<double> ImportRawData14bitUncompressed(string filename)
+        {
+            int width, height, bitsPerSample;
+            Matrix<double> output;
+            using (Tiff input = Tiff.Open(@filename, "r"))
+            {
+                //width = input.GetField(TiffTag.IMAGEWIDTH)[0].ToInt();
+                //height = input.GetField(TiffTag.IMAGELENGTH)[0].ToInt();
+                height = 3465;
+                width = 5202;
+                bitsPerSample = 16;
+                //bitsPerSample = input.GetField(TiffTag.BITSPERSAMPLE)[0].ToInt();
+                //output  = Matrix<ushort>.Build.Diagonal( width, height);
+                output = CreateMatrix.Dense<double>(height, width);
+            }
+            using (BinaryReader reader = new BinaryReader(File.Open(filename, FileMode.Open)))
+            {
+                Console.WriteLine();
+                int filelength = (int)(new System.IO.FileInfo(filename).Length);
+                int datalength = (int)(width * height * bitsPerSample / 8f);
+                //int start_addr = filelength - datalength;
+                int start_addr = 251952;
                 int pixelcount = width * height;
                 reader.ReadBytes(start_addr);
                 byte[] bytebuffer = new byte[datalength];
                 bytebuffer = reader.ReadBytes(datalength);
+                Console.WriteLine();
                 BitArray bitbuffer = new BitArray(bytebuffer);
                 int[] intbuffer = new int[pixelcount];
 
-
-                bitbuffer = Reverse_Bitarray(bitbuffer);
+                Console.WriteLine();
+                //bitbuffer = Reverse_Bitarray(bitbuffer);
 
                 bool temp;
                 int sum;

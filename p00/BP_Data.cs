@@ -17,5 +17,6 @@ namespace p00
     {
         public Matrix<double> Left;
         public Matrix<double> Right;
+        public double minimum, maximum;
     }
 }

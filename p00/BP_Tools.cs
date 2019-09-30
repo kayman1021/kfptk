@@ -108,5 +108,22 @@ namespace p00
             }
             return output;
         }
+
+        public Matrix<double> Reflow(Matrix<double>input,int value)
+        {
+            int width =value;
+            
+            double[] flow = input.ToRowMajorArray();
+            Console.WriteLine();
+            Matrix<double> output = Matrix<double>.Build.Dense((int)((input.RowCount * input.ColumnCount) / (width)), width);
+            for (int xxx = 0; xxx < output.ColumnCount; xxx++)
+            {
+                for (int yyy = 0; yyy < output.RowCount; yyy++)
+                {
+                    output[yyy, xxx] = flow[(yyy*width)+xxx];
+                }
+            }
+            return output;
+        }
     }
 }

@@ -194,5 +194,149 @@ namespace p00
             }
             return Math.Sqrt(sum) / (measured.Length - 2);
         }
+
+
+
+
+
+
+
+
+
+
+
+        public Matrix<double> Prefit2(Matrix<double> data, Matrix<double> map)
+        {
+            int height = data.RowCount;
+            int width = data.ColumnCount;
+            Matrix<double> output = data;
+            for (int xxx = 0; xxx < width; xxx++)
+            {
+                for (int yyy = 0; yyy < height; yyy++)
+                {
+                    if (map[yyy, xxx] == 0)
+                    {
+                        if (xxx == 0)
+                        {
+                            /*if (yyy == 0) { output[yyy, xxx] = (int)((data[yyy + 1, xxx] + data[yyy, xxx + 1]) / 2d); }//borderType = BorderType.LowerLeft;   
+                            else
+                            {
+                                if (yyy == height - 1) { output[yyy, xxx] = (int)((data[yyy - 1, xxx] + data[yyy, xxx + 1]) / 2d); }//borderType = BorderType.UpperLeft;
+                                else { output[yyy, xxx] = (int)((data[yyy + 1, xxx] + data[yyy - 1, xxx] + data[yyy, xxx + 1]) / 3d); }//borderType = BorderType.Left;
+                            }*/
+                        }
+                        else
+                        {
+                            if (xxx == width - 1)
+                            {
+                                /*if (yyy == 0) { output[yyy, xxx] = (int)((data[yyy + 1, xxx] + data[yyy, xxx - 1]) / 2d); }//borderType = BorderType.LowerRight;
+                                else
+                                {
+                                    if (yyy == height - 1) { data[yyy, xxx] = (int)((data[yyy - 1, xxx] + data[yyy, xxx - 1]) / 2d); }//borderType = BorderType.UpperRight;
+                                    else { output[yyy, xxx] = (int)((data[yyy + 1, xxx] + data[yyy - 1, xxx] + data[yyy, xxx - 1]) / 3d); }//borderType = BorderType.Right;
+                                }*/
+                            }
+                            else
+                            {
+                                if (yyy == 0) { output[yyy, xxx] = (int)((data[yyy, xxx + 1] + data[yyy, xxx - 1]) / 2d); }//borderType = BorderType.Lower;     
+                                else
+                                {
+                                    if (yyy == height - 1) { data[yyy, xxx] = (int)((data[yyy, xxx + 1] + data[yyy, xxx - 1]) / 2d); }//borderType = BorderType.Upper;
+                                    else { output[yyy, xxx] = (int)((data[yyy, xxx + 1] + data[yyy, xxx - 1]) / 2d); }//borderType = BorderType.None;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            return output;
+        }
+
+        public Matrix<double> Collector2(Matrix<double> data, Matrix<double> map, int radius)
+        {
+            int height = data.RowCount;
+            int width = data.ColumnCount;
+
+            List<InterpolatedUnit>[,] allValue = new List<InterpolatedUnit>[width, height];
+
+            for (int xxx = 0; xxx < width; xxx++)
+            {
+                for (int yyy = 0; yyy < height; yyy++)
+                {
+                    List<InterpolatedUnit> results = new List<InterpolatedUnit>();
+                    if (map[yyy, xxx] == 0)
+                    {
+                        if (yyy - radius >= 0 && yyy + radius < height && xxx - radius >= 0 && xxx + radius < width)
+                        {
+                            int size = (radius * 2) + 1;
+
+                            Matrix<double> subData = data.SubMatrix(yyy - radius, size, xxx - radius, size);
+                            Matrix<double> subMap = map.SubMatrix(yyy - radius, size, xxx - radius, size);
+
+                            double[] tempData = new double[size];
+                            double[] places = new double[tempData.Length];
+                            for (int i = 0; i < places.Length; i++)
+                            {
+                                places[i] = i;
+                            }
+
+
+                            tempData = MakeCenterAverage((subData.Row(radius)).AsArray());
+                            results.Add(Fitter(tempData, places, 1));
+                            results.Add(Fitter(tempData, places, 2));
+                            tempData = MakeCenterAverage(tempData);
+
+                            tempData = MakeCenterAverage((subData.Diagonal()).AsArray());
+                            results.Add(Fitter(tempData, places, 1));
+                            results.Add(Fitter(tempData, places, 2));
+
+                            tempData = MakeCenterAverage((FlipMatrixHorizontally(subData).Diagonal()).AsArray());
+                            results.Add(Fitter(tempData, places, 1));
+                            results.Add(Fitter(tempData, places, 2));
+
+                        }
+
+                        else
+                        {
+                            //BORDER, ONLY VERTICAL OR HORIZONTAL
+                        }
+                    }
+                    else
+                    {
+                        //Nothing to do
+                    }
+                    allValue[xxx, yyy] = results;
+                }
+            }
+            for (int xxx = 0; xxx < width; xxx++)
+            {
+                for (int yyy = 0; yyy < height; yyy++)
+                {
+                    if (allValue[xxx, yyy].Count != 0)
+                    {
+                        InterpolatedUnit bestGoodness = new InterpolatedUnit { goodnessOfFit = 99999999999999 };
+                        List<InterpolatedUnit> temp3 = allValue[xxx, yyy];
+                        for (int i = 0; i < temp3.Count; i++)
+                        {
+                            if (temp3[i].goodnessOfFit <= bestGoodness.goodnessOfFit)
+                            {
+                                bestGoodness = temp3[i];
+                            }
+                        }
+                        data[yyy, xxx] = bestGoodness.value;
+                    }
+                }
+            }
+
+            return data;
+        }
+
+
+        public double[] MakeCenterAverage(double[] input)
+        {
+            int center = input.Length / 2;
+            input[center] = (int)((input[center - 1] + input[center + 1]) / 2);
+            return input;
+        }
     }
 }
