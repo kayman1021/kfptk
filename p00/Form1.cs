@@ -9,6 +9,11 @@ namespace p00
 {
     public partial class Form1 : Form
     {
+        //MLV_DATA fff = new MLV_DATA(@"F:\\ooo.MLV");
+        //MLV_DATA fff = new MLV_DATA(@"E:\\MLV\M06-0752.MLV");
+        //StringFinder sf = new StringFinder(@"E:\\MLV\M26-2108.MLV");
+        //StringFinder sf = new StringFinder(@"F:\\ooo.MLV");
+
         BP_Data rrwwtt = new BP_Data();
 
         public Form1()
@@ -33,12 +38,11 @@ namespace p00
         {
             if ((DngFileType)comboBox_Import_DNG_Select.SelectedItem == DngFileType.MLVApp14bit)
             {
-                rrwwtt.Left = rrwwtt.ImportRawData14bitUncompressed(textBox_Import_DNG_Text.Text);
-                //rrwwtt.ImportRawData14bitUncompressed2(textBox_Import_DNG_Text.Text);
+                rrwwtt.LLL = rrwwtt._ImportRawData14bitUncompressed(textBox_Import_DNG_Text.Text);
             }
             if ((DngFileType)comboBox_Import_DNG_Select.SelectedItem == DngFileType.Xiaomi16bit)
             {
-                rrwwtt.Left = rrwwtt.ImportRawDataXiaomi(textBox_Import_DNG_Text.Text);
+                rrwwtt.LLL = rrwwtt._ImportRawDataXiaomi(textBox_Import_DNG_Text.Text);
             }
         }
         private void button_Import_FPM_Browse_Click(object sender, EventArgs e)
@@ -53,7 +57,7 @@ namespace p00
         }
         private void button_Import_FPM_Import_Click(object sender, EventArgs e)
         {
-            rrwwtt.Left = rrwwtt.ImportPixelMapFromFPM(textBox_Import_FPM_Text.Text, rrwwtt.Left);
+            rrwwtt.RRR = rrwwtt._ImportPixelMapFromFPM(rrwwtt.LLL.Width(), rrwwtt.LLL.Height(), textBox_Import_FPM_Text.Text);
         }
         private void button_Import_TIFF_Browse_Click(object sender, EventArgs e)
         {
@@ -67,7 +71,7 @@ namespace p00
         }
         private void button_Import_TIFF_Import_Click(object sender, EventArgs e)
         {
-            rrwwtt.Left = rrwwtt.ImportRawDataTiff(textBox_Export_TIFF_Text.Text);
+            rrwwtt.LLL = rrwwtt._ImportRawDataTiff(textBox_Export_TIFF_Text.Text);
         }
         private void button_Import_Mapped_Browse_Click(object sender, EventArgs e)
         {
@@ -87,35 +91,31 @@ namespace p00
         }
         private void button_Import_Mapped_Import_Click(object sender, EventArgs e)
         {
-            //rrwwtt.Right = rrwwtt.ImportPixelMapFromPicture(textBox_Import_Mapped_Text.Text);
-            rrwwtt.Right = rrwwtt.OpenAsPixelmap(new Bitmap(@textBox_Import_Mapped_Text.Text));
+            rrwwtt.RRR = rrwwtt._OpenAsPixelmap(new Bitmap(@textBox_Import_Mapped_Text.Text));
         }
         private void button_Tools_Deinterlace_Click(object sender, EventArgs e)
         {
-            rrwwtt.Left = rrwwtt.DeinterlaceUniversal(rrwwtt.Left, false);
+            rrwwtt.LLL.UpdateData(rrwwtt.LLL.DeinterlaceUniversal(false));
         }
         private void button_Tools_DeinterlaceDualISO_Click(object sender, EventArgs e)
         {
-            rrwwtt.Left = rrwwtt.DeinterlaceUniversal(rrwwtt.Left, true);
+            rrwwtt.LLL.UpdateData(rrwwtt.LLL.DeinterlaceUniversal(true));
         }
         private void button_Tools_Transpose_Click(object sender, EventArgs e)
         {
-            rrwwtt.Left = rrwwtt.TransposeArray(rrwwtt.Left);
+            rrwwtt.LLL.UpdateData(rrwwtt.LLL.Transpose());
         }
         private void button_Tools_Interlace_Click(object sender, EventArgs e)
         {
-            rrwwtt.Left = rrwwtt.InterlaceUniversal(rrwwtt.Left, false);
+            rrwwtt.LLL.UpdateData(rrwwtt.LLL.InterlaceUniversal(false));
         }
         private void button_Tools_InterlaceDualISO_Click(object sender, EventArgs e)
         {
-            rrwwtt.Left = rrwwtt.InterlaceUniversal(rrwwtt.Left, true);
+            rrwwtt.LLL.UpdateData(rrwwtt.LLL.InterlaceUniversal(true));
         }
         private void button_Tools_SwapSides_Click(object sender, EventArgs e)
         {
-            Matrix<double> temp = Matrix<double>.Build.Dense(rrwwtt.Left.RowCount, rrwwtt.Left.ColumnCount);
-            temp = rrwwtt.Left;
-            rrwwtt.Left = rrwwtt.Right;
-            rrwwtt.Right = temp;
+            rrwwtt._SwapSides();
         }
         private void button_Export_TIFF_Browse_Click(object sender, EventArgs e)
         {
@@ -130,7 +130,7 @@ namespace p00
         }
         private void button_Export_TIFF_Export_Click(object sender, EventArgs e)
         {
-            rrwwtt.ExportRawDataTiff(@textBox_Export_TIFF_Text.Text, rrwwtt.Left);
+            rrwwtt._ExportRawDataTiff(rrwwtt.LLL, @textBox_Export_TIFF_Text.Text);
         }
         private void button_Export_FPM_Browse_Click(object sender, EventArgs e)
         {
@@ -145,27 +145,27 @@ namespace p00
         }
         private void button_Export_FPM_Export_Click(object sender, EventArgs e)
         {
-            rrwwtt.ExportFPM(@textBox_Export_FPM_Text.Text, rrwwtt.Right);
+            rrwwtt._ExportFPM(rrwwtt.LLL, @textBox_Export_FPM_Text.Text);
         }
 
         private void button3_Click(object sender, EventArgs e)
         {
-            rrwwtt.Left = rrwwtt.DeinterlaceUniversal(rrwwtt.Left, true);
+            rrwwtt.LLL.UpdateData(rrwwtt.LLL.DeinterlaceUniversal(true));
         }
 
         private void button4_Click(object sender, EventArgs e)
         {
-            rrwwtt.Left = rrwwtt.DeinterlaceUniversal(rrwwtt.Left, false);
+            rrwwtt.LLL.UpdateData(rrwwtt.LLL.DeinterlaceUniversal(false));
         }
 
         private void button3_Click_1(object sender, EventArgs e)
         {
-            rrwwtt.ExportRawDataXiaomi(rrwwtt.Left, @textBox_Import_DNG_Text.Text);
+            rrwwtt._ExportRawDataXiaomi(rrwwtt.LLL, @textBox_Import_DNG_Text.Text);
         }
 
         private void button_EXP_EOS_Click(object sender, EventArgs e)
         {
-            rrwwtt.ExportRawData14bitUncompressed(rrwwtt.Left, @textBox_Import_DNG_Text.Text);
+            rrwwtt._ExportRawData14bitUncompressed(rrwwtt.LLL, @textBox_Import_DNG_Text.Text);
         }
 
         private void button4_Click_1(object sender, EventArgs e)
@@ -206,28 +206,38 @@ namespace p00
         {
             int radius = 3;
             int rounds = 2;
-            rrwwtt.ModifyBlock(rrwwtt.Left, 0, 0, rrwwtt.Prefit(rrwwtt.SliceBlock(rrwwtt.Left, 2, 4, 0, 0), rrwwtt.SliceBlock(rrwwtt.Right, 2, 4, 0, 0)));
-            rrwwtt.ModifyBlock(rrwwtt.Left, 1, 1, rrwwtt.Prefit(rrwwtt.SliceBlock(rrwwtt.Left, 2, 4, 1, 1), rrwwtt.SliceBlock(rrwwtt.Right, 2, 4, 1, 1)));
-            rrwwtt.ModifyBlock(rrwwtt.Left, 0, 2, rrwwtt.Prefit(rrwwtt.SliceBlock(rrwwtt.Left, 2, 4, 0, 2), rrwwtt.SliceBlock(rrwwtt.Right, 2, 4, 0, 2)));
-            rrwwtt.ModifyBlock(rrwwtt.Left, 1, 3, rrwwtt.Prefit(rrwwtt.SliceBlock(rrwwtt.Left, 2, 4, 1, 3), rrwwtt.SliceBlock(rrwwtt.Right, 2, 4, 1, 3)));
+            //rrwwtt.LLL.ModifyBlock(0, 0, rrwwtt._Prefit(rrwwtt.LLL.SliceBlock(2, 4, 0, 0), rrwwtt.RRR.SliceBlock(2, 4, 0, 0)));
+            //rrwwtt.LLL.ModifyBlock(1, 1, rrwwtt._Prefit(rrwwtt.LLL.SliceBlock(2, 4, 1, 1), rrwwtt.RRR.SliceBlock(2, 4, 1, 1)));
+            //rrwwtt.LLL.ModifyBlock(0, 2, rrwwtt._Prefit(rrwwtt.LLL.SliceBlock(2, 4, 0, 2), rrwwtt.RRR.SliceBlock(2, 4, 0, 2)));
+            //rrwwtt.LLL.ModifyBlock(1, 3, rrwwtt._Prefit(rrwwtt.LLL.SliceBlock(2, 4, 1, 3), rrwwtt.RRR.SliceBlock(2, 4, 1, 3)));
 
+
+
+            int sliceX = 2;
+            int sliceY = 4;
+            Console.WriteLine();
+            rrwwtt.LLL.ModifyBlock(0, 0, rrwwtt._Prefit(rrwwtt.LLL.SliceBlock(sliceX, sliceY, 0, 0), rrwwtt.RRR.SliceBlock(sliceX, sliceY, 0, 0)));
+            rrwwtt.LLL.ModifyBlock(1, 1, rrwwtt._Prefit(rrwwtt.LLL.SliceBlock(sliceX, sliceY, 1, 1), rrwwtt.RRR.SliceBlock(sliceX, sliceY, 1, 1)));
+            rrwwtt.LLL.ModifyBlock(0, 2, rrwwtt._Prefit(rrwwtt.LLL.SliceBlock(sliceX, sliceY, 0, 2), rrwwtt.RRR.SliceBlock(sliceX, sliceY, 0, 2)));
+            rrwwtt.LLL.ModifyBlock(1, 3, rrwwtt._Prefit(rrwwtt.LLL.SliceBlock(sliceX, sliceY, 1, 3), rrwwtt.RRR.SliceBlock(sliceX, sliceY, 1, 3)));
+            
             for (int i = 0; i < rounds; i++)
             {
-                rrwwtt.ModifyBlock(rrwwtt.Left, 0, 0, rrwwtt.Collector(rrwwtt.SliceBlock(rrwwtt.Left, 2, 4, 0, 0), rrwwtt.SliceBlock(rrwwtt.Right, 2, 4, 0, 0), radius));
-                rrwwtt.ModifyBlock(rrwwtt.Left, 1, 1, rrwwtt.Collector(rrwwtt.SliceBlock(rrwwtt.Left, 2, 4, 1, 1), rrwwtt.SliceBlock(rrwwtt.Right, 2, 4, 1, 1), radius));
-                rrwwtt.ModifyBlock(rrwwtt.Left, 0, 2, rrwwtt.Collector(rrwwtt.SliceBlock(rrwwtt.Left, 2, 4, 0, 2), rrwwtt.SliceBlock(rrwwtt.Right, 2, 4, 0, 2), radius));
-                rrwwtt.ModifyBlock(rrwwtt.Left, 1, 3, rrwwtt.Collector(rrwwtt.SliceBlock(rrwwtt.Left, 2, 4, 1, 3), rrwwtt.SliceBlock(rrwwtt.Right, 2, 4, 1, 3), radius));
+                rrwwtt.LLL.ModifyBlock(0, 0, rrwwtt._Collector(rrwwtt.LLL.SliceBlock(2, 4, 0, 0), rrwwtt.RRR.SliceBlock(2, 4, 0, 0), radius));
+                rrwwtt.LLL.ModifyBlock(1, 1, rrwwtt._Collector(rrwwtt.LLL.SliceBlock(2, 4, 1, 1), rrwwtt.RRR.SliceBlock(2, 4, 1, 1), radius));
+                rrwwtt.LLL.ModifyBlock(0, 2, rrwwtt._Collector(rrwwtt.LLL.SliceBlock(2, 4, 0, 2), rrwwtt.RRR.SliceBlock(2, 4, 0, 2), radius));
+                rrwwtt.LLL.ModifyBlock(1, 3, rrwwtt._Collector(rrwwtt.LLL.SliceBlock(2, 4, 1, 3), rrwwtt.RRR.SliceBlock(2, 4, 1, 3), radius));
             }
         }
 
         private void button5_Click(object sender, EventArgs e)
         {
-            int radius = 3;
+            /*int radius = 3;
             int rounds = 2;
             BP_Data mass = new BP_Data();
             foreach (string path in listBox_MASS_DUAL_ISO.Items)
             {
-                mass.Left = mass.ImportRawData14bitUncompressed(@path);
+                mass.Left = mass._ImportRawData14bitUncompressed(@path);
                 mass.Left = mass.DeinterlaceUniversal(mass.Left, true);
 
                 mass.ModifyBlock(mass.Left, 0, 0, mass.Prefit(mass.SliceBlock(mass.Left, 2, 4, 0, 0), mass.SliceBlock(rrwwtt.Right, 2, 4, 0, 0)));
@@ -245,13 +255,13 @@ namespace p00
 
                 mass.Left = mass.InterlaceUniversal(mass.Left, true);
                 mass.ExportRawData14bitUncompressed(mass.Left, @path);
-            }
+            }*/
         }
 
         private void button1_Click(object sender, EventArgs e)
         {
             //rrwwtt.Left= rrwwtt.Reflow(rrwwtt.Left, ((3/1856)+32)+3);
-            rrwwtt.Left = rrwwtt.ImportAdobeConverted(textBox_Import_DNG_Text.Text);
+            rrwwtt.LLL.UpdateData(rrwwtt._ImportAdobeConverted(textBox_Import_DNG_Text.Text));
         }
 
         private void button2_Click(object sender, EventArgs e)
@@ -259,16 +269,18 @@ namespace p00
             int radius = 3;
             int sliceX = 2;
             int sliceY = 2;
-            rrwwtt.ModifyBlock(rrwwtt.Left, 0, 0, rrwwtt.Prefit2(rrwwtt.SliceBlock(rrwwtt.Left, sliceX, sliceY, 0, 0), rrwwtt.SliceBlock(rrwwtt.Right, sliceX, sliceY, 0, 0)));
-            rrwwtt.ModifyBlock(rrwwtt.Left, 0, 1, rrwwtt.Prefit2(rrwwtt.SliceBlock(rrwwtt.Left, sliceX, sliceY, 0, 1), rrwwtt.SliceBlock(rrwwtt.Right, sliceX, sliceY, 0, 1)));
+            rrwwtt.LLL.ModifyBlock(0, 0, rrwwtt._Prefit2(rrwwtt.LLL.SliceBlock(sliceX, sliceY, 0, 0), rrwwtt.RRR.SliceBlock(sliceX, sliceY, 0, 0)));
+            rrwwtt.LLL.ModifyBlock(0, 1, rrwwtt._Prefit2(rrwwtt.LLL.SliceBlock(sliceX, sliceY, 0, 1), rrwwtt.RRR.SliceBlock(sliceX, sliceY, 0, 1)));
+            //rrwwtt.ModifyBlock(rrwwtt.Left, 0, 1, rrwwtt.Prefit2(rrwwtt.SliceBlock(rrwwtt.Left, sliceX, sliceY, 0, 1), rrwwtt.SliceBlock(rrwwtt.Right, sliceX, sliceY, 0, 1)));
             //rrwwtt.ModifyBlock(rrwwtt.Left, 0, 0, rrwwtt.Collector2(rrwwtt.SliceBlock(rrwwtt.Left, sliceX, sliceY, 0, 0), rrwwtt.SliceBlock(rrwwtt.Right, sliceX, sliceY, 0, 0), radius));
-           //rrwwtt.ModifyBlock(rrwwtt.Left, 0, 1, rrwwtt.Collector2(rrwwtt.SliceBlock(rrwwtt.Left, sliceX, sliceY, 0, 1), rrwwtt.SliceBlock(rrwwtt.Right, sliceX, sliceY, 0, 1), radius));
+            //rrwwtt.ModifyBlock(rrwwtt.Left, 0, 1, rrwwtt.Collector2(rrwwtt.SliceBlock(rrwwtt.Left, sliceX, sliceY, 0, 1), rrwwtt.SliceBlock(rrwwtt.Right, sliceX, sliceY, 0, 1), radius));
             Console.WriteLine();
         }
 
         private void button7_Click(object sender, EventArgs e)
         {
-            rrwwtt.ExportAdobeConverted(rrwwtt.Left, textBox_Import_DNG_Text.Text);
+            Console.WriteLine();
+            rrwwtt._ExportAdobeConverted(rrwwtt.LLL, textBox_Import_DNG_Text.Text);
         }
     }
 }

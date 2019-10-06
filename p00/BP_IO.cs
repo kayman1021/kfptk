@@ -13,7 +13,7 @@ using System.Runtime.InteropServices;
 
 namespace p00
 {
-    public partial class BP_Data
+   /* public partial class BP_Data
     {
         public Matrix<double> ImportRawDataXiaomi(string filename)
         {
@@ -40,6 +40,7 @@ namespace p00
             //Console.WriteLine();
             return output;
         }
+
         public void ExportRawDataXiaomi(Matrix<double> data, string filename)
         {
             int bitsPerSample = 16;
@@ -254,7 +255,7 @@ namespace p00
             return output;
         }
 
-        public void ImportRawData14bitUncompressed2(string filename)
+        /*public void ImportRawData14bitUncompressed2(string filename)
         {
             int width, height;
             Matrix<double> output;
@@ -285,7 +286,7 @@ namespace p00
                 Console.WriteLine();
             }
 
-        }
+        }*/
 
 
 
@@ -297,7 +298,7 @@ namespace p00
 
 
 
-        public Matrix<double> OpenAsPixelmap(Bitmap image)
+       /* public Matrix<double> OpenAsPixelmap(Bitmap image)
         {
             int width = image.Width;
             int height = image.Height;
@@ -311,9 +312,9 @@ namespace p00
 
             for (int i = 0; i < imageBytes.Length; i += 3)
             {
-                if (imageBytes[i] + imageBytes[i + 1] + imageBytes[i + 2]==0)
+                if (imageBytes[i] + imageBytes[i + 1] + imageBytes[i + 2] == 0)
                 {
-                    output[(i/3)/width, (i/3)% width] = 0;
+                    output[(i / 3) / width, (i / 3) % width] = 0;
                 }
             }
             image.UnlockBits(imageData);
@@ -345,18 +346,18 @@ namespace p00
             int width = 5360;
             int height = 3465;
             int bitsPerSample = 16;
-            Matrix<double> output= Matrix<double>.Build.Dense(height, width);
+            Matrix<double> output = Matrix<double>.Build.Dense(height, width);
             using (BinaryReader reader = new BinaryReader(File.Open(filename, FileMode.Open)))
             {
                 int filelength = (int)(new System.IO.FileInfo(filename).Length);
                 int datalength = (int)(width * height * bitsPerSample / 8f);
                 int start_addr = filelength - datalength;
                 reader.ReadBytes(start_addr);
-                byte[] bytebuffer =reader.ReadBytes(datalength);
+                byte[] bytebuffer = reader.ReadBytes(datalength);
                 Console.WriteLine();
-                for (int i = 0; i < (bytebuffer.Length/2); i++)
+                for (int i = 0; i < (bytebuffer.Length / 2); i++)
                 {
-                    output[(i)/width, (i)%width] = bytebuffer[2*i] + (bytebuffer[(2*i) + 1] * 256);
+                    output[(i) / width, (i) % width] = bytebuffer[2 * i] + (bytebuffer[(2 * i) + 1] * 256);
                 }
                 Console.WriteLine();
             }
@@ -441,7 +442,7 @@ namespace p00
 
 
 
-            public Matrix<double> ImportRawData14bitUncompressed(string filename)
+        public Matrix<double> ImportRawData14bitUncompressed(string filename)
         {
             int width, height, bitsPerSample;
             Matrix<double> output;
@@ -628,5 +629,5 @@ namespace p00
             }
             System.IO.File.WriteAllText(@filename, sb.ToString());
         }
-    }
+    }*/
 }
