@@ -26,7 +26,7 @@ namespace p00
 
         public BP_Data()
         {
-            LLL = new oMatrix(new ushort[0,0]);
+            LLL = new oMatrix(new ushort[0, 0]);
             RRR = new oMatrix(new ushort[0, 0]);
         }
 
@@ -139,7 +139,7 @@ namespace p00
 
         public void _byteArrayWriter(byte[] input, string filename, string additionToName)
         {
-            string outputFilename = filename.Substring(0, filename.Length - 4) + additionToName + filename.Substring(filename.Length - 4,4);
+            string outputFilename = filename.Substring(0, filename.Length - 4) + additionToName + filename.Substring(filename.Length - 4, 4);
             using (BinaryWriter writer = new BinaryWriter(File.Open((@outputFilename), FileMode.Create))) { writer.Write(input); }
         }
 
@@ -274,38 +274,6 @@ namespace p00
             return output;
         }
 
-        /*public void _ImportRawData14bitUncompressed2(string filename)
-        {
-            int width, height;
-            ushort[,] output;
-            using (Tiff input = Tiff.Open(@filename, "r"))
-            {
-                width = input.GetField(TiffTag.IMAGEWIDTH)[0].ToInt();
-                height = input.GetField(TiffTag.IMAGELENGTH)[0].ToInt();
-                output = new ushort[width, height];
-            }
-            int bitsPerSample = 14;
-            int filelength = (int)(new System.IO.FileInfo(filename).Length);
-            int datalength = (int)(width * height * bitsPerSample / 8f);
-            int start_addr = filelength - datalength;
-            Console.WriteLine();
-            using (FileStream fs = new FileStream(filename, FileMode.Open))
-            {
-                Console.WriteLine();
-                int[] bbb = new int[filelength];
-                for (int i = 0; i < filelength; i++)
-                {
-                    if (i >= start_addr)
-                    {
-                        Console.WriteLine();
-                        bbb[i - start_addr] = fs.ReadByte();
-                    }
-                }
-                Console.WriteLine();
-            }
-
-        }*/
-
         public oMatrix _OpenAsPixelmap(Bitmap image)
         {
             int width = image.Width;
@@ -399,11 +367,7 @@ namespace p00
             {
                 width = input.GetField(TiffTag.IMAGEWIDTH)[0].ToInt();
                 height = input.GetField(TiffTag.IMAGELENGTH)[0].ToInt();
-                //height = 3465;
-                //width = 5202;
-                //bitsPerSample = 16;
                 bitsPerSample = input.GetField(TiffTag.BITSPERSAMPLE)[0].ToInt();
-                //output  = Matrix<ushort>.Build.Diagonal( width, height);
                 output = new ushort[width, height];
             }
             using (BinaryReader reader = new BinaryReader(File.Open(filename, FileMode.Open)))
@@ -411,32 +375,31 @@ namespace p00
                 Console.WriteLine();
                 int filelength = (int)(new System.IO.FileInfo(filename).Length);
                 int datalength = (int)(width * height * bitsPerSample / 8f);
-                int start_addr = filelength-datalength;
+                int start_addr = filelength - datalength;
                 int pixelcount = width * height;
                 reader.ReadBytes(start_addr);
-                byte[] bytebuffer = new byte[datalength];
-                bytebuffer = reader.ReadBytes(datalength);
-                BitArray bitbuffer = new BitArray(bytebuffer);
-                int[] intbuffer = new int[pixelcount];
 
-                Console.WriteLine();
-                bitbuffer = _Reverse_Bitarray(bitbuffer);
+                List<ushort> buff = new List<ushort>();
 
-                bool temp;
-                int sum;
-                for (int bbb = 0; bbb < bitbuffer.Length; bbb += bitsPerSample)
+                byte[] tempbuffer = new byte[7];
+                for (int i = 0; i < datalength - 7; i = i + 7)
                 {
-                    sum = 0;
-                    for (int aaa = 0; aaa < bitsPerSample; aaa++)
-                    {
-                        temp = bitbuffer[aaa + bbb];
-                        if (temp) { sum += (int)(Math.Pow((double)(2), (double)(bitsPerSample - 1 - aaa))); }
-                    }
-                    intbuffer[bbb / bitsPerSample] = sum;
+                    tempbuffer = reader.ReadBytes(7);
+                    /*buff.Add((ushort)((tempbuffer[0] * 64) + (tempbuffer[1] >> 2)));
+                    buff.Add((ushort)(((((byte)(tempbuffer[1] << 6)) >> 6) * 4096) + (tempbuffer[2] * 16) + (tempbuffer[3] >> 4)));
+                    buff.Add((ushort)(((((byte)(tempbuffer[3] << 4)) >> 4) * 1024) + (tempbuffer[4] * 4) + (tempbuffer[5] >> 6)));
+                    buff.Add((ushort)(((((byte)(tempbuffer[5] << 2)) >> 2) * 256) + (tempbuffer[6])));*/
+
+                    buff.Add((ushort)((tempbuffer[0] * 64) + (tempbuffer[1] >> 2)));
+                    buff.Add((ushort)((((byte)(tempbuffer[1] << 6)) << 6) + (tempbuffer[2] << 4) + (tempbuffer[3] >> 4)));
+                    buff.Add((ushort)((((byte)(tempbuffer[3] << 4)) << 6) + (tempbuffer[4] << 2) + (tempbuffer[5] >> 6)));
+                    buff.Add((ushort)((((byte)(tempbuffer[5] << 2)) << 6) + (tempbuffer[6])));
                 }
-                //Console.WriteLine();
-                for (int i = 0; i < intbuffer.Length; i++) { output[i % width, i / width] = (ushort)intbuffer[i]; }
-                //Console.WriteLine();
+
+                for (int i = 0; i < buff.Count; i++)
+                {
+                    output[i % width, i / width] = buff[i];
+                }
                 return new oMatrix(output);
             }
         }
@@ -610,7 +573,7 @@ namespace p00
                     List<InterpolatedUnit> results = new List<InterpolatedUnit>();
                     if (map[xxx, yyy] == 0)
                     {
-                        
+
                         if (yyy - radius >= 0 && yyy + radius < height && xxx - radius >= 0 && xxx + radius < width)
                         {
                             int size = (radius * 2) + 1;
@@ -814,9 +777,9 @@ namespace p00
                             int size = (radius * 2) + 1;
 
                             oMatrix subData = new oMatrix(data);
-                            subData=subData.Submatrix(yyy - radius, xxx - radius, size, size);
+                            subData = subData.Submatrix(yyy - radius, xxx - radius, size, size);
 
-                                //data.Submatrix(yyy - radius, xxx - radius, size, size);
+                            //data.Submatrix(yyy - radius, xxx - radius, size, size);
 
                             double[] tempData = new double[size];
                             double[] places = new double[tempData.Length];
@@ -917,7 +880,7 @@ namespace p00
 
         int width; public int Width() { return width; }
         int height; public int Height() { return height; }
-        public ushort[,] Data(){ return data; }
+        public ushort[,] Data() { return data; }
 
         public oMatrix(int dimX, int dimY, ushort fillingValue)
         {
@@ -1121,7 +1084,7 @@ namespace p00
             {
                 for (int yyy = 0; yyy < sizeY; yyy++)
                 {
-                    output[xxx,yyy] = data[startPosX+ xxx,startPosY+ yyy];
+                    output[xxx, yyy] = data[startPosX + xxx, startPosY + yyy];
                 }
             }
             return new oMatrix(output);

@@ -220,7 +220,7 @@ namespace p00
             rrwwtt.LLL.ModifyBlock(1, 1, rrwwtt._Prefit(rrwwtt.LLL.SliceBlock(sliceX, sliceY, 1, 1), rrwwtt.RRR.SliceBlock(sliceX, sliceY, 1, 1)));
             rrwwtt.LLL.ModifyBlock(0, 2, rrwwtt._Prefit(rrwwtt.LLL.SliceBlock(sliceX, sliceY, 0, 2), rrwwtt.RRR.SliceBlock(sliceX, sliceY, 0, 2)));
             rrwwtt.LLL.ModifyBlock(1, 3, rrwwtt._Prefit(rrwwtt.LLL.SliceBlock(sliceX, sliceY, 1, 3), rrwwtt.RRR.SliceBlock(sliceX, sliceY, 1, 3)));
-            
+
             for (int i = 0; i < rounds; i++)
             {
                 rrwwtt.LLL.ModifyBlock(0, 0, rrwwtt._Collector(rrwwtt.LLL.SliceBlock(2, 4, 0, 0), rrwwtt.RRR.SliceBlock(2, 4, 0, 0), radius));

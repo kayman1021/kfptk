@@ -9,6 +9,6 @@ namespace p00
 {
     public partial class BP_Data
     {
-        
+
     }
 }

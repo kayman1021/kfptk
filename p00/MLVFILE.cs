@@ -37,98 +37,37 @@ namespace p00
             }
         }
 
-
-
-        public MLVFILE(string filename)
-        {
-            int nextField = 0;
-            int fileLength;
-                using (BinaryReader reader = new BinaryReader(File.Open(filename, FileMode.Open)))
-            {
-                fileLength =(int)new System.IO.FileInfo(filename).Length;
-                byte[] bytebuffer = reader.ReadBytes(nextField);
-
-            }
-        }
-
         public uint get32bit(byte[] input)
         {
             return (uint)((input[0]) + (input[1] << 8) + (input[2] << 16) + (input[3] << 24));
         }
 
-        void setParams(byte[]input)
+        public ushort[] FrameDataToUshort(byte[] input)
         {
-            string blockType = System.Text.Encoding.ASCII.GetString(input.Take<byte>(4).ToArray());
-            uint blockLength = get32bit(input.Skip(4).ToArray());
+            ushort[] output = new ushort[8];
 
-            /*switch (blockType)
-            {
-                case "MLVI":
-                    break;
-                case "RAWI":
-                    break;
-                case "RAWC":
-                    break;
-                case "IDNT":
-                    break;
-                case "EXPO":
-                    break;
-                case "LENS":
-                    break;
-                case "WBAL":
-                    break;
-                case "RTCI":
-                    break;
-                case "DISO":
-                    break;
-                case "VERS":
-                    break;
-                case "VIDF":
-                    break;
-                case "NULL":
-                    break;
-                case MLV_frameTypes.STYL:
-                    break;
-                case MLV_frameTypes.ELVL:
-                    break;
-                case MLV_frameTypes.WBAL:
-                    break;
-                case MLV_frameTypes.DEBG:
-                    break;
-                default:
-                    break;
-            }*/
-        }
-    }
+            /*output[0] = (ushort)((input[0] >> 2) + (input[1] * 64));
+            output[1] = (ushort)((((input[0] << 6) >> 6) * 4096) + (input[2] >> 4) + (input[3] * 16));
+            output[2] = (ushort)((((input[2] << 4) >> 4) * 1024) + (input[4] >> 6) + (input[5] * 4));
+            output[3] = (ushort)((((input[4] << 2) >> 2) * 256) + input[7]);
 
-    class StringFinder
-    {
-        public uint get32bit(byte[] input)
-        {
-            return (uint)((input[0]) + (input[1] << 8) + (input[2] << 16) + (input[3] << 24));
-        }
-        public StringFinder(string filename)
-        {
-            string results = "";
-            int fileLength;
-            string blockName;
-            uint blockLength;
-            uint blockPosition;
+            output[4] = (ushort)((input[6] * 64) + (input[9] >> 2));
+            output[5] = (ushort)((input[8] * 16) + (((input[9] << 6) >> 6) * 4096) + (input[11] >> 4));
+            output[6] = (ushort)((input[10] * 4) + (((input[11] << 4) >> 4) * 1024) + (input[13] >> 6));
+            output[7] = (ushort)((input[12]) + (((input[13] << 2) >> 2) * 256));*/
 
-            using (BinaryReader reader = new BinaryReader(File.Open(filename, FileMode.Open)))
-            {
-                fileLength = (int)new System.IO.FileInfo(filename).Length;
-                uint counter = 0;
-                do
-                {
-                    blockPosition = counter;
-                    blockName= System.Text.Encoding.ASCII.GetString(reader.ReadBytes(4));
-                    blockLength =get32bit( reader.ReadBytes(4));
-                    reader.ReadBytes((int)blockLength- 8);
-                    results += blockName + "\n";
-                    counter += blockLength;
-                } while (counter<fileLength - 4);
-            }
+
+            output[0] = (ushort)((input[0] >> 2) + (input[1] >> 6));
+            output[1] = (ushort)(((input[0] << 6) >> 18) + (input[2] >> 4) + (input[3] >> 4));
+            output[2] = (ushort)(((input[2] << 4) >> 14) + (input[4] >> 6) + (input[5] >> 2));
+            output[3] = (ushort)(((input[4] << 2) >> 10) + input[7]);
+
+            output[4] = (ushort)((input[6] >> 6) + (input[9] >> 2));
+            output[5] = (ushort)((input[8] >> 4) + ((input[9] << 6) >> 18) + (input[11] >> 4));
+            output[6] = (ushort)((input[10] >> 2) + ((input[11] << 4) >> 14) + (input[13] >> 6));
+            output[7] = (ushort)((input[12]) + ((input[13] << 2) >> 10));
+
+            return output;
         }
     }
 }

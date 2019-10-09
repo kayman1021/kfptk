@@ -53,20 +53,20 @@ namespace p00
         public int frameStart;
         oMatrix framedata;
 
-        public ushort get16bit(byte[]input)
+        public ushort get16bit(byte[] input)
         {
-            return (ushort)((input[0])+(input[1]<<8));
+            return (ushort)((input[0]) + (input[1] << 8));
         }
-        public uint get32bit(byte[]input)
+        public uint get32bit(byte[] input)
         {
-            return (uint)((input[0]) + (input[1] << 8) +(input[2] << 16) + (input[3] << 24));
+            return (uint)((input[0]) + (input[1] << 8) + (input[2] << 16) + (input[3] << 24));
         }
         public ulong get64bit(byte[] input)
         {
             return 9999999999;
         }
 
-        public VideoFrame(int start,byte[] byteArray)
+        public VideoFrame(int start, byte[] byteArray)
         {
             frameStart = start;
 
@@ -130,7 +130,7 @@ namespace p00
 
         public void bbbb()
         {
-            for (int i = 0; i < bytebuffer.Length-4; i++)
+            for (int i = 0; i < bytebuffer.Length - 4; i++)
             {
                 switch (System.Text.Encoding.ASCII.GetString(bytebuffer.Skip(i).Take(4).ToArray()))
                 {
@@ -140,10 +140,10 @@ namespace p00
 
                     case "VIDF":
                         mlvData.Add(new vidf_hdr_t());
-                        int start =  i;
+                        int start = i;
                         byte[] lengthInByte = bytebuffer.Skip(start).Take(4).ToArray();
                         uint lengthInUint = get32bit(lengthInByte);
-                        frames.Add(new VideoFrame(start,bytebuffer.Skip(start).Take((int)lengthInUint).ToArray()));
+                        frames.Add(new VideoFrame(start, bytebuffer.Skip(start).Take((int)lengthInUint).ToArray()));
                         break;
                     case "AUDF":
                         mlvData.Add(new audf_hdr_t());
@@ -191,7 +191,7 @@ namespace p00
                         mlvData.Add(new debg_hdr_t());
                         break;
                         //default:
-                       // break;
+                        // break;
                 }
             }
             Console.WriteLine();
