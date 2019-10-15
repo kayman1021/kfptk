@@ -160,12 +160,12 @@ namespace p00
 
         private void button3_Click_1(object sender, EventArgs e)
         {
-            rrwwtt._ExportRawDataXiaomi(rrwwtt.LLL, @textBox_Import_DNG_Text.Text);
+            rrwwtt._ExportRawDataXiaomi(rrwwtt.LLL.Data(), @textBox_Import_DNG_Text.Text);
         }
 
         private void button_EXP_EOS_Click(object sender, EventArgs e)
         {
-            rrwwtt._ExportRawData14bitUncompressed(rrwwtt.LLL, @textBox_Import_DNG_Text.Text);
+            rrwwtt._ExportRawData14bitUncompressed(rrwwtt.LLL.Data(), @textBox_Import_DNG_Text.Text);
         }
 
         private void button4_Click_1(object sender, EventArgs e)
