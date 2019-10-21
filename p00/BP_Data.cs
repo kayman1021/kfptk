@@ -28,12 +28,28 @@ namespace p00
             RRR = new oMatrix(new ushort[0, 0]);
         }
 
+
+        public byte[] byteLoader(string filename, int startAddress, int length)
+        {
+            using (BinaryReader reader = new BinaryReader(File.Open(@filename, FileMode.Open)))
+            {
+                reader.ReadBytes(startAddress);
+                return reader.ReadBytes(length);
+            }
+        }
+
         public oMatrix _ImportRawDataXiaomi(string filename)
         {
             //const int bitsPerSample = 16;
             //const int bitsPerByte = 8;
             int width, height;
             ushort[,] output;
+            int pixelcount;
+            int datalength;
+            int start_addr;
+            byte[] bytebuffer;
+            int filelength;
+            filelength = (int)new System.IO.FileInfo(@filename).Length;
             using (Tiff input = Tiff.Open(@filename, "r"))
             {
                 width = input.GetField(TiffTag.IMAGEWIDTH)[0].ToInt();
@@ -45,17 +61,16 @@ namespace p00
             output = new ushort[width, height];
             using (BinaryReader reader = new BinaryReader(File.Open(@filename, FileMode.Open)))
             {
-                int filelength = (int)new System.IO.FileInfo(@filename).Length;
+                pixelcount = width * height;
                 //int datalength = (width * height * bitsPerSample / bitsPerByte);
-                int pixelcount = width * height;
-                int datalength = (pixelcount) << 1;
-                int start_addr = filelength - datalength;
+                datalength = (pixelcount) << 1;
+                start_addr = filelength - datalength;
                 reader.ReadBytes(start_addr);
-                byte[] bytebuffer = reader.ReadBytes(datalength);
-                for (int i = 0; i < pixelcount; i++)
-                {
-                    output[i % width, i / width] = (ushort)(bytebuffer[i << 1] + ((bytebuffer[(i << 1) + 1]) << 8));
-                }
+            }
+            bytebuffer = byteLoader(filename, start_addr, datalength);
+            for (int i = 0; i < pixelcount; i++)
+            {
+                output[i % width, i / width] = (ushort)(bytebuffer[i << 1] + ((bytebuffer[(i << 1) + 1]) << 8));
             }
             return new oMatrix(output);
         }
@@ -180,16 +195,24 @@ namespace p00
 
             outputByte = new byte[datalength];
             values = _ArrayConvert2Dto1D(input);
-
+            int temp;
             for (int i = 0; i < pixelcount; i = i + 4)
             {
-                outputByte[((i / 4) * 7) + 0] = (byte)(values[i] / 64);
-                outputByte[((i / 4) * 7) + 1] = (byte)(((values[i] % 64) * 4) + (values[i + 1] / 4096));
-                outputByte[((i / 4) * 7) + 2] = (byte)((values[i + 1] % 4096) / 16);
-                outputByte[((i / 4) * 7) + 3] = (byte)(((values[i + 1] % 16) * 16) + (values[i + 2] / 1024));
-                outputByte[((i / 4) * 7) + 4] = (byte)((values[i + 2] % 1024) / 4);
-                outputByte[((i / 4) * 7) + 5] = (byte)(((values[i + 2] % 4) * 64) + (values[i + 3] / 256));
-                outputByte[((i / 4) * 7) + 6] = (byte)(values[i + 3] % 256);
+                temp = (i / 4) * 7;
+                /*outputByte[temp + 0] = (byte)(values[i] / 64);
+                outputByte[temp + 1] = (byte)(((values[i] % 64) * 4) + (values[i + 1] / 4096));
+                outputByte[temp + 2] = (byte)((values[i + 1] % 4096) / 16);
+                outputByte[temp + 3] = (byte)(((values[i + 1] % 16) * 16) + (values[i + 2] / 1024));
+                outputByte[temp + 4] = (byte)((values[i + 2] % 1024) / 4);
+                outputByte[temp + 5] = (byte)(((values[i + 2] % 4) * 64) + (values[i + 3] / 256));
+                outputByte[temp + 6] = (byte)(values[i + 3] % 256);*/
+                outputByte[temp + 0] = (byte)(values[i] >> 6);
+                outputByte[temp + 1] = (byte)(((byte)((values[i] % 64) << 2)) + (byte)(values[i + 1] >> 12));
+                outputByte[temp + 2] = (byte)((values[i + 1] % 4096) >> 4);
+                outputByte[temp + 3] = (byte)(((values[i + 1] % 16) * 16) + (values[i + 2] >> 10));
+                outputByte[temp + 4] = (byte)((values[i + 2] % 1024) / 4);
+                outputByte[temp + 5] = (byte)(((values[i + 2] % 4) * 64) + (values[i + 3] >> 8));
+                outputByte[temp + 6] = (byte)(values[i + 3] % 256);
             }
             Array.Copy(outputByte, 0, inputByte, start_addr, datalength);
             _byteArrayWriter(inputByte, filename, "_corrected");
@@ -293,39 +316,36 @@ namespace p00
                 width = input.GetField(TiffTag.IMAGEWIDTH)[0].ToInt();
                 height = input.GetField(TiffTag.IMAGELENGTH)[0].ToInt();
                 bitsPerSample = input.GetField(TiffTag.BITSPERSAMPLE)[0].ToInt();
-                output = new ushort[width, height];
             }
+            output = new ushort[width, height];
             pixelcount = width * height;
             datalength = (int)(width * height * bitsPerSample / 8f);
+            byte[] inputByte;
             using (BinaryReader reader = new BinaryReader(File.Open(filename, FileMode.Open)))
             {
                 filelength = (int)(new System.IO.FileInfo(filename).Length);
                 start_addr = filelength - datalength;
                 reader.ReadBytes(start_addr);
-
-                List<ushort> buff = new List<ushort>();
-
-                byte[] tempbuffer = new byte[7];
-                for (int i = 0; i < datalength; i = i + 7)
-                {
-                    tempbuffer = reader.ReadBytes(7);
-                    /*buff.Add((ushort)((tempbuffer[0] * 64) + (tempbuffer[1] >> 2)));
-                    buff.Add((ushort)(((((byte)(tempbuffer[1] << 6)) >> 6) * 4096) + (tempbuffer[2] * 16) + (tempbuffer[3] >> 4)));
-                    buff.Add((ushort)(((((byte)(tempbuffer[3] << 4)) >> 4) * 1024) + (tempbuffer[4] * 4) + (tempbuffer[5] >> 6)));
-                    buff.Add((ushort)(((((byte)(tempbuffer[5] << 2)) >> 2) * 256) + (tempbuffer[6])));*/
-
-                    buff.Add((ushort)((tempbuffer[0] * 64) + (tempbuffer[1] >> 2)));
-                    buff.Add((ushort)((((byte)(tempbuffer[1] << 6)) << 6) + (tempbuffer[2] << 4) + (tempbuffer[3] >> 4)));
-                    buff.Add((ushort)((((byte)(tempbuffer[3] << 4)) << 6) + (tempbuffer[4] << 2) + (tempbuffer[5] >> 6)));
-                    buff.Add((ushort)((((byte)(tempbuffer[5] << 2)) << 6) + (tempbuffer[6])));
-                }
-
-                for (int i = 0; i < buff.Count; i++)
-                {
-                    output[i % width, i / width] = buff[i];
-                }
-                return new oMatrix(output);
+                inputByte = reader.ReadBytes(datalength);
             }
+
+            int temp;
+            for (int i = 0; i < datalength; i = i + 7)
+            {
+                //tempbuffer = reader.ReadBytes(7);
+                /*buff.Add((ushort)((tempbuffer[0] * 64) + (tempbuffer[1] >> 2)));
+                buff.Add((ushort)(((((byte)(tempbuffer[1] << 6)) >> 6) * 4096) + (tempbuffer[2] * 16) + (tempbuffer[3] >> 4)));
+                buff.Add((ushort)(((((byte)(tempbuffer[3] << 4)) >> 4) * 1024) + (tempbuffer[4] * 4) + (tempbuffer[5] >> 6)));
+                buff.Add((ushort)(((((byte)(tempbuffer[5] << 2)) >> 2) * 256) + (tempbuffer[6])));*/
+
+                temp = (i / 7) << 2;
+
+                output[(temp + 0) % width, (temp + 0) / width] = (ushort)((inputByte[i + 0] << 6) + (inputByte[i + 1] >> 2));
+                output[(temp + 1) % width, (temp + 1) / width] = (ushort)((((byte)(inputByte[i + 1] << 6)) << 6) + (inputByte[i + 2] << 4) + (inputByte[i + 3] >> 4));
+                output[(temp + 2) % width, (temp + 2) / width] = (ushort)((((byte)(inputByte[i + 3] << 4)) << 6) + (inputByte[i + 4] << 2) + (inputByte[i + 5] >> 6));
+                output[(temp + 3) % width, (temp + 3) / width] = (ushort)((((byte)(inputByte[i + 5] << 2)) << 6) + (inputByte[i + 6]));
+            }
+            return new oMatrix(output);
         }
 
         public void _ExportRawDataTiff(oMatrix input, string filename)
@@ -360,21 +380,6 @@ namespace p00
                     output.WriteScanline(bytebuffer, yyy);
                 }
             }
-        }///////////////////////////////opt
-
-        public void _ExportRawDataArray(oMatrix input, string filename)
-        {
-            int width = input.Width();
-            int height = input.Height();
-            StringBuilder sb = new StringBuilder();
-            string spacer = " ";
-            string newline = "\r\n";
-            for (int yyy = 0; yyy < height; yyy++)
-            {
-                for (int xxx = 0; xxx < width; xxx++) { sb.Append(input.GetValue(xxx, yyy) + spacer); }
-                sb.Append(newline);
-            }
-            File.WriteAllText(@filename, sb.ToString());
         }
 
         public oMatrix _BitmapToIntArray(Bitmap input)
@@ -401,10 +406,6 @@ namespace p00
                     output[yyy, xxx] = temp;
                 }
             }
-            //Console.WriteLine();
-
-
-
             return new oMatrix(output);
         }
 
@@ -490,23 +491,26 @@ namespace p00
             {
                 for (int yyy = 0; yyy < height; yyy++)
                 {
-                    if (xxx == 73 && yyy == 469)
+                    /*if (xxx == 73 && yyy == 469)
                     {
                         Console.WriteLine();
-                    }
+                    }*/
                     List<InterpolatedUnit> results = new List<InterpolatedUnit>();
                     if (map[xxx, yyy] == 0)
                     {
 
                         if (yyy - radius >= 0 && yyy + radius < height && xxx - radius >= 0 && xxx + radius < width)
                         {
-                            int size = (radius * 2) + 1;
+                            if (xxx == 367 && yyy == 871)
+                            {
+                                Console.WriteLine();
+                            }
 
-                            //oMatrix subData = data.Submatrix(xxx - radius, yyy - radius, size, size);
+                            int size = (radius << 1) + 1;
 
                             oMatrix subData = new oMatrix(data);
                             subData = subData.Submatrix(xxx - radius, yyy - radius, size, size);
-
+                            Console.WriteLine();
                             double[] tempData = new double[size];
                             double[] places = new double[tempData.Length];
                             for (int i = 0; i < places.Length; i++)
@@ -514,27 +518,28 @@ namespace p00
                                 places[i] = i;
                             }
 
+                            int orders = 2;
 
                             tempData = subData.ReturnRowAsDoubleArray(radius);
-                            for (int i = 1; i <= 2; i++)
+                            for (int i = 1; i <= orders; i++)
                             {
                                 results.Add(_Fitter(tempData, places, i));
                             }
 
                             tempData = subData.ReturnColumnAsDoubleArray(radius);
-                            for (int i = 1; i <= 2; i++)
+                            for (int i = 1; i <= orders; i++)
                             {
                                 results.Add(_Fitter(tempData, places, i));
                             }
 
                             tempData = subData.ReturnDiagonalAsDoubleArray1();
-                            for (int i = 1; i <= 2; i++)
+                            for (int i = 1; i <= orders; i++)
                             {
                                 results.Add(_Fitter(tempData, places, i));
                             }
 
                             tempData = subData.ReturnDiagonalAsDoubleArray2();
-                            for (int i = 1; i <= 2; i++)
+                            for (int i = 1; i <= orders; i++)
                             {
                                 results.Add(_Fitter(tempData, places, i));
                             }
@@ -575,28 +580,17 @@ namespace p00
             return output;
         }
 
-        /*public Matrix<double> _FlipMatrixHorizontally(Matrix<double> data)
-        {
-            Matrix<double> output = Matrix<double>.Build.Dense(data.RowCount, data.ColumnCount);
-            int counter = data.ColumnCount - 1;
-            for (int i = 0; i < data.ColumnCount; i++)
-            {
-                output.SetColumn(0, data.Row(counter));
-                counter--;
-            }
-            return output;
-        }*/
-
         public InterpolatedUnit _Fitter(double[] values, double[] places, int order)
         {
+            int arrayLength = values.Length;
             double[] fit = Fit.Polynomial(places, values, order);
-            double[] fittedValues = new double[places.Length];
-            for (int i = 0; i < fittedValues.Length; i++)
+            double[] fittedValues = new double[arrayLength];
+            for (int i = 0; i < arrayLength; i++)
             {
                 fittedValues[i] = Polynomial.Evaluate(i, fit);
             }
             double error = _ErrorOfFit(values, fittedValues);
-            return new InterpolatedUnit { value = (int)Polynomial.Evaluate(values.Length / 2, fit), goodnessOfFit = error };
+            return new InterpolatedUnit { value = (int)Polynomial.Evaluate(arrayLength >> 1, fit), goodnessOfFit = error };
         }
 
         public ushort[,] _Prefit(ushort[,] data, ushort[,] map)
@@ -649,18 +643,16 @@ namespace p00
         public double _ErrorOfFit(double[] measured, double[] fitted)
         {
             double sum = 0;
-            if (measured.Length == fitted.Length)
+            /*for (int i = 1; i < measured.Length - 1; i++)
             {
-                for (int i = 1; i < measured.Length - 1; i++)
-                {
-                    sum += (measured[i] - fitted[i]) * (measured[i] - fitted[i]);
-                }
-            }
-            else
+                sum += (measured[i] - fitted[i]) * (measured[i] - fitted[i]);
+            }*/
+            for (int i = 0; i < measured.Length; i++)
             {
-                //Console.WriteLine();
+                sum += (measured[i] - fitted[i]) * (measured[i] - fitted[i]);
             }
-            return Math.Sqrt(sum) / (measured.Length - 2);
+
+            return Math.Sqrt(sum) / (measured.Length);
         }
 
         public ushort[,] _Prefit2(ushort[,] data, ushort[,] map)
@@ -711,7 +703,6 @@ namespace p00
                             {
                                 places[i] = i;
                             }
-
 
                             tempData = _MakeCenterAverage((subData.ReturnRowAsDoubleArray(radius)));
                             results.Add(_Fitter(tempData, places, 1));
@@ -915,7 +906,7 @@ namespace p00
             {
                 for (int yyy = 0; yyy < height; yyy++)
                 {
-                    output[xxx, height - 1] = data[xxx, yyy];
+                    output[xxx, (height - 1) - yyy] = data[xxx, yyy];
                 }
             }
             return output;
@@ -954,12 +945,12 @@ namespace p00
             return ((input % (arraylength / sensels)) * sensels) + (input / (arraylength / sensels));
         }
 
-        public ushort[,] InterlaceUniversal(bool IsDualISO)
+        public ushort[,] InterlaceUniversal(int UniqueSenselsX, int UniqueSenselsY)
         {
-            int UniqueSenselsX = 2;
+            /*int UniqueSenselsX = 2;
             int UniqueSenselsY;
             if (IsDualISO) { UniqueSenselsY = 4; }
-            else { UniqueSenselsY = 2; }
+            else { UniqueSenselsY = 2; }*/
             int resolutionX = width;
             int resolutionY = height;
             int blockSizeX = width / UniqueSenselsX;
@@ -972,6 +963,13 @@ namespace p00
                 {
                     output[tempX, InterlaceCoordinate(height, UniqueSenselsY, yyy)] = data[xxx, yyy];
                 }
+                if (height % UniqueSenselsY != 0)
+                {
+                    for (int i = 0; i < height % UniqueSenselsY; i++)
+                    {
+                        output[xxx, ((height / UniqueSenselsY) * UniqueSenselsY) + i] = data[xxx, ((height / UniqueSenselsY) * UniqueSenselsY) + i];
+                    }
+                }
             }
             return output;
         }
@@ -981,12 +979,12 @@ namespace p00
             return ((arraylength / sensels) * (input % sensels)) + (input / sensels);
         }
 
-        public ushort[,] DeinterlaceUniversal(bool IsDualISO)
+        public ushort[,] DeinterlaceUniversal(int UniqueSenselsX, int UniqueSenselsY)
         {
-            int UniqueSenselsX = 2;
+            /*int UniqueSenselsX = 2;
             int UniqueSenselsY;
             if (IsDualISO) { UniqueSenselsY = 4; }
-            else { UniqueSenselsY = 2; }
+            else { UniqueSenselsY = 2; }*/
             int blockSizeX = width / UniqueSenselsX;
             int blockSizeY = height / UniqueSenselsY;
             ushort[,] output = new ushort[width, height];
@@ -996,6 +994,13 @@ namespace p00
                 for (int yyy = 0; yyy < height; yyy++)
                 {
                     output[tempx, DeinterlaceCoordinate(height, UniqueSenselsY, yyy)] = (ushort)data[xxx, yyy];
+                }
+                if (height % UniqueSenselsY != 0)
+                {
+                    for (int i = 0; i < height % UniqueSenselsY; i++)
+                    {
+                        output[xxx, ((height / UniqueSenselsY) * UniqueSenselsY) + i] = data[xxx, ((height / UniqueSenselsY) * UniqueSenselsY) + i];
+                    }
                 }
             }
             return output;

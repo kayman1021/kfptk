@@ -66,6 +66,7 @@
             this.button_EXP_EOS = new System.Windows.Forms.Button();
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
+            this.button8 = new System.Windows.Forms.Button();
             this.button10 = new System.Windows.Forms.Button();
             this.tabPage2 = new System.Windows.Forms.TabPage();
             this.button5 = new System.Windows.Forms.Button();
@@ -77,6 +78,10 @@
             this.button1 = new System.Windows.Forms.Button();
             this.button2 = new System.Windows.Forms.Button();
             this.button7 = new System.Windows.Forms.Button();
+            this.numericUpDown1 = new System.Windows.Forms.NumericUpDown();
+            this.numericUpDown2 = new System.Windows.Forms.NumericUpDown();
+            this.button_DEINT_MAN = new System.Windows.Forms.Button();
+            this.button_INT_MAN = new System.Windows.Forms.Button();
             this.groupBox_Export_TIFF.SuspendLayout();
             this.groupBox_Export_FPM.SuspendLayout();
             this.groupBox_Tools.SuspendLayout();
@@ -91,6 +96,8 @@
             this.tabPage2.SuspendLayout();
             this.tabPage3.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown_angle)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown2)).BeginInit();
             this.SuspendLayout();
             // 
             // groupBox_Export_TIFF
@@ -181,6 +188,10 @@
             // 
             // groupBox_Tools
             // 
+            this.groupBox_Tools.Controls.Add(this.button_INT_MAN);
+            this.groupBox_Tools.Controls.Add(this.button_DEINT_MAN);
+            this.groupBox_Tools.Controls.Add(this.numericUpDown2);
+            this.groupBox_Tools.Controls.Add(this.numericUpDown1);
             this.groupBox_Tools.Controls.Add(this.button_Tools_SwapSides);
             this.groupBox_Tools.Controls.Add(this.button_Tools_Transpose);
             this.groupBox_Tools.Controls.Add(this.button_Tools_InterlaceDualISO);
@@ -503,6 +514,7 @@
             // 
             // tabPage1
             // 
+            this.tabPage1.Controls.Add(this.button8);
             this.tabPage1.Controls.Add(this.button10);
             this.tabPage1.Controls.Add(this.groupBox_Import);
             this.tabPage1.Controls.Add(this.button_EXP_EOS);
@@ -517,13 +529,23 @@
             this.tabPage1.Text = "SANDBOX";
             this.tabPage1.UseVisualStyleBackColor = true;
             // 
+            // button8
+            // 
+            this.button8.Location = new System.Drawing.Point(540, 698);
+            this.button8.Name = "button8";
+            this.button8.Size = new System.Drawing.Size(161, 23);
+            this.button8.TabIndex = 29;
+            this.button8.Text = "SINGLE XIAOMI";
+            this.button8.UseVisualStyleBackColor = true;
+            this.button8.Click += new System.EventHandler(this.button8_Click);
+            // 
             // button10
             // 
-            this.button10.Location = new System.Drawing.Point(521, 730);
+            this.button10.Location = new System.Drawing.Point(540, 659);
             this.button10.Name = "button10";
             this.button10.Size = new System.Drawing.Size(161, 23);
             this.button10.TabIndex = 28;
-            this.button10.Text = "INTERPOLATION2";
+            this.button10.Text = "DUAL CANON";
             this.button10.UseVisualStyleBackColor = true;
             this.button10.Click += new System.EventHandler(this.button10_Click);
             // 
@@ -624,6 +646,39 @@
             this.button7.UseVisualStyleBackColor = true;
             this.button7.Click += new System.EventHandler(this.button7_Click);
             // 
+            // numericUpDown1
+            // 
+            this.numericUpDown1.Location = new System.Drawing.Point(12, 150);
+            this.numericUpDown1.Name = "numericUpDown1";
+            this.numericUpDown1.Size = new System.Drawing.Size(120, 26);
+            this.numericUpDown1.TabIndex = 8;
+            // 
+            // numericUpDown2
+            // 
+            this.numericUpDown2.Location = new System.Drawing.Point(139, 150);
+            this.numericUpDown2.Name = "numericUpDown2";
+            this.numericUpDown2.Size = new System.Drawing.Size(120, 26);
+            this.numericUpDown2.TabIndex = 9;
+            // 
+            // button_DEINT_MAN
+            // 
+            this.button_DEINT_MAN.Location = new System.Drawing.Point(266, 150);
+            this.button_DEINT_MAN.Name = "button_DEINT_MAN";
+            this.button_DEINT_MAN.Size = new System.Drawing.Size(138, 26);
+            this.button_DEINT_MAN.TabIndex = 10;
+            this.button_DEINT_MAN.Text = "DEINT MAN";
+            this.button_DEINT_MAN.UseVisualStyleBackColor = true;
+            this.button_DEINT_MAN.Click += new System.EventHandler(this.button_DEINT_MAN_Click);
+            // 
+            // button_INT_MAN
+            // 
+            this.button_INT_MAN.Location = new System.Drawing.Point(411, 150);
+            this.button_INT_MAN.Name = "button_INT_MAN";
+            this.button_INT_MAN.Size = new System.Drawing.Size(132, 26);
+            this.button_INT_MAN.TabIndex = 11;
+            this.button_INT_MAN.Text = "INT MAN";
+            this.button_INT_MAN.UseVisualStyleBackColor = true;
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -655,6 +710,8 @@
             this.tabPage2.ResumeLayout(false);
             this.tabPage3.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown_angle)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown2)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -710,6 +767,11 @@
         private System.Windows.Forms.Button button1;
         private System.Windows.Forms.Button button2;
         private System.Windows.Forms.Button button7;
+        private System.Windows.Forms.Button button8;
+        private System.Windows.Forms.Button button_INT_MAN;
+        private System.Windows.Forms.Button button_DEINT_MAN;
+        private System.Windows.Forms.NumericUpDown numericUpDown2;
+        private System.Windows.Forms.NumericUpDown numericUpDown1;
     }
 }
 

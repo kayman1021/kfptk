@@ -95,11 +95,11 @@ namespace p00
         }
         private void button_Tools_Deinterlace_Click(object sender, EventArgs e)
         {
-            rrwwtt.LLL.UpdateData(rrwwtt.LLL.DeinterlaceUniversal(false));
+            rrwwtt.LLL.UpdateData(rrwwtt.LLL.DeinterlaceUniversal(2,2));
         }
         private void button_Tools_DeinterlaceDualISO_Click(object sender, EventArgs e)
         {
-            rrwwtt.LLL.UpdateData(rrwwtt.LLL.DeinterlaceUniversal(true));
+            rrwwtt.LLL.UpdateData(rrwwtt.LLL.DeinterlaceUniversal(2,4));
         }
         private void button_Tools_Transpose_Click(object sender, EventArgs e)
         {
@@ -107,11 +107,11 @@ namespace p00
         }
         private void button_Tools_Interlace_Click(object sender, EventArgs e)
         {
-            rrwwtt.LLL.UpdateData(rrwwtt.LLL.InterlaceUniversal(false));
+            rrwwtt.LLL.UpdateData(rrwwtt.LLL.InterlaceUniversal(2,2));
         }
         private void button_Tools_InterlaceDualISO_Click(object sender, EventArgs e)
         {
-            rrwwtt.LLL.UpdateData(rrwwtt.LLL.InterlaceUniversal(true));
+            rrwwtt.LLL.UpdateData(rrwwtt.LLL.InterlaceUniversal(2,4));
         }
         private void button_Tools_SwapSides_Click(object sender, EventArgs e)
         {
@@ -150,12 +150,12 @@ namespace p00
 
         private void button3_Click(object sender, EventArgs e)
         {
-            rrwwtt.LLL.UpdateData(rrwwtt.LLL.DeinterlaceUniversal(true));
+            rrwwtt.LLL.UpdateData(rrwwtt.LLL.DeinterlaceUniversal(2,4));
         }
 
         private void button4_Click(object sender, EventArgs e)
         {
-            rrwwtt.LLL.UpdateData(rrwwtt.LLL.DeinterlaceUniversal(false));
+            rrwwtt.LLL.UpdateData(rrwwtt.LLL.DeinterlaceUniversal(2,2));
         }
 
         private void button3_Click_1(object sender, EventArgs e)
@@ -215,18 +215,18 @@ namespace p00
 
             int sliceX = 2;
             int sliceY = 4;
-            Console.WriteLine();
-            rrwwtt.LLL.ModifyBlock(0, 0, rrwwtt._Prefit(rrwwtt.LLL.SliceBlock(sliceX, sliceY, 0, 0), rrwwtt.RRR.SliceBlock(sliceX, sliceY, 0, 0)));
-            rrwwtt.LLL.ModifyBlock(1, 1, rrwwtt._Prefit(rrwwtt.LLL.SliceBlock(sliceX, sliceY, 1, 1), rrwwtt.RRR.SliceBlock(sliceX, sliceY, 1, 1)));
-            rrwwtt.LLL.ModifyBlock(0, 2, rrwwtt._Prefit(rrwwtt.LLL.SliceBlock(sliceX, sliceY, 0, 2), rrwwtt.RRR.SliceBlock(sliceX, sliceY, 0, 2)));
-            rrwwtt.LLL.ModifyBlock(1, 3, rrwwtt._Prefit(rrwwtt.LLL.SliceBlock(sliceX, sliceY, 1, 3), rrwwtt.RRR.SliceBlock(sliceX, sliceY, 1, 3)));
+            //Console.WriteLine();
+            //rrwwtt.LLL.ModifyBlock(0, 0, rrwwtt._Prefit(rrwwtt.LLL.SliceBlock(sliceX, sliceY, 0, 0), rrwwtt.RRR.SliceBlock(sliceX, sliceY, 0, 0)));
+            //rrwwtt.LLL.ModifyBlock(1, 1, rrwwtt._Prefit(rrwwtt.LLL.SliceBlock(sliceX, sliceY, 1, 1), rrwwtt.RRR.SliceBlock(sliceX, sliceY, 1, 1)));
+            //rrwwtt.LLL.ModifyBlock(0, 2, rrwwtt._Prefit(rrwwtt.LLL.SliceBlock(sliceX, sliceY, 0, 2), rrwwtt.RRR.SliceBlock(sliceX, sliceY, 0, 2)));
+            //rrwwtt.LLL.ModifyBlock(1, 3, rrwwtt._Prefit(rrwwtt.LLL.SliceBlock(sliceX, sliceY, 1, 3), rrwwtt.RRR.SliceBlock(sliceX, sliceY, 1, 3)));
 
             for (int i = 0; i < rounds; i++)
             {
-                rrwwtt.LLL.ModifyBlock(0, 0, rrwwtt._Collector(rrwwtt.LLL.SliceBlock(2, 4, 0, 0), rrwwtt.RRR.SliceBlock(2, 4, 0, 0), radius));
-                rrwwtt.LLL.ModifyBlock(1, 1, rrwwtt._Collector(rrwwtt.LLL.SliceBlock(2, 4, 1, 1), rrwwtt.RRR.SliceBlock(2, 4, 1, 1), radius));
-                rrwwtt.LLL.ModifyBlock(0, 2, rrwwtt._Collector(rrwwtt.LLL.SliceBlock(2, 4, 0, 2), rrwwtt.RRR.SliceBlock(2, 4, 0, 2), radius));
-                rrwwtt.LLL.ModifyBlock(1, 3, rrwwtt._Collector(rrwwtt.LLL.SliceBlock(2, 4, 1, 3), rrwwtt.RRR.SliceBlock(2, 4, 1, 3), radius));
+                rrwwtt.LLL.ModifyBlock(0, 0, rrwwtt._Collector(rrwwtt.LLL.SliceBlock(sliceX,sliceY, 0, 0), rrwwtt.RRR.SliceBlock(sliceX, sliceY, 0, 0), radius));
+                rrwwtt.LLL.ModifyBlock(1, 1, rrwwtt._Collector(rrwwtt.LLL.SliceBlock(sliceX, sliceY, 1, 1), rrwwtt.RRR.SliceBlock(sliceX, sliceY, 1, 1), radius));
+                rrwwtt.LLL.ModifyBlock(0, 2, rrwwtt._Collector(rrwwtt.LLL.SliceBlock(sliceX, sliceY, 0, 2), rrwwtt.RRR.SliceBlock(sliceX, sliceY, 0, 2), radius));
+                rrwwtt.LLL.ModifyBlock(1, 3, rrwwtt._Collector(rrwwtt.LLL.SliceBlock(sliceX, sliceY, 1, 3), rrwwtt.RRR.SliceBlock(sliceX, sliceY, 1, 3), radius));
             }
         }
 
@@ -269,8 +269,8 @@ namespace p00
             int radius = 3;
             int sliceX = 2;
             int sliceY = 2;
-            rrwwtt.LLL.ModifyBlock(0, 0, rrwwtt._Prefit2(rrwwtt.LLL.SliceBlock(sliceX, sliceY, 0, 0), rrwwtt.RRR.SliceBlock(sliceX, sliceY, 0, 0)));
-            rrwwtt.LLL.ModifyBlock(0, 1, rrwwtt._Prefit2(rrwwtt.LLL.SliceBlock(sliceX, sliceY, 0, 1), rrwwtt.RRR.SliceBlock(sliceX, sliceY, 0, 1)));
+            //rrwwtt.LLL.ModifyBlock(0, 0, rrwwtt._Prefit2(rrwwtt.LLL.SliceBlock(sliceX, sliceY, 0, 0), rrwwtt.RRR.SliceBlock(sliceX, sliceY, 0, 0)));
+            //rrwwtt.LLL.ModifyBlock(0, 1, rrwwtt._Prefit2(rrwwtt.LLL.SliceBlock(sliceX, sliceY, 0, 1), rrwwtt.RRR.SliceBlock(sliceX, sliceY, 0, 1)));
             //rrwwtt.ModifyBlock(rrwwtt.Left, 0, 1, rrwwtt.Prefit2(rrwwtt.SliceBlock(rrwwtt.Left, sliceX, sliceY, 0, 1), rrwwtt.SliceBlock(rrwwtt.Right, sliceX, sliceY, 0, 1)));
             //rrwwtt.ModifyBlock(rrwwtt.Left, 0, 0, rrwwtt.Collector2(rrwwtt.SliceBlock(rrwwtt.Left, sliceX, sliceY, 0, 0), rrwwtt.SliceBlock(rrwwtt.Right, sliceX, sliceY, 0, 0), radius));
             //rrwwtt.ModifyBlock(rrwwtt.Left, 0, 1, rrwwtt.Collector2(rrwwtt.SliceBlock(rrwwtt.Left, sliceX, sliceY, 0, 1), rrwwtt.SliceBlock(rrwwtt.Right, sliceX, sliceY, 0, 1), radius));
@@ -281,6 +281,27 @@ namespace p00
         {
             Console.WriteLine();
             rrwwtt._ExportAdobeConverted(rrwwtt.LLL, textBox_Import_DNG_Text.Text);
+        }
+
+        private void button8_Click(object sender, EventArgs e)
+        {
+            int radius = 4;
+            int rounds = 8;
+
+            int sliceX = 2;
+            int sliceY = 2;
+            Console.WriteLine();
+            rrwwtt.LLL.ModifyBlock(0, 0, rrwwtt._Prefit(rrwwtt.LLL.SliceBlock(sliceX, sliceY, 0, 0), rrwwtt.RRR.SliceBlock(sliceX, sliceY, 0, 0)));
+
+            for (int i = 0; i < rounds; i++)
+            {
+                rrwwtt.LLL.ModifyBlock(0, 0, rrwwtt._Collector(rrwwtt.LLL.SliceBlock(sliceX, sliceY, 0, 0), rrwwtt.RRR.SliceBlock(sliceX, sliceY, 0, 0), radius));
+            }
+        }
+
+        private void button_DEINT_MAN_Click(object sender, EventArgs e)
+        {
+            rrwwtt.LLL.UpdateData(rrwwtt.LLL.DeinterlaceUniversal((int)numericUpDown1.Value, (int)numericUpDown2.Value));
         }
     }
 }
