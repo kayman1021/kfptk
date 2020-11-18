@@ -65,7 +65,7 @@ namespace p00
                 //int datalength = (width * height * bitsPerSample / bitsPerByte);
                 datalength = (pixelcount) << 1;
                 start_addr = filelength - datalength;
-                reader.ReadBytes(start_addr);
+                //reader.ReadBytes(start_addr);
             }
             bytebuffer = byteLoader(filename, start_addr, datalength);
             for (int i = 0; i < pixelcount; i++)
@@ -250,20 +250,23 @@ namespace p00
             int width = 5360;
             int height = 3465;
             int bitsPerSample = 16;
+            byte[] bytebuffer;
+            int filelength = (int)(new System.IO.FileInfo(filename).Length);
+            int datalength = (int)(width * height * bitsPerSample / 8f);
+            int start_addr = filelength - datalength;
             ushort[,] output = new ushort[width, height];
             using (BinaryReader reader = new BinaryReader(File.Open(filename, FileMode.Open)))
             {
-                int filelength = (int)(new System.IO.FileInfo(filename).Length);
-                int datalength = (int)(width * height * bitsPerSample / 8f);
-                int start_addr = filelength - datalength;
-                reader.ReadBytes(start_addr);
-                byte[] bytebuffer = reader.ReadBytes(datalength);
-                Console.WriteLine();
-                for (int i = 0; i < (bytebuffer.Length / 2); i++)
-                {
-                    output[(i) % width, (i) / width] = (ushort)(bytebuffer[2 * i] + (bytebuffer[(2 * i) + 1] * 256));
-                }
-                Console.WriteLine();
+                bytebuffer = byteLoader(filename, start_addr, datalength);
+
+
+                //reader.ReadBytes(start_addr);
+                //bytebuffer = reader.ReadBytes(datalength);
+
+            }
+            for (int i = 0; i < (bytebuffer.Length / 2); i++)
+            {
+                output[(i) % width, (i) / width] = (ushort)(bytebuffer[2 * i] + (bytebuffer[(2 * i) + 1] * 256));
             }
 
             return output;
@@ -315,7 +318,8 @@ namespace p00
             {
                 width = input.GetField(TiffTag.IMAGEWIDTH)[0].ToInt();
                 height = input.GetField(TiffTag.IMAGELENGTH)[0].ToInt();
-                bitsPerSample = input.GetField(TiffTag.BITSPERSAMPLE)[0].ToInt();
+                //bitsPerSample = input.GetField(TiffTag.BITSPERSAMPLE)[0].ToInt();
+                bitsPerSample = 14;
             }
             output = new ushort[width, height];
             pixelcount = width * height;
@@ -416,6 +420,27 @@ namespace p00
 
         public oMatrix _ImportPixelMapFromFPM(int resolutionX, int resolutionY, string filename)
         {
+            string[] input = System.IO.File.ReadAllLines(@filename);
+            resolutionX = 4096;
+            resolutionY = 4096;
+            ushort[,] output = new ushort[resolutionX, resolutionY];
+            for (int xxx = 0; xxx < resolutionX; xxx++)
+            {
+                for (int yyy = 0; yyy < resolutionY; yyy++)
+                {
+                    output[xxx, yyy] = ushort.MaxValue;
+                }
+            }
+
+            string[] ttt;
+            for (int i = 0; i < input.Length; i++)
+            {
+                ttt = input[i].Split(new string[] { " \t " },StringSplitOptions.None);
+                output[Convert.ToInt32(ttt[0]), Convert.ToInt32(ttt[1])] = ushort.MinValue;
+            }
+
+
+            /*
             string input = System.IO.File.ReadAllText(@filename);
             string[] stringArray = input.Split(new string[] { "\n" }, StringSplitOptions.None);
             Point[] pointArray = new Point[stringArray.GetLength(0)];
@@ -425,7 +450,7 @@ namespace p00
             int xxx, yyy;
             for (int i = 0; i < stringArray.GetLength(0); i++)
             {
-                coordinates = stringArray[i].Split(new string[] { " \r " }, StringSplitOptions.None);
+                coordinates = stringArray[i].Split(new string[] { " \t " }, StringSplitOptions.None);
                 xxx = int.Parse(coordinates[0]);
                 yyy = int.Parse(coordinates[1]);
                 if (xxx > maximumXXX)
@@ -444,7 +469,7 @@ namespace p00
             {
                 output[pointArray[i].X, pointArray[i].Y] = ushort.MinValue;
             }
-
+            */
             return new oMatrix(output);
         }
 
@@ -593,7 +618,7 @@ namespace p00
             return new InterpolatedUnit { value = (int)Polynomial.Evaluate(arrayLength >> 1, fit), goodnessOfFit = error };
         }
 
-        public ushort[,] _Prefit(ushort[,] data, ushort[,] map)
+        /*public ushort[,] _Prefit(ushort[,] data, ushort[,] map)
         {
             int height = data.GetLength(1);
             int width = data.GetLength(0);
@@ -638,7 +663,7 @@ namespace p00
                 }
             }
             return output;
-        }
+        }*/
 
         public double _ErrorOfFit(double[] measured, double[] fitted)
         {
@@ -673,11 +698,11 @@ namespace p00
             return output;
         }
 
-        public oMatrix _Collector2(ushort[,] data, ushort[,] map, int radius)
+        public ushort[,] _Collector2(ushort[,] data, ushort[,] map, int radius)
         {
-            int height = data.GetLength(1);
             int width = data.GetLength(0);
-            ushort[,] output = new ushort[width, height];
+            int height = data.GetLength(1);
+            ushort[,] output = data;
 
             List<InterpolatedUnit>[,] allValue = new List<InterpolatedUnit>[width, height];
 
@@ -693,7 +718,7 @@ namespace p00
                             int size = (radius * 2) + 1;
 
                             oMatrix subData = new oMatrix(data);
-                            subData = subData.Submatrix(yyy - radius, xxx - radius, size, size);
+                            subData = subData.Submatrix(xxx - radius, yyy - radius, size, size);
 
                             //data.Submatrix(yyy - radius, xxx - radius, size, size);
 
@@ -704,18 +729,31 @@ namespace p00
                                 places[i] = i;
                             }
 
-                            tempData = _MakeCenterAverage((subData.ReturnRowAsDoubleArray(radius)));
-                            results.Add(_Fitter(tempData, places, 1));
-                            results.Add(_Fitter(tempData, places, 2));
-                            tempData = _MakeCenterAverage(tempData);
+                            int orders = 2;
 
-                            tempData = _MakeCenterAverage((subData.ReturnDiagonalAsDoubleArray1()));
-                            results.Add(_Fitter(tempData, places, 1));
-                            results.Add(_Fitter(tempData, places, 2));
+                            tempData = subData.ReturnRowAsDoubleArray(radius);
+                            for (int i = 1; i <= orders; i++)
+                            {
+                                results.Add(_Fitter(tempData, places, i));
+                            }
 
-                            tempData = _MakeCenterAverage((subData.ReturnDiagonalAsDoubleArray2()));
-                            results.Add(_Fitter(tempData, places, 1));
-                            results.Add(_Fitter(tempData, places, 2));
+                            /*tempData = subData.ReturnColumnAsDoubleArray(radius);
+                            for (int i = 1; i <= orders; i++)
+                            {
+                                results.Add(_Fitter(tempData, places, i));
+                            }*/
+
+                            /*tempData = subData.ReturnDiagonalAsDoubleArray1();
+                            for (int i = 1; i <= orders; i++)
+                            {
+                                results.Add(_Fitter(tempData, places, i));
+                            }
+
+                            tempData = subData.ReturnDiagonalAsDoubleArray2();
+                            for (int i = 1; i <= orders; i++)
+                            {
+                                results.Add(_Fitter(tempData, places, i));
+                            }*/
 
                         }
 
@@ -751,7 +789,7 @@ namespace p00
                 }
             }
 
-            return new oMatrix(output);
+            return output;
         }
 
 

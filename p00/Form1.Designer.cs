@@ -37,6 +37,10 @@
             this.button_Export_FPM_Browse = new System.Windows.Forms.Button();
             this.textBox_Export_FPM_Text = new System.Windows.Forms.TextBox();
             this.groupBox_Tools = new System.Windows.Forms.GroupBox();
+            this.button_INT_MAN = new System.Windows.Forms.Button();
+            this.button_DEINT_MAN = new System.Windows.Forms.Button();
+            this.numericUpDown2 = new System.Windows.Forms.NumericUpDown();
+            this.numericUpDown1 = new System.Windows.Forms.NumericUpDown();
             this.button_Tools_SwapSides = new System.Windows.Forms.Button();
             this.button_Tools_Transpose = new System.Windows.Forms.Button();
             this.button_Tools_InterlaceDualISO = new System.Windows.Forms.Button();
@@ -66,6 +70,11 @@
             this.button_EXP_EOS = new System.Windows.Forms.Button();
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
+            this.button11 = new System.Windows.Forms.Button();
+            this.button7 = new System.Windows.Forms.Button();
+            this.button9 = new System.Windows.Forms.Button();
+            this.button1 = new System.Windows.Forms.Button();
+            this.button2 = new System.Windows.Forms.Button();
             this.button8 = new System.Windows.Forms.Button();
             this.button10 = new System.Windows.Forms.Button();
             this.tabPage2 = new System.Windows.Forms.TabPage();
@@ -75,16 +84,13 @@
             this.tabPage3 = new System.Windows.Forms.TabPage();
             this.button6 = new System.Windows.Forms.Button();
             this.numericUpDown_angle = new System.Windows.Forms.NumericUpDown();
-            this.button1 = new System.Windows.Forms.Button();
-            this.button2 = new System.Windows.Forms.Button();
-            this.button7 = new System.Windows.Forms.Button();
-            this.numericUpDown1 = new System.Windows.Forms.NumericUpDown();
-            this.numericUpDown2 = new System.Windows.Forms.NumericUpDown();
-            this.button_DEINT_MAN = new System.Windows.Forms.Button();
-            this.button_INT_MAN = new System.Windows.Forms.Button();
+            this.button_XIAOMI16rep = new System.Windows.Forms.Button();
+            this.button_XIAOMI16rep_filelist = new System.Windows.Forms.Button();
             this.groupBox_Export_TIFF.SuspendLayout();
             this.groupBox_Export_FPM.SuspendLayout();
             this.groupBox_Tools.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown2)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).BeginInit();
             this.groupBox_Import_FPM.SuspendLayout();
             this.groupBox_Import_DNG.SuspendLayout();
             this.groupBox_Import.SuspendLayout();
@@ -96,8 +102,6 @@
             this.tabPage2.SuspendLayout();
             this.tabPage3.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown_angle)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown2)).BeginInit();
             this.SuspendLayout();
             // 
             // groupBox_Export_TIFF
@@ -205,6 +209,39 @@
             this.groupBox_Tools.TabIndex = 11;
             this.groupBox_Tools.TabStop = false;
             this.groupBox_Tools.Text = "Tools";
+            // 
+            // button_INT_MAN
+            // 
+            this.button_INT_MAN.Location = new System.Drawing.Point(411, 150);
+            this.button_INT_MAN.Name = "button_INT_MAN";
+            this.button_INT_MAN.Size = new System.Drawing.Size(132, 26);
+            this.button_INT_MAN.TabIndex = 11;
+            this.button_INT_MAN.Text = "INT MAN";
+            this.button_INT_MAN.UseVisualStyleBackColor = true;
+            // 
+            // button_DEINT_MAN
+            // 
+            this.button_DEINT_MAN.Location = new System.Drawing.Point(266, 150);
+            this.button_DEINT_MAN.Name = "button_DEINT_MAN";
+            this.button_DEINT_MAN.Size = new System.Drawing.Size(138, 26);
+            this.button_DEINT_MAN.TabIndex = 10;
+            this.button_DEINT_MAN.Text = "DEINT MAN";
+            this.button_DEINT_MAN.UseVisualStyleBackColor = true;
+            this.button_DEINT_MAN.Click += new System.EventHandler(this.button_DEINT_MAN_Click);
+            // 
+            // numericUpDown2
+            // 
+            this.numericUpDown2.Location = new System.Drawing.Point(139, 150);
+            this.numericUpDown2.Name = "numericUpDown2";
+            this.numericUpDown2.Size = new System.Drawing.Size(120, 26);
+            this.numericUpDown2.TabIndex = 9;
+            // 
+            // numericUpDown1
+            // 
+            this.numericUpDown1.Location = new System.Drawing.Point(12, 150);
+            this.numericUpDown1.Name = "numericUpDown1";
+            this.numericUpDown1.Size = new System.Drawing.Size(120, 26);
+            this.numericUpDown1.TabIndex = 8;
             // 
             // button_Tools_SwapSides
             // 
@@ -483,7 +520,7 @@
             // 
             // button3
             // 
-            this.button3.Location = new System.Drawing.Point(349, 698);
+            this.button3.Location = new System.Drawing.Point(190, 621);
             this.button3.Name = "button3";
             this.button3.Size = new System.Drawing.Size(75, 23);
             this.button3.TabIndex = 22;
@@ -493,7 +530,7 @@
             // 
             // button_EXP_EOS
             // 
-            this.button_EXP_EOS.Location = new System.Drawing.Point(349, 727);
+            this.button_EXP_EOS.Location = new System.Drawing.Point(190, 650);
             this.button_EXP_EOS.Name = "button_EXP_EOS";
             this.button_EXP_EOS.Size = new System.Drawing.Size(75, 23);
             this.button_EXP_EOS.TabIndex = 23;
@@ -509,11 +546,18 @@
             this.tabControl1.Location = new System.Drawing.Point(12, 12);
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
-            this.tabControl1.Size = new System.Drawing.Size(738, 785);
+            this.tabControl1.Size = new System.Drawing.Size(747, 804);
             this.tabControl1.TabIndex = 24;
             // 
             // tabPage1
             // 
+            this.tabPage1.Controls.Add(this.button_XIAOMI16rep_filelist);
+            this.tabPage1.Controls.Add(this.button_XIAOMI16rep);
+            this.tabPage1.Controls.Add(this.button11);
+            this.tabPage1.Controls.Add(this.button7);
+            this.tabPage1.Controls.Add(this.button9);
+            this.tabPage1.Controls.Add(this.button1);
+            this.tabPage1.Controls.Add(this.button2);
             this.tabPage1.Controls.Add(this.button8);
             this.tabPage1.Controls.Add(this.button10);
             this.tabPage1.Controls.Add(this.groupBox_Import);
@@ -524,14 +568,64 @@
             this.tabPage1.Location = new System.Drawing.Point(4, 22);
             this.tabPage1.Name = "tabPage1";
             this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage1.Size = new System.Drawing.Size(730, 759);
+            this.tabPage1.Size = new System.Drawing.Size(739, 778);
             this.tabPage1.TabIndex = 0;
             this.tabPage1.Text = "SANDBOX";
             this.tabPage1.UseVisualStyleBackColor = true;
             // 
+            // button11
+            // 
+            this.button11.Location = new System.Drawing.Point(517, 669);
+            this.button11.Name = "button11";
+            this.button11.Size = new System.Drawing.Size(95, 23);
+            this.button11.TabIndex = 31;
+            this.button11.Text = "SHOW DATA";
+            this.button11.UseVisualStyleBackColor = true;
+            this.button11.Click += new System.EventHandler(this.button11_Click);
+            // 
+            // button7
+            // 
+            this.button7.Location = new System.Drawing.Point(637, 621);
+            this.button7.Name = "button7";
+            this.button7.Size = new System.Drawing.Size(75, 23);
+            this.button7.TabIndex = 27;
+            this.button7.Text = "button7";
+            this.button7.UseVisualStyleBackColor = true;
+            this.button7.Click += new System.EventHandler(this.button7_Click);
+            // 
+            // button9
+            // 
+            this.button9.Location = new System.Drawing.Point(12, 621);
+            this.button9.Name = "button9";
+            this.button9.Size = new System.Drawing.Size(161, 23);
+            this.button9.TabIndex = 30;
+            this.button9.Text = "SINGLE CANON";
+            this.button9.UseVisualStyleBackColor = true;
+            this.button9.Click += new System.EventHandler(this.button9_Click);
+            // 
+            // button1
+            // 
+            this.button1.Location = new System.Drawing.Point(474, 621);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(75, 23);
+            this.button1.TabIndex = 25;
+            this.button1.Text = "button1";
+            this.button1.UseVisualStyleBackColor = true;
+            this.button1.Click += new System.EventHandler(this.button1_Click);
+            // 
+            // button2
+            // 
+            this.button2.Location = new System.Drawing.Point(556, 621);
+            this.button2.Name = "button2";
+            this.button2.Size = new System.Drawing.Size(75, 23);
+            this.button2.TabIndex = 26;
+            this.button2.Text = "button2";
+            this.button2.UseVisualStyleBackColor = true;
+            this.button2.Click += new System.EventHandler(this.button2_Click);
+            // 
             // button8
             // 
-            this.button8.Location = new System.Drawing.Point(540, 698);
+            this.button8.Location = new System.Drawing.Point(12, 679);
             this.button8.Name = "button8";
             this.button8.Size = new System.Drawing.Size(161, 23);
             this.button8.TabIndex = 29;
@@ -541,7 +635,7 @@
             // 
             // button10
             // 
-            this.button10.Location = new System.Drawing.Point(540, 659);
+            this.button10.Location = new System.Drawing.Point(12, 650);
             this.button10.Name = "button10";
             this.button10.Size = new System.Drawing.Size(161, 23);
             this.button10.TabIndex = 28;
@@ -557,7 +651,7 @@
             this.tabPage2.Location = new System.Drawing.Point(4, 22);
             this.tabPage2.Name = "tabPage2";
             this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage2.Size = new System.Drawing.Size(730, 759);
+            this.tabPage2.Size = new System.Drawing.Size(730, 710);
             this.tabPage2.TabIndex = 1;
             this.tabPage2.Text = "MASS DUAL ISO EOS";
             this.tabPage2.UseVisualStyleBackColor = true;
@@ -577,7 +671,7 @@
             this.listBox_MASS_DUAL_ISO.FormattingEnabled = true;
             this.listBox_MASS_DUAL_ISO.Location = new System.Drawing.Point(6, 6);
             this.listBox_MASS_DUAL_ISO.Name = "listBox_MASS_DUAL_ISO";
-            this.listBox_MASS_DUAL_ISO.Size = new System.Drawing.Size(410, 745);
+            this.listBox_MASS_DUAL_ISO.Size = new System.Drawing.Size(410, 329);
             this.listBox_MASS_DUAL_ISO.TabIndex = 1;
             // 
             // button4
@@ -597,7 +691,7 @@
             this.tabPage3.Location = new System.Drawing.Point(4, 22);
             this.tabPage3.Name = "tabPage3";
             this.tabPage3.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage3.Size = new System.Drawing.Size(730, 759);
+            this.tabPage3.Size = new System.Drawing.Size(730, 710);
             this.tabPage3.TabIndex = 2;
             this.tabPage3.Text = "tabPage3";
             this.tabPage3.UseVisualStyleBackColor = true;
@@ -616,77 +710,31 @@
             this.numericUpDown_angle.Size = new System.Drawing.Size(120, 20);
             this.numericUpDown_angle.TabIndex = 0;
             // 
-            // button1
+            // button_XIAOMI16rep
             // 
-            this.button1.Location = new System.Drawing.Point(570, 843);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(75, 23);
-            this.button1.TabIndex = 25;
-            this.button1.Text = "button1";
-            this.button1.UseVisualStyleBackColor = true;
-            this.button1.Click += new System.EventHandler(this.button1_Click);
+            this.button_XIAOMI16rep.Location = new System.Drawing.Point(280, 679);
+            this.button_XIAOMI16rep.Name = "button_XIAOMI16rep";
+            this.button_XIAOMI16rep.Size = new System.Drawing.Size(144, 23);
+            this.button_XIAOMI16rep.TabIndex = 32;
+            this.button_XIAOMI16rep.Text = "XIAOMI16rep";
+            this.button_XIAOMI16rep.UseVisualStyleBackColor = true;
+            this.button_XIAOMI16rep.Click += new System.EventHandler(this.button_XIAOMI16rep_Click);
             // 
-            // button2
+            // button_XIAOMI16rep_filelist
             // 
-            this.button2.Location = new System.Drawing.Point(570, 872);
-            this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(75, 23);
-            this.button2.TabIndex = 26;
-            this.button2.Text = "button2";
-            this.button2.UseVisualStyleBackColor = true;
-            this.button2.Click += new System.EventHandler(this.button2_Click);
-            // 
-            // button7
-            // 
-            this.button7.Location = new System.Drawing.Point(570, 902);
-            this.button7.Name = "button7";
-            this.button7.Size = new System.Drawing.Size(75, 23);
-            this.button7.TabIndex = 27;
-            this.button7.Text = "button7";
-            this.button7.UseVisualStyleBackColor = true;
-            this.button7.Click += new System.EventHandler(this.button7_Click);
-            // 
-            // numericUpDown1
-            // 
-            this.numericUpDown1.Location = new System.Drawing.Point(12, 150);
-            this.numericUpDown1.Name = "numericUpDown1";
-            this.numericUpDown1.Size = new System.Drawing.Size(120, 26);
-            this.numericUpDown1.TabIndex = 8;
-            // 
-            // numericUpDown2
-            // 
-            this.numericUpDown2.Location = new System.Drawing.Point(139, 150);
-            this.numericUpDown2.Name = "numericUpDown2";
-            this.numericUpDown2.Size = new System.Drawing.Size(120, 26);
-            this.numericUpDown2.TabIndex = 9;
-            // 
-            // button_DEINT_MAN
-            // 
-            this.button_DEINT_MAN.Location = new System.Drawing.Point(266, 150);
-            this.button_DEINT_MAN.Name = "button_DEINT_MAN";
-            this.button_DEINT_MAN.Size = new System.Drawing.Size(138, 26);
-            this.button_DEINT_MAN.TabIndex = 10;
-            this.button_DEINT_MAN.Text = "DEINT MAN";
-            this.button_DEINT_MAN.UseVisualStyleBackColor = true;
-            this.button_DEINT_MAN.Click += new System.EventHandler(this.button_DEINT_MAN_Click);
-            // 
-            // button_INT_MAN
-            // 
-            this.button_INT_MAN.Location = new System.Drawing.Point(411, 150);
-            this.button_INT_MAN.Name = "button_INT_MAN";
-            this.button_INT_MAN.Size = new System.Drawing.Size(132, 26);
-            this.button_INT_MAN.TabIndex = 11;
-            this.button_INT_MAN.Text = "INT MAN";
-            this.button_INT_MAN.UseVisualStyleBackColor = true;
+            this.button_XIAOMI16rep_filelist.Location = new System.Drawing.Point(280, 708);
+            this.button_XIAOMI16rep_filelist.Name = "button_XIAOMI16rep_filelist";
+            this.button_XIAOMI16rep_filelist.Size = new System.Drawing.Size(144, 23);
+            this.button_XIAOMI16rep_filelist.TabIndex = 33;
+            this.button_XIAOMI16rep_filelist.Text = "XIAOMI16rep_filelist";
+            this.button_XIAOMI16rep_filelist.UseVisualStyleBackColor = true;
+            this.button_XIAOMI16rep_filelist.Click += new System.EventHandler(this.button_XIAOMI16rep_filelist_Click);
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(764, 958);
-            this.Controls.Add(this.button7);
-            this.Controls.Add(this.button2);
-            this.Controls.Add(this.button1);
+            this.ClientSize = new System.Drawing.Size(1617, 1109);
             this.Controls.Add(this.tabControl1);
             this.Name = "Form1";
             this.Text = "Form1";
@@ -695,6 +743,8 @@
             this.groupBox_Export_FPM.ResumeLayout(false);
             this.groupBox_Export_FPM.PerformLayout();
             this.groupBox_Tools.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown2)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).EndInit();
             this.groupBox_Import_FPM.ResumeLayout(false);
             this.groupBox_Import_FPM.PerformLayout();
             this.groupBox_Import_DNG.ResumeLayout(false);
@@ -710,8 +760,6 @@
             this.tabPage2.ResumeLayout(false);
             this.tabPage3.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown_angle)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown2)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -772,6 +820,10 @@
         private System.Windows.Forms.Button button_DEINT_MAN;
         private System.Windows.Forms.NumericUpDown numericUpDown2;
         private System.Windows.Forms.NumericUpDown numericUpDown1;
+        private System.Windows.Forms.Button button9;
+        private System.Windows.Forms.Button button11;
+        private System.Windows.Forms.Button button_XIAOMI16rep;
+        private System.Windows.Forms.Button button_XIAOMI16rep_filelist;
     }
 }
 
