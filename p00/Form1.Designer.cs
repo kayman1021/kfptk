@@ -68,8 +68,10 @@
             this.groupBox_Export = new System.Windows.Forms.GroupBox();
             this.button3 = new System.Windows.Forms.Button();
             this.button_EXP_EOS = new System.Windows.Forms.Button();
-            this.tabControl1 = new System.Windows.Forms.TabControl();
+            this.SingleFile = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
+            this.button_XIAOMI16rep_filelist = new System.Windows.Forms.Button();
+            this.button_XIAOMI16rep = new System.Windows.Forms.Button();
             this.button11 = new System.Windows.Forms.Button();
             this.button7 = new System.Windows.Forms.Button();
             this.button9 = new System.Windows.Forms.Button();
@@ -84,8 +86,20 @@
             this.tabPage3 = new System.Windows.Forms.TabPage();
             this.button6 = new System.Windows.Forms.Button();
             this.numericUpDown_angle = new System.Windows.Forms.NumericUpDown();
-            this.button_XIAOMI16rep = new System.Windows.Forms.Button();
-            this.button_XIAOMI16rep_filelist = new System.Windows.Forms.Button();
+            this.tabPage4 = new System.Windows.Forms.TabPage();
+            this.radioButton_Single_DNG_14bit = new System.Windows.Forms.RadioButton();
+            this.radioButton_Single_DNG_16bit_A1 = new System.Windows.Forms.RadioButton();
+            this.radioButton_Single_DNG_16bit_4X = new System.Windows.Forms.RadioButton();
+            this.radioButton_MLV = new System.Windows.Forms.RadioButton();
+            this.radioButton_Multiple_DNG_16bit_4X = new System.Windows.Forms.RadioButton();
+            this.radioButton_Multiple_DNG_16bit_A1 = new System.Windows.Forms.RadioButton();
+            this.radioButton_Multiple_DNG_14bit = new System.Windows.Forms.RadioButton();
+            this.groupBox_Left = new System.Windows.Forms.GroupBox();
+            this.listBox1 = new System.Windows.Forms.ListBox();
+            this.panel1 = new System.Windows.Forms.Panel();
+            this.button12 = new System.Windows.Forms.Button();
+            this.button13 = new System.Windows.Forms.Button();
+            this.button14 = new System.Windows.Forms.Button();
             this.groupBox_Export_TIFF.SuspendLayout();
             this.groupBox_Export_FPM.SuspendLayout();
             this.groupBox_Tools.SuspendLayout();
@@ -97,11 +111,14 @@
             this.groupBox_Import_Mapped.SuspendLayout();
             this.groupBox_Import_TIFF.SuspendLayout();
             this.groupBox_Export.SuspendLayout();
-            this.tabControl1.SuspendLayout();
+            this.SingleFile.SuspendLayout();
             this.tabPage1.SuspendLayout();
             this.tabPage2.SuspendLayout();
             this.tabPage3.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown_angle)).BeginInit();
+            this.tabPage4.SuspendLayout();
+            this.groupBox_Left.SuspendLayout();
+            this.panel1.SuspendLayout();
             this.SuspendLayout();
             // 
             // groupBox_Export_TIFF
@@ -538,16 +555,18 @@
             this.button_EXP_EOS.UseVisualStyleBackColor = true;
             this.button_EXP_EOS.Click += new System.EventHandler(this.button_EXP_EOS_Click);
             // 
-            // tabControl1
+            // SingleFile
             // 
-            this.tabControl1.Controls.Add(this.tabPage1);
-            this.tabControl1.Controls.Add(this.tabPage2);
-            this.tabControl1.Controls.Add(this.tabPage3);
-            this.tabControl1.Location = new System.Drawing.Point(12, 12);
-            this.tabControl1.Name = "tabControl1";
-            this.tabControl1.SelectedIndex = 0;
-            this.tabControl1.Size = new System.Drawing.Size(747, 804);
-            this.tabControl1.TabIndex = 24;
+            this.SingleFile.Controls.Add(this.tabPage1);
+            this.SingleFile.Controls.Add(this.tabPage2);
+            this.SingleFile.Controls.Add(this.tabPage3);
+            this.SingleFile.Controls.Add(this.tabPage4);
+            this.SingleFile.Location = new System.Drawing.Point(13, 13);
+            this.SingleFile.Margin = new System.Windows.Forms.Padding(4);
+            this.SingleFile.Name = "SingleFile";
+            this.SingleFile.SelectedIndex = 0;
+            this.SingleFile.Size = new System.Drawing.Size(692, 793);
+            this.SingleFile.TabIndex = 24;
             // 
             // tabPage1
             // 
@@ -572,6 +591,26 @@
             this.tabPage1.TabIndex = 0;
             this.tabPage1.Text = "SANDBOX";
             this.tabPage1.UseVisualStyleBackColor = true;
+            // 
+            // button_XIAOMI16rep_filelist
+            // 
+            this.button_XIAOMI16rep_filelist.Location = new System.Drawing.Point(280, 708);
+            this.button_XIAOMI16rep_filelist.Name = "button_XIAOMI16rep_filelist";
+            this.button_XIAOMI16rep_filelist.Size = new System.Drawing.Size(144, 23);
+            this.button_XIAOMI16rep_filelist.TabIndex = 33;
+            this.button_XIAOMI16rep_filelist.Text = "XIAOMI16rep_filelist";
+            this.button_XIAOMI16rep_filelist.UseVisualStyleBackColor = true;
+            this.button_XIAOMI16rep_filelist.Click += new System.EventHandler(this.button_XIAOMI16rep_filelist_Click);
+            // 
+            // button_XIAOMI16rep
+            // 
+            this.button_XIAOMI16rep.Location = new System.Drawing.Point(280, 679);
+            this.button_XIAOMI16rep.Name = "button_XIAOMI16rep";
+            this.button_XIAOMI16rep.Size = new System.Drawing.Size(144, 23);
+            this.button_XIAOMI16rep.TabIndex = 32;
+            this.button_XIAOMI16rep.Text = "XIAOMI16rep";
+            this.button_XIAOMI16rep.UseVisualStyleBackColor = true;
+            this.button_XIAOMI16rep.Click += new System.EventHandler(this.button_XIAOMI16rep_Click);
             // 
             // button11
             // 
@@ -651,7 +690,7 @@
             this.tabPage2.Location = new System.Drawing.Point(4, 22);
             this.tabPage2.Name = "tabPage2";
             this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage2.Size = new System.Drawing.Size(730, 710);
+            this.tabPage2.Size = new System.Drawing.Size(739, 778);
             this.tabPage2.TabIndex = 1;
             this.tabPage2.Text = "MASS DUAL ISO EOS";
             this.tabPage2.UseVisualStyleBackColor = true;
@@ -691,7 +730,7 @@
             this.tabPage3.Location = new System.Drawing.Point(4, 22);
             this.tabPage3.Name = "tabPage3";
             this.tabPage3.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage3.Size = new System.Drawing.Size(730, 710);
+            this.tabPage3.Size = new System.Drawing.Size(739, 778);
             this.tabPage3.TabIndex = 2;
             this.tabPage3.Text = "tabPage3";
             this.tabPage3.UseVisualStyleBackColor = true;
@@ -710,32 +749,241 @@
             this.numericUpDown_angle.Size = new System.Drawing.Size(120, 20);
             this.numericUpDown_angle.TabIndex = 0;
             // 
-            // button_XIAOMI16rep
+            // tabPage4
             // 
-            this.button_XIAOMI16rep.Location = new System.Drawing.Point(280, 679);
-            this.button_XIAOMI16rep.Name = "button_XIAOMI16rep";
-            this.button_XIAOMI16rep.Size = new System.Drawing.Size(144, 23);
-            this.button_XIAOMI16rep.TabIndex = 32;
-            this.button_XIAOMI16rep.Text = "XIAOMI16rep";
-            this.button_XIAOMI16rep.UseVisualStyleBackColor = true;
-            this.button_XIAOMI16rep.Click += new System.EventHandler(this.button_XIAOMI16rep_Click);
+            this.tabPage4.Controls.Add(this.groupBox_Left);
+            this.tabPage4.Location = new System.Drawing.Point(4, 22);
+            this.tabPage4.Name = "tabPage4";
+            this.tabPage4.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPage4.Size = new System.Drawing.Size(684, 767);
+            this.tabPage4.TabIndex = 3;
+            this.tabPage4.Text = "Single File";
+            this.tabPage4.UseVisualStyleBackColor = true;
             // 
-            // button_XIAOMI16rep_filelist
+            // radioButton_Single_DNG_14bit
             // 
-            this.button_XIAOMI16rep_filelist.Location = new System.Drawing.Point(280, 708);
-            this.button_XIAOMI16rep_filelist.Name = "button_XIAOMI16rep_filelist";
-            this.button_XIAOMI16rep_filelist.Size = new System.Drawing.Size(144, 23);
-            this.button_XIAOMI16rep_filelist.TabIndex = 33;
-            this.button_XIAOMI16rep_filelist.Text = "XIAOMI16rep_filelist";
-            this.button_XIAOMI16rep_filelist.UseVisualStyleBackColor = true;
-            this.button_XIAOMI16rep_filelist.Click += new System.EventHandler(this.button_XIAOMI16rep_filelist_Click);
+            this.radioButton_Single_DNG_14bit.AutoSize = true;
+            this.radioButton_Single_DNG_14bit.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.25F);
+            this.radioButton_Single_DNG_14bit.Location = new System.Drawing.Point(4, 218);
+            this.radioButton_Single_DNG_14bit.Margin = new System.Windows.Forms.Padding(4);
+            this.radioButton_Single_DNG_14bit.Name = "radioButton_Single_DNG_14bit";
+            this.radioButton_Single_DNG_14bit.Size = new System.Drawing.Size(216, 21);
+            this.radioButton_Single_DNG_14bit.TabIndex = 0;
+            this.radioButton_Single_DNG_14bit.TabStop = true;
+            this.radioButton_Single_DNG_14bit.Text = "Single DNG 14bit(MLV export)";
+            this.radioButton_Single_DNG_14bit.UseVisualStyleBackColor = true;
+            // 
+            // radioButton_Single_DNG_16bit_A1
+            // 
+            this.radioButton_Single_DNG_16bit_A1.AutoSize = true;
+            this.radioButton_Single_DNG_16bit_A1.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.25F);
+            this.radioButton_Single_DNG_16bit_A1.Location = new System.Drawing.Point(4, 247);
+            this.radioButton_Single_DNG_16bit_A1.Margin = new System.Windows.Forms.Padding(4);
+            this.radioButton_Single_DNG_16bit_A1.Name = "radioButton_Single_DNG_16bit_A1";
+            this.radioButton_Single_DNG_16bit_A1.Size = new System.Drawing.Size(208, 21);
+            this.radioButton_Single_DNG_16bit_A1.TabIndex = 1;
+            this.radioButton_Single_DNG_16bit_A1.TabStop = true;
+            this.radioButton_Single_DNG_16bit_A1.Text = "Single DNG 16bit(Xiaomi A1)";
+            this.radioButton_Single_DNG_16bit_A1.UseVisualStyleBackColor = true;
+            // 
+            // radioButton_Single_DNG_16bit_4X
+            // 
+            this.radioButton_Single_DNG_16bit_4X.AutoSize = true;
+            this.radioButton_Single_DNG_16bit_4X.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.25F);
+            this.radioButton_Single_DNG_16bit_4X.Location = new System.Drawing.Point(4, 276);
+            this.radioButton_Single_DNG_16bit_4X.Margin = new System.Windows.Forms.Padding(4);
+            this.radioButton_Single_DNG_16bit_4X.Name = "radioButton_Single_DNG_16bit_4X";
+            this.radioButton_Single_DNG_16bit_4X.Size = new System.Drawing.Size(206, 21);
+            this.radioButton_Single_DNG_16bit_4X.TabIndex = 2;
+            this.radioButton_Single_DNG_16bit_4X.TabStop = true;
+            this.radioButton_Single_DNG_16bit_4X.Text = "Single DNG 16bit(Redmi 4X)";
+            this.radioButton_Single_DNG_16bit_4X.UseVisualStyleBackColor = true;
+            // 
+            // radioButton_MLV
+            // 
+            this.radioButton_MLV.AutoSize = true;
+            this.radioButton_MLV.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.25F);
+            this.radioButton_MLV.Location = new System.Drawing.Point(4, 392);
+            this.radioButton_MLV.Margin = new System.Windows.Forms.Padding(4);
+            this.radioButton_MLV.Name = "radioButton_MLV";
+            this.radioButton_MLV.Size = new System.Drawing.Size(76, 21);
+            this.radioButton_MLV.TabIndex = 3;
+            this.radioButton_MLV.TabStop = true;
+            this.radioButton_MLV.Text = "MLV file";
+            this.radioButton_MLV.UseVisualStyleBackColor = true;
+            // 
+            // radioButton_Multiple_DNG_16bit_4X
+            // 
+            this.radioButton_Multiple_DNG_16bit_4X.AutoSize = true;
+            this.radioButton_Multiple_DNG_16bit_4X.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.25F);
+            this.radioButton_Multiple_DNG_16bit_4X.Location = new System.Drawing.Point(4, 363);
+            this.radioButton_Multiple_DNG_16bit_4X.Margin = new System.Windows.Forms.Padding(4);
+            this.radioButton_Multiple_DNG_16bit_4X.Name = "radioButton_Multiple_DNG_16bit_4X";
+            this.radioButton_Multiple_DNG_16bit_4X.Size = new System.Drawing.Size(215, 21);
+            this.radioButton_Multiple_DNG_16bit_4X.TabIndex = 6;
+            this.radioButton_Multiple_DNG_16bit_4X.TabStop = true;
+            this.radioButton_Multiple_DNG_16bit_4X.Text = "Multiple DNG 16bit(Redmi 4X)";
+            this.radioButton_Multiple_DNG_16bit_4X.UseVisualStyleBackColor = true;
+            // 
+            // radioButton_Multiple_DNG_16bit_A1
+            // 
+            this.radioButton_Multiple_DNG_16bit_A1.AutoSize = true;
+            this.radioButton_Multiple_DNG_16bit_A1.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.25F);
+            this.radioButton_Multiple_DNG_16bit_A1.Location = new System.Drawing.Point(4, 334);
+            this.radioButton_Multiple_DNG_16bit_A1.Margin = new System.Windows.Forms.Padding(4);
+            this.radioButton_Multiple_DNG_16bit_A1.Name = "radioButton_Multiple_DNG_16bit_A1";
+            this.radioButton_Multiple_DNG_16bit_A1.Size = new System.Drawing.Size(217, 21);
+            this.radioButton_Multiple_DNG_16bit_A1.TabIndex = 5;
+            this.radioButton_Multiple_DNG_16bit_A1.TabStop = true;
+            this.radioButton_Multiple_DNG_16bit_A1.Text = "Multiple DNG 16bit(Xiaomi A1)";
+            this.radioButton_Multiple_DNG_16bit_A1.UseVisualStyleBackColor = true;
+            // 
+            // radioButton_Multiple_DNG_14bit
+            // 
+            this.radioButton_Multiple_DNG_14bit.AutoSize = true;
+            this.radioButton_Multiple_DNG_14bit.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.25F);
+            this.radioButton_Multiple_DNG_14bit.Location = new System.Drawing.Point(4, 305);
+            this.radioButton_Multiple_DNG_14bit.Margin = new System.Windows.Forms.Padding(4);
+            this.radioButton_Multiple_DNG_14bit.Name = "radioButton_Multiple_DNG_14bit";
+            this.radioButton_Multiple_DNG_14bit.Size = new System.Drawing.Size(225, 21);
+            this.radioButton_Multiple_DNG_14bit.TabIndex = 4;
+            this.radioButton_Multiple_DNG_14bit.TabStop = true;
+            this.radioButton_Multiple_DNG_14bit.Text = "Multiple DNG 14bit(MLV export)";
+            this.radioButton_Multiple_DNG_14bit.UseVisualStyleBackColor = true;
+            // 
+            // groupBox_Left
+            // 
+            this.groupBox_Left.AutoSize = true;
+            this.groupBox_Left.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.groupBox_Left.Controls.Add(this.panel1);
+            this.groupBox_Left.Dock = System.Windows.Forms.DockStyle.Left;
+            this.groupBox_Left.Font = new System.Drawing.Font("Microsoft Sans Serif", 12.25F);
+            this.groupBox_Left.Location = new System.Drawing.Point(3, 3);
+            this.groupBox_Left.Margin = new System.Windows.Forms.Padding(4);
+            this.groupBox_Left.Name = "groupBox_Left";
+            this.groupBox_Left.Padding = new System.Windows.Forms.Padding(4);
+            this.groupBox_Left.Size = new System.Drawing.Size(332, 761);
+            this.groupBox_Left.TabIndex = 7;
+            this.groupBox_Left.TabStop = false;
+            this.groupBox_Left.Text = "Left";
+            // 
+            // listBox1
+            // 
+            this.listBox1.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.25F);
+            this.listBox1.FormattingEnabled = true;
+            this.listBox1.ItemHeight = 17;
+            this.listBox1.Items.AddRange(new object[] {
+            "sdfsdf",
+            "rthrtrt",
+            "54",
+            "4",
+            "ghdf",
+            "tz54",
+            "2343453453",
+            "3645456",
+            "67867867",
+            "jghjghghj",
+            "45544554",
+            "sdfsdf",
+            "rthrtrt",
+            "54",
+            "4",
+            "ghdf",
+            "tz54",
+            "2343453453",
+            "3645456",
+            "67867867",
+            "jghjghghj",
+            "45544554",
+            "sdfsdf",
+            "rthrtrt",
+            "54",
+            "4",
+            "ghdf",
+            "tz54",
+            "2343453453",
+            "3645456",
+            "67867867",
+            "jghjghghj",
+            "45544554",
+            "sdfsdf",
+            "rthrtrt",
+            "54",
+            "4",
+            "ghdf",
+            "tz54",
+            "2343453453",
+            "3645456",
+            "67867867",
+            "jghjghghj",
+            "45544554"});
+            this.listBox1.Location = new System.Drawing.Point(4, 36);
+            this.listBox1.Margin = new System.Windows.Forms.Padding(4);
+            this.listBox1.Name = "listBox1";
+            this.listBox1.SelectionMode = System.Windows.Forms.SelectionMode.MultiExtended;
+            this.listBox1.Size = new System.Drawing.Size(316, 174);
+            this.listBox1.TabIndex = 7;
+            // 
+            // panel1
+            // 
+            this.panel1.AutoSize = true;
+            this.panel1.Controls.Add(this.button14);
+            this.panel1.Controls.Add(this.radioButton_Single_DNG_14bit);
+            this.panel1.Controls.Add(this.radioButton_Multiple_DNG_16bit_4X);
+            this.panel1.Controls.Add(this.button13);
+            this.panel1.Controls.Add(this.radioButton_Single_DNG_16bit_A1);
+            this.panel1.Controls.Add(this.listBox1);
+            this.panel1.Controls.Add(this.radioButton_Multiple_DNG_16bit_A1);
+            this.panel1.Controls.Add(this.button12);
+            this.panel1.Controls.Add(this.radioButton_Single_DNG_16bit_4X);
+            this.panel1.Controls.Add(this.radioButton_MLV);
+            this.panel1.Controls.Add(this.radioButton_Multiple_DNG_14bit);
+            this.panel1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.panel1.Location = new System.Drawing.Point(4, 23);
+            this.panel1.Margin = new System.Windows.Forms.Padding(4);
+            this.panel1.Name = "panel1";
+            this.panel1.Size = new System.Drawing.Size(324, 734);
+            this.panel1.TabIndex = 8;
+            // 
+            // button12
+            // 
+            this.button12.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.25F);
+            this.button12.Location = new System.Drawing.Point(4, 4);
+            this.button12.Margin = new System.Windows.Forms.Padding(4);
+            this.button12.Name = "button12";
+            this.button12.Size = new System.Drawing.Size(100, 24);
+            this.button12.TabIndex = 9;
+            this.button12.Text = "Add";
+            this.button12.UseVisualStyleBackColor = true;
+            // 
+            // button13
+            // 
+            this.button13.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.25F);
+            this.button13.Location = new System.Drawing.Point(112, 4);
+            this.button13.Margin = new System.Windows.Forms.Padding(4);
+            this.button13.Name = "button13";
+            this.button13.Size = new System.Drawing.Size(100, 24);
+            this.button13.TabIndex = 10;
+            this.button13.Text = "Delete";
+            this.button13.UseVisualStyleBackColor = true;
+            // 
+            // button14
+            // 
+            this.button14.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.25F);
+            this.button14.Location = new System.Drawing.Point(220, 4);
+            this.button14.Margin = new System.Windows.Forms.Padding(4);
+            this.button14.Name = "button14";
+            this.button14.Size = new System.Drawing.Size(100, 24);
+            this.button14.TabIndex = 11;
+            this.button14.Text = "Empty";
+            this.button14.UseVisualStyleBackColor = true;
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1617, 1109);
-            this.Controls.Add(this.tabControl1);
+            this.Controls.Add(this.SingleFile);
             this.Name = "Form1";
             this.Text = "Form1";
             this.groupBox_Export_TIFF.ResumeLayout(false);
@@ -755,11 +1003,17 @@
             this.groupBox_Import_TIFF.ResumeLayout(false);
             this.groupBox_Import_TIFF.PerformLayout();
             this.groupBox_Export.ResumeLayout(false);
-            this.tabControl1.ResumeLayout(false);
+            this.SingleFile.ResumeLayout(false);
             this.tabPage1.ResumeLayout(false);
             this.tabPage2.ResumeLayout(false);
             this.tabPage3.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown_angle)).EndInit();
+            this.tabPage4.ResumeLayout(false);
+            this.tabPage4.PerformLayout();
+            this.groupBox_Left.ResumeLayout(false);
+            this.groupBox_Left.PerformLayout();
+            this.panel1.ResumeLayout(false);
+            this.panel1.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -802,7 +1056,7 @@
         private System.Windows.Forms.Button button_Tools_SwapSides;
         private System.Windows.Forms.Button button3;
         private System.Windows.Forms.Button button_EXP_EOS;
-        private System.Windows.Forms.TabControl tabControl1;
+        private System.Windows.Forms.TabControl SingleFile;
         private System.Windows.Forms.TabPage tabPage1;
         private System.Windows.Forms.TabPage tabPage2;
         private System.Windows.Forms.Button button4;
@@ -824,6 +1078,20 @@
         private System.Windows.Forms.Button button11;
         private System.Windows.Forms.Button button_XIAOMI16rep;
         private System.Windows.Forms.Button button_XIAOMI16rep_filelist;
+        private System.Windows.Forms.TabPage tabPage4;
+        private System.Windows.Forms.RadioButton radioButton_Single_DNG_14bit;
+        private System.Windows.Forms.RadioButton radioButton_MLV;
+        private System.Windows.Forms.RadioButton radioButton_Single_DNG_16bit_4X;
+        private System.Windows.Forms.RadioButton radioButton_Single_DNG_16bit_A1;
+        private System.Windows.Forms.RadioButton radioButton_Multiple_DNG_16bit_4X;
+        private System.Windows.Forms.RadioButton radioButton_Multiple_DNG_16bit_A1;
+        private System.Windows.Forms.RadioButton radioButton_Multiple_DNG_14bit;
+        private System.Windows.Forms.GroupBox groupBox_Left;
+        private System.Windows.Forms.Panel panel1;
+        private System.Windows.Forms.Button button14;
+        private System.Windows.Forms.Button button13;
+        private System.Windows.Forms.ListBox listBox1;
+        private System.Windows.Forms.Button button12;
     }
 }
 
