@@ -16,16 +16,26 @@ namespace p00
         //StringFinder sf = new StringFinder(@"E:\\MLV\M26-2108.MLV");
         //StringFinder sf = new StringFinder(@"F:\\ooo.MLV");
 
+        Size GroupboxSize = new Size(308, 500);
         BP_Data rrwwtt = new BP_Data();
+        PPP_Groupbox ppp;
+        PPP_Groupbox qqq;
+        PPP_Groupbox rrr;
 
         public Form1()
         {
+            ppp = new PPP_Groupbox("Raw", GroupboxSize.Width, GroupboxSize.Height, 1);
+            qqq = new PPP_Groupbox("Pixel Map", GroupboxSize.Width,GroupboxSize.Height, 2);
+            rrr = new PPP_Groupbox("Bad Pixel", GroupboxSize.Width, GroupboxSize.Height, 3);
+            this.Controls.Add(ppp);
+            this.Controls.Add(qqq);
+            this.Controls.Add(rrr);
             InitializeComponent();
-            comboBox_Import_DNG_Select.Items.Add(DngFileType.MLVApp14bit);
-            comboBox_Import_DNG_Select.Items.Add(DngFileType.Xiaomi16bit);
-            comboBox_Import_DNG_Select.SelectedIndex = 0;
+            //comboBox_Import_DNG_Select.Items.Add(DngFileType.MLVApp14bit);
+            //comboBox_Import_DNG_Select.Items.Add(DngFileType.Xiaomi16bit);
+            //comboBox_Import_DNG_Select.SelectedIndex = 0;
         }
-
+        /*
         private void button_Import_DNG_Browse_Click(object sender, EventArgs e)
         {
             try
@@ -388,6 +398,6 @@ namespace p00
                 rrwwtt.LLL.UpdateData(rrwwtt.LLL.InterlaceUniversal(2, 2));
                 rrwwtt._ExportRawDataXiaomi(rrwwtt.LLL.Data(), basedir + "\\" + filelist[i]);
             }
-        }
+        }*/
     }
 }
